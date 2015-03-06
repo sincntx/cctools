@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>cctools</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="res/style.css" rel="stylesheet">
+    <link rel="shortcut icon" href="res/favicon.ico" />
+    <script type="text/javascript" src="res/cocos2d-js-v3.3.js" charset="UTF-8"></script>
+</head>
+<body>
+<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand"><img src="res/logo.png"></a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse">
+            <ul class="nav navbar-nav navbar-main">
+                <!--<li class="bold"><a href="#">Position tool</a></li>
+                <li><a href="#">Etc</a></li>-->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a>Help</a></li>
+                <li>
+                    <select class="form-control input-sm lang">
+                        <option>English</option>
+                    </select>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="row">
+    <div class="col-md-9 center">
+        <canvas id="gameCanvas" width="800" height="480"></canvas>
+    </div>
+    <div class="col-md-3">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a id="canvas-btn" href="#">Canvas</a></li>
+            <li role="presentation"><a id="nodes-btn" href="#">Nodes</a></li>
+            <li role="presentation"><a id="property-btn" href="#">Property</a></li>
+        </ul>
+        <div id="canvas-contents" class="contents-box">
+            <form>
+                <div class="form-group">
+                    <label for="canvasWidthInput">Width (px)</label>
+                    <input type="number" class="form-control canvas-input" id="canvasWidthInput" placeholder="width">
+                </div>
+                <div class="form-group">
+                    <label for="canvasHeightInput">Height (px)</label>
+                    <input type="number" class="form-control canvas-input" id="canvasHeightInput" placeholder="height">
+                </div>
+                <div class="form-group">
+                    <label for="canvasResInput">Resolution Policy</label>
+                    <select class="form-control" id="canvasResInput">
+                        <option>cc.ContainerStrategy.SHOW_ALL</option>
+                        <option>cc.ContainerStrategy.NO_BORDER</option>
+                        <option>cc.ContainerStrategy.EXACT_FIT</option>
+                        <option>cc.ContainerStrategy.FIXED_WIDTH</option>
+                        <option>cc.ContainerStrategy.FIXED_HEIGHT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="canvasBackgroundInput">Canvas Background Color</label>
+                    <input type="text" class="form-control canvas-input" id="canvasBackgroundInput" value="#000000" placeholder="#000000">
+                </div>
+                <div class="form-group">
+                    <label for="canvasLayerBackgroundInput">Layer Background Color </label>
+                    <input type="text" class="form-control canvas-input" id="canvasLayerBackgroundInput" value="#000000" placeholder="#000000">
+                </div>
+            </form>
+        </div>
+        <div id="nodes-contents" class="contents-box hidden">
+            <table id="nodeList" class="table table-bordered">
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                </tr>
+            </table>
+
+            <ul class="list-group">
+                <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#labelttf-modal">cc.LabelTTF</a></li>
+                <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#sprite-modal">cc.Sprite</a></li>
+            </ul>
+        </div>
+        <div id="property-contents" class="contents-box hidden">
+            <form>
+                <div class="form-group">
+                    <label for="propNameInput">Node Name</label>
+                    <input type="text" class="form-control prop-input" id="propNameInput" placeholder="Name" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="propXInput">X</label>
+                    <input type="number" class="form-control prop-input" id="propXInput" placeholder="X Position">
+                </div>
+                <div class="form-group">
+                    <label for="propYInput">Y</label>
+                    <input type="number" class="form-control prop-input" id="propYInput" placeholder="Y Position">
+                </div>
+                <div class="form-group">
+                    <label for="propAXInput">Anchor X</label>
+                    <input type="number" class="form-control prop-input" id="propAXInput" placeholder="Anchor X">
+                </div>
+                <div class="form-group">
+                    <label for="propAYInput">Anchor Y</label>
+                    <input type="number" class="form-control prop-input" id="propAYInput" placeholder="Anchor Y">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<footer>
+    <div class="container">
+        <p>Maintained by the <a href="https://github.com/sincntx">sincntx</a> with the help of <a href="https://github.com/sincntx/cctools/graphs/contributors">our contributors</a>.</p>
+        <p>Code licensed under <a href="https://github.com/twbs/bootstrap/blob/master/LICENSE" target="_blank">MIT</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+
+        <ul>
+            <li>
+                <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=sincntx&amp;repo=cctools&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe>
+            </li>
+            <li>
+                <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=sincntx&amp;repo=cctools&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+            </li>
+            <li>
+                <a href="https://twitter.com/sincntx" class="twitter-follow-button" data-show-count="false">Follow @sincntx</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </li>
+            <li>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://github.com/sincntx/ccstyle">Tweet</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>                </li>
+        </ul>
+    </div>
+</footer>
+
+<div id="labelttf-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">cc.LabelTTF</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="labelttfName">Name</label>
+                        <input type="text" class="form-control" id="labelttfName" placeholder="Name" value="label">
+                    </div>
+                    <div class="form-group">
+                        <label for="labelttfText">Text</label>
+                        <input type="text" class="form-control" id="labelttfText" placeholder="Text" value="Hello World!">
+                    </div>
+                    <div class="form-group">
+                        <label for="labelttfFont">Font</label>
+                        <input type="text" class="form-control" id="labelttfFont" placeholder="Font" value="Arial">
+                    </div>
+                    <div class="form-group">
+                        <label for="labelttfFontSize">Font Size</label>
+                        <input type="number" class="form-control" id="labelttfFontSize" placeholder="Font Size" value="40">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="labelttf-btn" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="sprite-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">cc.Sprite</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="spriteName">Name</label>
+                        <input type="text" class="form-control" id="spriteName" placeholder="Name" value="sprite">
+                    </div>
+                    <div class="form-group">
+                        <label for="spriteSrc">Src</label>
+                        <input type="file" class="form-control" id="spriteSrc">
+                        <img id="spriteImagePreivew" style="display:none;"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="sprite-btn" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js" charset="UTF-8"></script>
+<script src="res/main.js"></script>
+
+</body>
+</html>

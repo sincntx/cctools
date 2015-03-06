@@ -1,0 +1,100 @@
+@charset "utf-8";
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+body {
+    font-family:'Segoe UI',Meiryo,'Trebuchet MS','나눔고딕',NanumGothic,ng,'맑은 고딕','Malgun Gothic';*font-family:'나눔고딕',NanumGothic,ng,'맑은 고딕','Malgun Gothic','Trebuchet MS';
+    font-size:12px;
+}
+
+a {
+    color:#fc3948;
+    cursor:hand;
+}
+
+.navbar {
+    border-bottom: 1px solid #d9d9de;
+    padding-bottom:2px;
+}
+
+.navbar-main {
+    padding-top:3px;
+    margin-left:50px;
+    padding-right:50px;
+}
+
+.navbar-main a {
+    font-size:14px;
+    color:#333;
+}
+
+.navbar-right {
+    padding-top:5px;
+}
+
+.navbar-right> li > a {
+    color:#000;
+    font-size:14px;
+}
+
+.lang {
+    margin-left:20px;
+    margin-top:10px;
+    padding:0;
+}
+
+footer {
+    margin-top:30px;
+    border-top: 1px solid #d9d9de;
+    padding-top:50px;
+}
+
+footer > div > ul {
+    margin-top:10px;
+    display:inline-block;
+    padding-left:0;
+    margin-bottom:0;
+    list-style:none
+}
+
+footer > div > ul > li{
+    display:inline-block;
+    padding:5px 8px;
+    line-height:1
+}
+
+.github-btn{
+    overflow:hidden;
+    border:0
+}
+
+.canvas-box {
+    border:1px solid #d9d9de;
+    margin:auto;
+}
+
+.center {
+    text-align:center;
+}
+
+.bold {
+    font-weight:bold;
+}
+
+.contents-box {
+    border-left:1px solid #d9d9de;
+    border-bottom:1px solid #d9d9de;
+    padding:20px;
+}
+
+.hidden {
+    display:none;
+}
+
+.margin-top-30 {
+    margin-top:30px;
+}
+
+.row {
+    margin-left:0;
+    margin-right:0;
+}

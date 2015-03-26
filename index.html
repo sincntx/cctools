@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>cctools</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="res/jstree/themes/default/style.min.css" />
     <link href="res/style.css" rel="stylesheet">
     <link rel="shortcut icon" href="res/favicon.ico" />
     <script type="text/javascript" src="res/cocos2d-js-v3.3.js" charset="UTF-8"></script>
@@ -23,8 +24,11 @@
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse">
             <ul class="nav navbar-nav navbar-main">
-                <!--<li class="bold"><a href="#">Position tool</a></li>
-                <li><a href="#">Etc</a></li>-->
+                <li role="presentation" class="active"><a id="canvasBtn" href="#">Canvas</a></li>
+                <li role="presentation"><a id="nodesBtn" href="#">Nodes</a></li>
+                <li role="presentation"><a id="propertyBtn" href="#">Property</a></li>
+                <li role="presentation"><a id="actionBtn" href="#">Action</a></li>
+                <li role="presentation"><a id="codeBtn" href="#">Code</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a>Help</a></li>
@@ -43,11 +47,6 @@
         <canvas id="gameCanvas" width="800" height="480"></canvas>
     </div>
     <div class="col-md-3">
-        <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a id="canvas-btn" href="#">Canvas</a></li>
-            <li role="presentation"><a id="nodes-btn" href="#">Nodes</a></li>
-            <li role="presentation"><a id="property-btn" href="#">Property</a></li>
-        </ul>
         <div id="canvas-contents" class="contents-box">
             <form>
                 <div class="form-group">
@@ -79,17 +78,20 @@
             </form>
         </div>
         <div id="nodes-contents" class="contents-box hidden">
-            <table id="nodeList" class="table table-bordered">
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Action</th>
-                </tr>
-            </table>
+            <div  class="well">
+                <b>Node Tree</b>
+                <div id="jstreeNode">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+
+            <br />
 
             <ul class="list-group">
-                <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#labelttf-modal">cc.LabelTTF</a></li>
-                <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#sprite-modal">cc.Sprite</a></li>
+                <li class="list-group-item"><b>Node List</b></li>
+                <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#labelttfModal">cc.LabelTTF</a></li>
+                <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#spriteModal">cc.Sprite</a></li>
             </ul>
         </div>
         <div id="property-contents" class="contents-box hidden">
@@ -103,17 +105,80 @@
                     <input type="number" class="form-control prop-input" id="propXInput" placeholder="X Position">
                 </div>
                 <div class="form-group">
+                    <a id="xLeftAlign" href="#" class="btn btn-default" aria-label="Left Align"><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span></a>
+                    <a id="xCenterAlign" hrf="#" class="btn btn-default" aria-label="Center Align"><span class="glyphicon glyphicon-align-center" aria-hidden="true"></span></a>
+                    <a id="xRightAlign" href="#" class="btn btn-default" aria-label="Right Align"><span class="glyphicon glyphicon-align-right" aria-hidden="true"></span></a>
+                </div>
+                <div class="form-group">
                     <label for="propYInput">Y</label>
                     <input type="number" class="form-control prop-input" id="propYInput" placeholder="Y Position">
                 </div>
                 <div class="form-group">
-                    <label for="propAXInput">Anchor X</label>
-                    <input type="number" class="form-control prop-input" id="propAXInput" placeholder="Anchor X">
+                    <a id="yTopAlign" href="#" class="btn btn-default" aria-label="Top Align"><span class="glyphicon glyphicon-object-align-top" aria-hidden="true"></span></a>
+                    <a id="yMiddleAlign" hrf="#" class="btn btn-default" aria-label="Middle Align"><span class="glyphicon glyphicon-object-align-vertical" aria-hidden="true"></span></a>
+                    <a id="yBottomAlign" href="#" class="btn btn-default" aria-label="Bottom Align"><span class="glyphicon glyphicon-object-align-bottom" aria-hidden="true"></span></a>
                 </div>
-                <div class="form-group">
-                    <label for="propAYInput">Anchor Y</label>
-                    <input type="number" class="form-control prop-input" id="propAYInput" placeholder="Anchor Y">
+
+                <a class="btn btn-default btn-sm" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> More Property</a>
+                <div class="collapse" id="collapseExample">
+                    <div class="well">
+                        <div class="form-group">
+                            <label for="propAXInput">Anchor X</label>
+                            <input type="number" class="form-control prop-input" id="propAXInput" placeholder="Anchor X">
+                        </div>
+                        <div class="form-group">
+                            <label for="propAYInput">Anchor Y</label>
+                            <input type="number" class="form-control prop-input" id="propAYInput" placeholder="Anchor Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="propScaleXInput">Scale X</label>
+                            <input type="number" class="form-control prop-input" id="propScaleXInput" placeholder="Scale X">
+                        </div>
+                        <div class="form-group">
+                            <label for="propScaleYInput">Scale Y</label>
+                            <input type="number" class="form-control prop-input" id="propScaleYInput" placeholder="Scale Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="propSkewXInput">Skew X</label>
+                            <input type="number" class="form-control prop-input" id="propSkewXInput" placeholder="Skew X">
+                        </div>
+                        <div class="form-group">
+                            <label for="propSkewYInput">Skew Y</label>
+                            <input type="number" class="form-control prop-input" id="propSkewYInput" placeholder="Skew Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="propRotationXInput">Rotation X</label>
+                            <input type="number" class="form-control prop-input" id="propRotationXInput" placeholder="Rotate">
+                        </div>
+                        <div class="form-group">
+                            <label for="propRotationYInput">Rotation Y</label>
+                            <input type="number" class="form-control prop-input" id="propRotationYInput" placeholder="Rotate">
+                        </div>
+                        <div class="form-group">
+                            <label for="propzIndexInput">zIndex</label>
+                            <input type="number" class="form-control prop-input" id="propzIndexInput" placeholder="Rotate">
+                        </div>
+                    </div>
                 </div>
+            </form>
+        </div>
+        <div id="action-contents" class="contents-box hidden">
+            <p><span class="label label-default" id="actionStatus">Ready</span></p>
+            <br />
+            <div  class="well">
+                <b>Action Tree</b>
+                <div id="jstreeAction">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <br />
+
+            <ul class="list-group">
+                <li class="list-group-item"><b>Action List</b></li>
+                <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#movetoModal">cc.MoveTo</a></li>
+            </ul>
+            <form>
             </form>
         </div>
     </div>
@@ -143,7 +208,7 @@
     </div>
 </footer>
 
-<div id="labelttf-modal" class="modal fade">
+<div id="labelttfModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -172,13 +237,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="labelttf-btn" class="btn btn-primary">Create</button>
+                <button type="button" id="labelttfBtn" class="btn btn-primary">Create</button>
             </div>
         </div>
     </div>
 </div>
 
-<div id="sprite-modal" class="modal fade">
+<div id="spriteModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -187,6 +252,7 @@
             </div>
             <div class="modal-body">
                 <form>
+                    <input type="hidden" id="spriteFilename" />
                     <div class="form-group">
                         <label for="spriteName">Name</label>
                         <input type="text" class="form-control" id="spriteName" placeholder="Name" value="sprite">
@@ -200,7 +266,83 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="sprite-btn" class="btn btn-primary">Create</button>
+                <button type="button" id="spriteBtn" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="movetoModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">cc.MoveTo</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="movetoName">Name</label>
+                        <input type="text" class="form-control" id="movetoName" value="movetoAction">
+                    </div>
+                    <div class="form-group">
+                        <label for="movetoX">X</label>
+                        <input type="number" class="form-control" id="movetoX" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="movetoY">Y</label>
+                        <input type="number" class="form-control" id="movetoY" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="movetoDuration">Duration</label>
+                        <input type="number" class="form-control" id="movetoDuration" value="1">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="movetoBtn" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="codeModal" class="modal large fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Code</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="codeTextHidden" />
+                <pre id="codeText">
+                </pre>
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group float-left" role="group">
+                    <button type="button" id="jsBtn" class="btn btn-default active">JS</button>
+                </div>
+                <a id="codeCopyBtn" class="btn btn-danger" data-clipboard-target="codeTextHidden">Copy to clipboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="runActionModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Run Action</h4>
+            </div>
+            <div class="modal-body">
+                <select class="form-control" id="runTargetInput">
+                </select>
+            </div>
+            <div class="modal-footer">
+                <a id="runActionBtn" class="btn btn-danger">Run Action</a>
             </div>
         </div>
     </div>
@@ -208,6 +350,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js" charset="UTF-8"></script>
+<script src="res/zeroclipboard/ZeroClipboard.min.js"></script>
+<script src="res/jstree/jstree.min.js"></script>
+<script src="res/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="res/main.js"></script>
 
 </body>

@@ -13,7 +13,8 @@ a {
 
 .navbar {
     border-bottom: 1px solid #d9d9de;
-    padding-bottom:2px;
+    padding-bottom:5px;
+    padding-top:1px;
 }
 
 .navbar-main {
@@ -45,7 +46,7 @@ a {
 footer {
     margin-top:30px;
     border-top: 1px solid #d9d9de;
-    padding-top:50px;
+    padding-top:30px;
 }
 
 footer > div > ul {
@@ -81,8 +82,8 @@ footer > div > ul > li{
 }
 
 .contents-box {
-    border-left:1px solid #d9d9de;
-    border-bottom:1px solid #d9d9de;
+    border:1px solid #d9d9de;
+    border-radius:5px;
     padding:20px;
 }
 
@@ -97,4 +98,30 @@ footer > div > ul > li{
 .row {
     margin-left:0;
     margin-right:0;
+}
+
+.navbar-main > li.active > a {
+    color:#fc3948;
+    border-bottom:1px solid #d9d9de;
+}
+
+.navbar-main > li > a:hover, .navbar-main > li > a:visited {
+    background-color:#fff;
+}
+
+textarea {
+    width:100%;
+}
+
+.float-left {
+    float:left;
+}
+
+#codeText {
+    height: 500px;
+    margin: 0;
+}
+
+.modal.modal.large .modal-dialog {
+    width: 70%;
 }

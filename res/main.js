@@ -1,5 +1,16 @@
 window.onload = function() {
-    var MainScene, targetNode, propNode;
+    var cctools;
+    var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false;
+
+    cctools = {};
+
+    cctools.sideBtnClick = function(selector) {
+        $('.contents-box').css('display', 'none');
+        $('.contents-box').removeClass('hidden');
+        $('#' + selector + '-contents').css('display', 'block');
+        $('.navbar-main > li').removeClass('active');
+        $('#' + selector + 'Btn').parent().addClass('active');
+    };
 
     $.fn.setPreview = function(opt){
         "use strict"
@@ -19,6 +30,8 @@ window.onload = function() {
 
             if (window.FileReader) {
                 if (!inputFile.files[0].type.match(/image\//)) return;
+
+                $('#spriteFilename').val(inputFile.files[0].name);
 
                 try {
                     var reader = new FileReader();
@@ -57,16 +70,14 @@ window.onload = function() {
 
     $('#spriteSrc').setPreview(opt);
 
-    var sideBtnClick = function(selector) {
-        $('.contents-box').css('display', 'none');
-        $('.contents-box').removeClass('hidden');
-        $('#' + selector + '-contents').css('display', 'block');
-        $('.nav-tabs > li').removeClass('active');
-        $('#' + selector + '-btn').parent().addClass('active');
-    }
-
-    $('.nav-tabs > li > a').click(function() {
-        sideBtnClick(this.id.split('-btn')[0]);
+    $('.navbar-main > li > a').click(function() {
+        if(this.id.split('Btn')[0] !== 'code') {
+            cctools.sideBtnClick(this.id.split('Btn')[0]);
+        }
+        else {
+            $('#jsBtn').click();
+            $('#codeModal').modal('show');
+        }
     });
 
     $('#canvasWidthInput').val($('#gameCanvas').attr('width'));
@@ -94,35 +105,324 @@ window.onload = function() {
             propNode.y = parseInt($('#propYInput').val());
             propNode.anchorX = parseFloat($('#propAXInput').val());
             propNode.anchorY = parseFloat($('#propAYInput').val());
+            propNode.scaleX = parseFloat($('#propScaleXInput').val());
+            propNode.scaleY = parseFloat($('#propScaleYInput').val());
+            propNode.rotationX = parseInt($('#propRotationXInput').val());
+            propNode.rotationY = parseInt($('#propRotationYInput').val());
+            propNode.skewX = parseInt($('#propSkewXInput').val());
+            propNode.skewY = parseInt($('#propSkewYInput').val());
+            propNode.zIndex = parseInt($('#propzIndexInput').val());
         }
     });
 
-    $('#labelttf-btn').click(function() {
-        var size = cc.director.getWinSize();
-        var label = new cc.LabelTTF($('#labelttfText').val(), $('#labelttfFont').val(), $('#labelttfFontSize').val());
-        label.tag = $('#labelttfName').val();
-        label.setPosition(size.width / 2, size.height / 2);
-        MainScene.addChild(label);
-        $('#labelttf-modal').modal('hide');
-        $('#nodeList').append("<tr><td>" + $('#labelttfName').val() + "</td><td><span class='label label-default'>cc.LabelTTF</span></td><td><a href='#' class='remove-btn'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a></td></tr>");
-        $('.remove-btn').click(function() {
-            MainScene.removeChild(MainScene.getChildByTag($(this).parent().parent()[0].childNodes[0].innerText));
-            $(this).parent().parent().remove();
-        });
+    $('#labelttfBtn').click(function() {
+        var n = MainScene.getChildByTag($('#labelttfName').val());
+        if(!n) {
+            var size = cc.director.getWinSize();
+            var label = new cc.LabelTTF($('#labelttfText').val(), $('#labelttfFont').val(), $('#labelttfFontSize').val());
+            label.tag = $('#labelttfName').val();
+            label.setPosition(size.width / 2, size.height / 2);
+            MainScene.addChild(label);
+            $('#labelttfModal').modal('hide');
+            $('#jstreeNode').jstree("create_node", "#", {text:$('#labelttfName').val(), data:{type:"cc.LabelTTF", parent:"#"}}, "last");
+        }
+        else {
+            alert('Node name already exists.');
+        }
     });
 
-    $('#sprite-btn').click(function() {
+    $('#spriteBtn').click(function() {
+        var n = MainScene.getChildByTag($('#spriteName').val());
+        if(!n) {
+            var size = cc.director.getWinSize();
+            var sprite = new cc.Sprite($('#spriteImagePreivew')[0].src);
+            sprite.tag = $('#spriteName').val();
+            sprite.filename = $('#spriteFilename').val();
+            sprite.setPosition(size.width / 2, size.height / 2);
+            MainScene.addChild(sprite);
+            $('#spriteModal').modal('hide');
+        }
+        else {
+            alert('Node name already exists.');
+        }
+    });
+
+    $('#xLeftAlign').click(function() {
+        if(propNode) {
+            propNode.x = 0;
+            $('#propXInput').val(propNode.x);
+        }
+    });
+
+    $('#xCenterAlign').click(function() {
         var size = cc.director.getWinSize();
-        var sprite = new cc.Sprite($('#spriteImagePreivew')[0].src);
-        sprite.tag = $('#spriteName').val();
-        sprite.setPosition(size.width / 2, size.height / 2);
-        MainScene.addChild(sprite);
-        $('#sprite-modal').modal('hide');
-        $('#nodeList').append("<tr><td>" + $('#spriteName').val() + "</td><td><span class='label label-default'>cc.Sprite</span></td><td><a href='#' class='remove-btn'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a></td></tr>");
-        $('.remove-btn').click(function() {
-            MainScene.removeChild(MainScene.getChildByTag($(this).parent().parent()[0].childNodes[0].innerText));
-            $(this).parent().parent().remove();
-        });
+        if(propNode) {
+            propNode.x = size.width / 2;
+            $('#propXInput').val(propNode.x);
+        }
+    });
+
+    $('#xRightAlign').click(function() {
+        if(propNode) {
+            propNode.x = size.width;
+            $('#propXInput').val(propNode.x);
+        }
+    });
+
+    $('#yTopAlign').click(function() {
+        var size = cc.director.getWinSize();
+        if(propNode) {
+            propNode.y = size.height;
+            $('#propYInput').val(propNode.y);
+        }
+    });
+
+    $('#yMiddleAlign').click(function() {
+        var size = cc.director.getWinSize();
+        if(propNode) {
+            propNode.y = size.height / 2;
+            $('#propYInput').val(propNode.y);
+        }
+    });
+
+    $('#yBottomAlign').click(function() {
+        if(propNode) {
+            propNode.y = 0;
+            $('#propYInput').val(propNode.y);
+        }
+    });
+
+    $('#jsBtn').click(function() {
+        var i, j, type, name, child, child2, str = "// Canvas Setting\n";
+        str += "cc.view.setDesignResolutionSize(" + $('#canvasWidthInput').val() + ", " + $('#canvasHeightInput').val() + ", " + $("#canvasResInput option:selected").text() + ");";
+        str += "\n\n";
+        str += "// Nodes Create\n";
+
+        for(i = 1;i < MainScene._children.length;i++) {
+            child = MainScene._children[i];
+            name = child.tag;
+
+            if(child instanceof cc.LabelTTF) {
+                type = "cc.LabelTTF";
+                str += "var " + name + " = new " + type + "(\"" + child.string + "\", \"" + child.fontName + "\", " + child.fontSize + ");\n";
+            }
+            else if(child instanceof cc.Sprite) {
+                type = "cc.Sprite";
+                str += "var " + name + " = new " + type + "(\"" + child.filename + "\");\n";
+            }
+
+            str += name + ".x = " + child.x + ";\n";
+            str += name + ".y = " + child.y + ";\n";
+            str += name + ".anchorX = " + child.anchorX + ";\n";
+            str += name + ".anchorY = " + child.anchorY + ";\n";
+            str += name + ".scaleX = " + child.scaleX + ";\n";
+            str += name + ".scaleY = " + child.scaleY + ";\n";
+            str += name + ".skewX = " + child.skewX + ";\n";
+            str += name + ".skewY = " + child.skewY + ";\n";
+            str += name + ".rotationX = " + child.rotationX + ";\n";
+            str += name + ".rotationY = " + child.rotationY + ";\n";
+            str += name + ".zIndex = " + child.zIndex + ";\n";
+            str += "this.addChild(" + name + ");\n\n";
+
+            for(j = 0;j < child._children.length;j++) {
+                child2 = child._children[j];
+                name = child2.tag;
+
+                if(child2 instanceof cc.LabelTTF) {
+                    type = "cc.LabelTTF";
+                    str += "var " + name + " = new " + type + "(\"" + child2.string + "\", \"" + child2.fontName + "\", " + child2.fontSize + ");\n";
+                }
+                else if(child2 instanceof cc.Sprite) {
+                    type = "cc.Sprite";
+                    str += "var " + name + " = new " + type + "(\"" + child2.filename + "\");\n";
+                }
+
+                str += name + ".x = " + child2.x + ";\n";
+                str += name + ".y = " + child2.y + ";\n";
+                str += name + ".anchorX = " + child2.anchorX + ";\n";
+                str += name + ".anchorY = " + child2.anchorY + ";\n";
+                str += name + ".scaleX = " + child2.scaleX + ";\n";
+                str += name + ".scaleY = " + child2.scaleY + ";\n";
+                str += name + ".skewX = " + child2.skewX + ";\n";
+                str += name + ".skewY = " + child2.skewY + ";\n";
+                str += name + ".rotationX = " + child2.rotationX + ";\n";
+                str += name + ".rotationY = " + child2.rotationY + ";\n";
+                str += name + ".zIndex = " + child2.zIndex + ";\n";
+                str += child.tag + ".addChild(" + name + ");\n\n";
+            }
+        }
+
+        $('#codeTextHidden').val(str);
+
+        var editor = ace.edit("codeText");
+        editor.setValue(str);
+        editor.clearSelection();
+    });
+
+    $('#movetoBtn').click(function() {
+        var check = $('#jstreeAction').jstree("create_node", "#", {text:$('#movetoName').val()}, "last");
+
+        if(!check) {
+            alert('Action name already exists.');
+        }
+        else {
+            check = $('#jstreeAction').jstree(true).get_node(check);
+            check.type = 'cc.MoveTo';
+            check.x = $('#movetoX').val();
+            check.y = $('#movetoY').val();
+            check.duration = $('#movetoDuration').val();
+            $('#movetoModal').modal('hide');
+        }
+    });
+
+    var editor = ace.edit("codeText");
+    editor.setTheme("ace/theme/chrome");
+    editor.getSession().setMode("ace/mode/javascript");
+
+    var client = new ZeroClipboard( document.getElementById("codeCopyBtn") );
+
+    $('#jstreeNode').jstree({"core":{"check_callback" : true}, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
+        "items" : function ($node) {
+            return {
+                "Rename" : {
+                    "label" : "Rename",
+                    "action" : function (obj) {
+                        var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
+                        $('#jstreeNode').jstree(true).edit(n);
+                    }
+                },
+                "Delete" : {
+                    "label" : "Delete",
+                    "action" : function (obj) {
+                        var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
+                        $('#jstreeNode').jstree(true).delete_node(n);
+                    }
+                },
+                "Property" : {
+                    "label" : "Property",
+                    "action" : function (obj) {
+                        var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
+                        if(n.parent_tags) {
+                            propNode = MainScene.getChildByTag(n.parent_tags).getChildByTag(n.text);
+                        }
+                        else {
+                            propNode = MainScene.getChildByTag(n.text);
+                        }
+                        $('#propNameInput').val(propNode.tag);
+                        $('#propXInput').val(propNode.x);
+                        $('#propYInput').val(propNode.y);
+                        $('#propAXInput').val(propNode.anchorX);
+                        $('#propAYInput').val(propNode.anchorY);
+                        $('#propScaleXInput').val(propNode.scaleX);
+                        $('#propScaleYInput').val(propNode.scaleY);
+                        $('#propRotationXInput').val(propNode.rotationX);
+                        $('#propRotationYInput').val(propNode.rotationY);
+                        $('#propSkewXInput').val(propNode.skewX);
+                        $('#propSkewYInput').val(propNode.skewY);
+                        $('#propzIndexInput').val(propNode.zIndex);
+                        $('#propertyBtn').click();
+                    }
+                }
+            };
+        }
+    }});
+
+    $('#jstreeNode').on('move_node.jstree', function (event, data) {
+        var exParentName, exParent, parent, node;
+
+        exParentName = $('#jstreeNode').jstree(true).get_node(data.node).parent_tags;
+
+        if(exParentName) {
+            exParent = MainScene.getChildByTag(exParentName);
+        }
+
+        if(!exParent) {
+            exParent = MainScene;
+        }
+
+        parent = MainScene.getChildByTag($('#jstreeNode').jstree(true).get_node(data.parent).text);
+        $('#jstreeNode').jstree(true).get_node(data.node).parent_tags = $('#jstreeNode').jstree(true).get_node(data.parent).text
+
+        if(!parent) parent = MainScene;
+
+        node = exParent.getChildByTag(data.node.text);
+        exParent.removeChildByTag(data.node.text);
+        parent.addChild(node);
+    });
+
+    $('#jstreeNode').on('rename_node.jstree', function (event, obj) {
+        var node;
+        node = MainScene.getChildByTag(obj.old);
+        node.tag = obj.text;
+    });
+
+    $('#jstreeNode').on('delete_node.jstree', function (event, obj) {
+        MainScene.removeChildByTag(obj.node.text);
+    });
+
+    $('#jstreeAction').jstree({"core":{"check_callback" : true}, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
+        "items" : function ($node) {
+            return {
+                "Rename" : {
+                    "label" : "Rename",
+                    "action" : function (obj) {
+                        var n = $('#jstreeAction').jstree(true).get_node(obj.reference);
+                        $('#jstreeAction').jstree(true).edit(n);
+                    }
+                },
+                "Delete" : {
+                    "label" : "Delete",
+                    "action" : function (obj) {
+                        var n = $('#jstreeAction').jstree(true).get_node(obj.reference);
+                        $('#jstreeAction').jstree(true).delete_node(n);
+                    }
+                },
+                "Run" : {
+                    "label" : "Run",
+                    "action" : function (obj) {
+                        var n = $('#jstreeAction').jstree(true).get_node(obj.reference), i;
+
+                        if(isRun) return;
+
+                        if(MainScene._children.length < 2) {
+                            alert('Please add a node.');
+                            return;
+                        }
+
+                        targetAction = n;
+
+                        $('#runTargetInput option').remove();
+
+                        for(i = 1;i < MainScene._children.length;i++) {
+                            $('#runTargetInput').append('<option>' + MainScene._children[i].tag +'</option>');
+                        }
+
+                        $('#runActionModal').modal('show');
+                    }
+                }
+            };
+        }
+    }});
+
+    $('#runActionBtn').click(function() {
+        var target = MainScene.getChildByTag($("#runTargetInput option:selected").text()), action;
+
+        isRun = true;
+        targetActionNode = $.extend({}, target);
+        $('#actionStatus').text('Action!');
+        $('#actionStatus').removeClass('label-default');
+        $('#actionStatus').addClass('label-danger');
+        action = new cc.MoveTo(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
+        target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {
+            isRun = false;
+            sender.x = targetActionNode.x;
+            sender.y = targetActionNode.y;
+            $('#actionStatus').text('Ready');
+            $('#actionStatus').removeClass('label-danger');
+            $('#actionStatus').addClass('label-default');
+        }, target)));
+
+        $('#runActionModal').modal('hide');
     });
 
     cc.game.onStart = function(){
@@ -138,13 +438,38 @@ window.onload = function() {
                     this.addChild(colorLayer);
 
                     cc.eventManager.addListener(cc.EventListener.create({
+                        event: cc.EventListener.KEYBOARD,
+                        onKeyPressed: function(key, event){
+                            if(propNode) {
+                                switch(key) {
+                                    case 37:
+                                        propNode.x--;
+                                        break;
+                                    case 39:
+                                        propNode.x++;
+                                        break;
+                                    case 38:
+                                        propNode.y++;
+                                        break;
+                                    case 40:
+                                        propNode.y--;
+                                        break;
+                                }
+
+                                $('#propXInput').val(propNode.x);
+                                $('#propYInput').val(propNode.y);
+                            }
+                        }
+                    }), this);
+
+                    cc.eventManager.addListener(cc.EventListener.create({
                         event: cc.EventListener.MOUSE,
                         onMouseDown: function(event){
-                            var pos = event.getLocation(), target = event.getCurrentTarget(), i;
-                            if(event.getButton() === cc.EventMouse.BUTTON_RIGHT)
+                            var pos = event.getLocation(), target = event.getCurrentTarget(), i, j;
+                            /*if(event.getButton() === cc.EventMouse.BUTTON_RIGHT)
                                 cc.log("onRightMouseDown at: " + pos.x + " " + pos.y );
                             else if(event.getButton() === cc.EventMouse.BUTTON_LEFT)
-                                cc.log("onLeftMouseDown at: " + pos.x + " " + pos.y );
+                                cc.log("onLeftMouseDown at: " + pos.x + " " + pos.y );*/
 
                             for(i = 1;i < target._children.length;i++) {
                                 if(cc.rectContainsPoint(target._children[i].getBoundingBox(),pos)) {
@@ -155,17 +480,44 @@ window.onload = function() {
                                     $('#propYInput').val(propNode.y);
                                     $('#propAXInput').val(propNode.anchorX);
                                     $('#propAYInput').val(propNode.anchorY);
-                                    $('#property-btn').click();
+                                    $('#propScaleXInput').val(propNode.scaleX);
+                                    $('#propScaleYInput').val(propNode.scaleY);
+                                    $('#propRotationXInput').val(propNode.rotationX);
+                                    $('#propRotationYInput').val(propNode.rotationY);
+                                    $('#propSkewXInput').val(propNode.skewX);
+                                    $('#propSkewYInput').val(propNode.skewY);
+                                    $('#propzIndexInput').val(propNode.zIndex);
+                                    $('#propertyBtn').click();
+                                }
+
+                                for(j = 0;j < target._children[i]._children.length;j++) {
+                                    if(cc.rectContainsPoint(target._children[i]._children[j].getBoundingBoxToWorld(),pos)) {
+                                        targetNode = target._children[i]._children[j];
+                                        propNode = target._children[i]._children[j];
+                                        $('#propNameInput').val(propNode.tag);
+                                        $('#propXInput').val(propNode.x);
+                                        $('#propYInput').val(propNode.y);
+                                        $('#propAXInput').val(propNode.anchorX);
+                                        $('#propAYInput').val(propNode.anchorY);
+                                        $('#propScaleXInput').val(propNode.scaleX);
+                                        $('#propScaleYInput').val(propNode.scaleY);
+                                        $('#propRotationXInput').val(propNode.rotationX);
+                                        $('#propRotationYInput').val(propNode.rotationY);
+                                        $('#propSkewXInput').val(propNode.skewX);
+                                        $('#propSkewYInput').val(propNode.skewY);
+                                        $('#propzIndexInput').val(propNode.zIndex);
+                                        $('#propertyBtn').click();
+                                    }
                                 }
                             }
                         },
                         onMouseMove: function(event){
                             var pos = event.getLocation(), target = event.getCurrentTarget();
                             if(targetNode) {
-                                targetNode.x = pos.x;
-                                targetNode.y = pos.y;
-                                $('#propXInput').val(pos.x);
-                                $('#propYInput').val(pos.y);
+                                targetNode.x = parseInt(pos.x - targetNode.parent.x);
+                                targetNode.y = parseInt(pos.y - targetNode.parent.y);
+                                $('#propXInput').val(targetNode.x);
+                                $('#propYInput').val(targetNode.y);
                             }
                         },
                         onMouseUp: function(event){

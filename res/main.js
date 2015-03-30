@@ -141,6 +141,7 @@ window.onload = function() {
             sprite.setPosition(size.width / 2, size.height / 2);
             MainScene.addChild(sprite);
             $('#spriteModal').modal('hide');
+            $('#jstreeNode').jstree("create_node", "#", {text:$('#spriteName').val(), data:{type:"cc.Sprite", parent:"#"}}, "last");
         }
         else {
             alert('Node name already exists.');

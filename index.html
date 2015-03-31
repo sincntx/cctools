@@ -88,10 +88,8 @@
 
             <br />
 
-            <ul class="list-group">
+            <ul class="list-group" id="nodeList">
                 <li class="list-group-item"><b>Node List</b></li>
-                <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#labelttfModal">cc.LabelTTF</a></li>
-                <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#spriteModal">cc.Sprite</a></li>
             </ul>
         </div>
         <div id="property-contents" class="contents-box hidden">
@@ -208,65 +206,21 @@
     </div>
 </footer>
 
-<div id="labelttfModal" class="modal fade">
+<div id="nodeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">cc.LabelTTF</h4>
+                <h4 class="modal-title" id="nodeModalTitle"></h4>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="labelttfName">Name</label>
-                        <input type="text" class="form-control" id="labelttfName" placeholder="Name" value="label">
-                    </div>
-                    <div class="form-group">
-                        <label for="labelttfText">Text</label>
-                        <input type="text" class="form-control" id="labelttfText" placeholder="Text" value="Hello World!">
-                    </div>
-                    <div class="form-group">
-                        <label for="labelttfFont">Font</label>
-                        <input type="text" class="form-control" id="labelttfFont" placeholder="Font" value="Arial">
-                    </div>
-                    <div class="form-group">
-                        <label for="labelttfFontSize">Font Size</label>
-                        <input type="number" class="form-control" id="labelttfFontSize" placeholder="Font Size" value="40">
-                    </div>
+                <form id="nodeModalForm">
                 </form>
+                <img id="spriteImagePreivew" style="display:none;"/>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="labelttfBtn" class="btn btn-primary">Create</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="spriteModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">cc.Sprite</h4>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <input type="hidden" id="spriteFilename" />
-                    <div class="form-group">
-                        <label for="spriteName">Name</label>
-                        <input type="text" class="form-control" id="spriteName" placeholder="Name" value="sprite">
-                    </div>
-                    <div class="form-group">
-                        <label for="spriteSrc">Src</label>
-                        <input type="file" class="form-control" id="spriteSrc">
-                        <img id="spriteImagePreivew" style="display:none;"/>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="spriteBtn" class="btn btn-primary">Create</button>
+                <button type="button" id="nodeModalBtn" class="btn btn-primary">Create</button>
             </div>
         </div>
     </div>

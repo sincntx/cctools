@@ -1,6 +1,60 @@
 window.onload = function() {
     var cctools;
-    var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false;
+    var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false, nodeIndex = -1;
+    var NodeList = [
+        [
+            {
+                "title" : "cc.LabelTTF",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.LabelTTF"
+            },
+            {
+                "title" : "Tag",
+                "id" : "tag",
+                "type" : "text",
+                "value" : "label"
+            },
+            {
+                "title" : "Text",
+                "id" : "text",
+                "type" : "text",
+                "value" : "Hello World!"
+            },
+            {
+                "title" : "Font",
+                "id" : "font",
+                "type" : "text",
+                "value" : "Arial"
+            },
+            {
+                "title" : "Font Size",
+                "id" : "fontsize",
+                "type" : "number",
+                "value" : "40"
+            }
+        ],
+        [
+            {
+                "title" : "cc.Sprite",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.Sprite"
+            },
+            {
+                "title" : "Tag",
+                "id" : "tag",
+                "type" : "text",
+                "value" : "sprite"
+            },
+            {
+                "title" : "Src",
+                "id" : "src",
+                "type" : "file",
+                "value" : ""
+            }
+        ]
+    ];
 
     cctools = {};
 
@@ -68,7 +122,58 @@ window.onload = function() {
         h: 200
     };
 
-    $('#spriteSrc').setPreview(opt);
+    // Node List Init
+    for(var i = 0;i < NodeList.length;i++) {
+        $('#nodeList').append('<li class="list-group-item"><a class="node-list-btn" href="#" data-toggle="modal" data-target="#nodeModal" data-type="' + NodeList[i][0].value + '">' + NodeList[i][0].title + '</a></li>');
+    }
+
+    $('.node-list-btn').click(function(e) {
+        var i;
+        for(i = 0;i < NodeList.length;i++) {
+            if(NodeList[i][0].value === e.currentTarget.childNodes[0].data) {
+                nodeIndex = i;
+                break;
+            }
+        }
+
+        $('#nodeModalTitle').html(NodeList[nodeIndex][0].title);
+        $('#nodeModalForm').empty();
+        $('#spriteImagePreivew').hide();
+
+        for(i = 1;i < NodeList[nodeIndex].length;i++) {
+            $('#nodeModalForm').append('<div class="form-group"> <label for="nodeModal' + NodeList[nodeIndex][i].id + '">' + NodeList[nodeIndex][i].title + '</label><input type="' + NodeList[nodeIndex][i].type + '" class="form-control" id="nodeModal' + NodeList[nodeIndex][i].id + '" placeholder="' + NodeList[nodeIndex][i].title + '" value="' + NodeList[nodeIndex][i].value +'"></div>');
+            if(NodeList[nodeIndex][i].type === 'file') {
+                $('#nodeModal' + NodeList[nodeIndex][i].id).setPreview(opt);
+                $('#nodeModalForm').append('<input type="hidden" id="spriteFilename" />');
+            }
+        }
+        $('#nodeModalBtn').unbind('click');
+        $('#nodeModalBtn').click(function() {
+            console.log($('#nodeModal' + NodeList[nodeIndex][1].id).val());
+            var n = MainScene.getChildByTag($('#nodeModal' + NodeList[nodeIndex][1].id).val());
+            if(!n) {
+                var size = cc.director.getWinSize(), node;
+
+                switch(NodeList[nodeIndex][0].value) {
+                    case "cc.LabelTTF" :
+                        node = new cc.LabelTTF($('#nodeModal' + NodeList[nodeIndex][2].id).val(), $('#nodeModal' + NodeList[nodeIndex][3].id).val(), $('#nodeModal' + NodeList[nodeIndex][4].id).val());
+                        break;
+                    case "cc.Sprite" :
+                        node = new cc.Sprite($('#spriteImagePreivew')[0].src);
+                        node.filename = $('#spriteFilename').val();
+                }
+
+                node.tag = $('#nodeModal' + NodeList[nodeIndex][1].id).val();
+                node.setPosition(size.width / 2, size.height / 2);
+                MainScene.addChild(node);
+                $('#nodeModal').modal('hide');
+                $('#jstreeNode').jstree("create_node", "#", {text:$('#nodeModal' + NodeList[nodeIndex][1].id).val(), data:{type:NodeList[nodeIndex][0].value, parent:"#"}}, "last");
+            }
+            else {
+                alert('Same tag already exists.');
+            }
+        });
+    });
 
     $('.navbar-main > li > a').click(function() {
         if(this.id.split('Btn')[0] !== 'code') {
@@ -112,39 +217,6 @@ window.onload = function() {
             propNode.skewX = parseInt($('#propSkewXInput').val());
             propNode.skewY = parseInt($('#propSkewYInput').val());
             propNode.zIndex = parseInt($('#propzIndexInput').val());
-        }
-    });
-
-    $('#labelttfBtn').click(function() {
-        var n = MainScene.getChildByTag($('#labelttfName').val());
-        if(!n) {
-            var size = cc.director.getWinSize();
-            var label = new cc.LabelTTF($('#labelttfText').val(), $('#labelttfFont').val(), $('#labelttfFontSize').val());
-            label.tag = $('#labelttfName').val();
-            label.setPosition(size.width / 2, size.height / 2);
-            MainScene.addChild(label);
-            $('#labelttfModal').modal('hide');
-            $('#jstreeNode').jstree("create_node", "#", {text:$('#labelttfName').val(), data:{type:"cc.LabelTTF", parent:"#"}}, "last");
-        }
-        else {
-            alert('Node name already exists.');
-        }
-    });
-
-    $('#spriteBtn').click(function() {
-        var n = MainScene.getChildByTag($('#spriteName').val());
-        if(!n) {
-            var size = cc.director.getWinSize();
-            var sprite = new cc.Sprite($('#spriteImagePreivew')[0].src);
-            sprite.tag = $('#spriteName').val();
-            sprite.filename = $('#spriteFilename').val();
-            sprite.setPosition(size.width / 2, size.height / 2);
-            MainScene.addChild(sprite);
-            $('#spriteModal').modal('hide');
-            $('#jstreeNode').jstree("create_node", "#", {text:$('#spriteName').val(), data:{type:"cc.Sprite", parent:"#"}}, "last");
-        }
-        else {
-            alert('Node name already exists.');
         }
     });
 

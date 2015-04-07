@@ -56,6 +56,35 @@ window.onload = function() {
         ]
     ];
 
+    var ActionList = [
+        [
+            {
+                "title" : "cc.MoveTo",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.MoveTo"
+            },
+            {
+                "title" : "X",
+                "id" : "x",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "0"
+            }
+        ]
+    ];
+
     cctools = {};
 
     cctools.sideBtnClick = function(selector) {

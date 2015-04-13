@@ -1,6 +1,6 @@
 window.onload = function() {
     var cctools;
-    var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false, nodeIndex = -1;
+    var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false, nodeIndex = -1, actionIndex = -1;
     var NodeList = [
         [
             {
@@ -63,6 +63,12 @@ window.onload = function() {
                 "id" : "name",
                 "type" : "label",
                 "value" : "cc.MoveTo"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "moveto"
             },
             {
                 "title" : "X",
@@ -178,7 +184,6 @@ window.onload = function() {
         }
         $('#nodeModalBtn').unbind('click');
         $('#nodeModalBtn').click(function() {
-            console.log($('#nodeModal' + NodeList[nodeIndex][1].id).val());
             var n = MainScene.getChildByTag($('#nodeModal' + NodeList[nodeIndex][1].id).val());
             if(!n) {
                 var size = cc.director.getWinSize(), node;
@@ -200,6 +205,44 @@ window.onload = function() {
             }
             else {
                 alert('Same tag already exists.');
+            }
+        });
+    });
+
+    // Action List Init
+    for(var i = 0;i < ActionList.length;i++) {
+        $('#actionList').append('<li class="list-group-item"><a class="action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + ActionList[i][0].value + '">' + ActionList[i][0].title + '</a></li>');
+    }
+
+    $('.action-list-btn').click(function(e) {
+        var i;
+        for(i = 0;i < ActionList.length;i++) {
+            if(ActionList[i][0].value === e.currentTarget.childNodes[0].data) {
+                actionIndex = i;
+                break;
+            }
+        }
+
+        $('#actionModalTitle').html(ActionList[actionIndex][0].title);
+        $('#actionModalForm').empty();
+
+        for(i = 1;i < ActionList[actionIndex].length;i++) {
+            $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + ActionList[actionIndex][i].id + '">' + ActionList[actionIndex][i].title + '</label><input type="' + ActionList[actionIndex][i].type + '" class="form-control" id="actionModal' + ActionList[actionIndex][i].id + '" placeholder="' + ActionList[actionIndex][i].title + '" value="' + ActionList[actionIndex][i].value +'"></div>');
+        }
+        $('#actionModalBtn').unbind('click');
+        $('#actionModalBtn').click(function() {
+            var check = $('#jstreeAction').jstree("create_node", "#", {text:$('#actionModalname').val()}, "last");
+
+            if(!check) {
+                alert('Action name already exists.');
+            }
+            else {
+                check = $('#jstreeAction').jstree(true).get_node(check);
+                check.type = ActionList[actionIndex][0].value;
+                check.x = $('#actionModalx').val();
+                check.y = $('#actionModaly').val();
+                check.duration = $('#actionModalduration').val();
+                $('#actionModal').modal('hide');
             }
         });
     });
@@ -361,22 +404,6 @@ window.onload = function() {
         editor.clearSelection();
     });
 
-    $('#movetoBtn').click(function() {
-        var check = $('#jstreeAction').jstree("create_node", "#", {text:$('#movetoName').val()}, "last");
-
-        if(!check) {
-            alert('Action name already exists.');
-        }
-        else {
-            check = $('#jstreeAction').jstree(true).get_node(check);
-            check.type = 'cc.MoveTo';
-            check.x = $('#movetoX').val();
-            check.y = $('#movetoY').val();
-            check.duration = $('#movetoDuration').val();
-            $('#movetoModal').modal('hide');
-        }
-    });
-
     var editor = ace.edit("codeText");
     editor.setTheme("ace/theme/chrome");
     editor.getSession().setMode("ace/mode/javascript");
@@ -508,7 +535,7 @@ window.onload = function() {
 
     $('#runActionBtn').click(function() {
         var target = MainScene.getChildByTag($("#runTargetInput option:selected").text()), action;
-
+        console.log(targetAction);
         isRun = true;
         targetActionNode = $.extend({}, target);
         $('#actionStatus').text('Action!');

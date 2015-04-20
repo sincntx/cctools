@@ -88,6 +88,38 @@ window.onload = function() {
                 "type" : "number",
                 "value" : "0"
             }
+        ],
+        [
+            {
+                "title" : "cc.MoveBy",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.MoveBy"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "moveto"
+            },
+            {
+                "title" : "X",
+                "id" : "x",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "0"
+            }
         ]
     ];
 

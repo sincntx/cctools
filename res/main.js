@@ -86,7 +86,7 @@ window.onload = function() {
                 "title" : "Duration",
                 "id" : "duration",
                 "type" : "number",
-                "value" : "0"
+                "value" : "1"
             }
         ],
         [
@@ -118,7 +118,33 @@ window.onload = function() {
                 "title" : "Duration",
                 "id" : "duration",
                 "type" : "number",
-                "value" : "0"
+                "value" : "1"
+            }
+        ],
+        [
+            {
+                "title" : "cc.ScaleTo",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.MoveBy"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "moveto"
+            },
+            {
+                "title" : "scale",
+                "id" : "scale",
+                "type" : "number",
+                "value" : "2"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
             }
         ]
     ];

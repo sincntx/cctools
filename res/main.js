@@ -100,7 +100,7 @@ window.onload = function() {
                 "title" : "Name",
                 "id" : "name",
                 "type" : "text",
-                "value" : "moveto"
+                "value" : "moveby"
             },
             {
                 "title" : "X",
@@ -126,13 +126,39 @@ window.onload = function() {
                 "title" : "cc.ScaleTo",
                 "id" : "name",
                 "type" : "label",
-                "value" : "cc.MoveBy"
+                "value" : "cc.ScaleTo"
             },
             {
                 "title" : "Name",
                 "id" : "name",
                 "type" : "text",
-                "value" : "moveto"
+                "value" : "scaleto"
+            },
+            {
+                "title" : "scale",
+                "id" : "scale",
+                "type" : "number",
+                "value" : "2"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
+        ],
+        [
+            {
+                "title" : "cc.ScaleBy",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.ScaleBy"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "scaleby"
             },
             {
                 "title" : "scale",

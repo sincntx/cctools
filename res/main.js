@@ -135,10 +135,16 @@ window.onload = function() {
                 "value" : "scaleto"
             },
             {
-                "title" : "scale",
-                "id" : "scale",
+                "title" : "X",
+                "id" : "x",
                 "type" : "number",
-                "value" : "2"
+                "value" : "1"
+            },
+            {
+                "title" : "Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "1"
             },
             {
                 "title" : "Duration",
@@ -161,10 +167,16 @@ window.onload = function() {
                 "value" : "scaleby"
             },
             {
-                "title" : "scale",
-                "id" : "scale",
+                "title" : "X",
+                "id" : "x",
                 "type" : "number",
-                "value" : "2"
+                "value" : "1"
+            },
+            {
+                "title" : "Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "1"
             },
             {
                 "title" : "Duration",
@@ -392,6 +404,7 @@ window.onload = function() {
     });
 
     $('#xRightAlign').click(function() {
+        var size = cc.director.getWinSize();
         if(propNode) {
             propNode.x = size.width;
             $('#propXInput').val(propNode.x);
@@ -619,17 +632,32 @@ window.onload = function() {
 
     $('#runActionBtn').click(function() {
         var target = MainScene.getChildByTag($("#runTargetInput option:selected").text()), action;
-        console.log(targetAction);
         isRun = true;
         targetActionNode = $.extend({}, target);
         $('#actionStatus').text('Action!');
         $('#actionStatus').removeClass('label-default');
         $('#actionStatus').addClass('label-danger');
-        action = new cc.MoveTo(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
+
+        switch(targetAction.type) {
+            case "cc.MoveTo":
+                action = new cc.MoveTo(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
+                break;
+            case "cc.MoveBy":
+                action = new cc.MoveBy(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
+                break;
+            case "cc.ScaleTo":
+                action = new cc.ScaleTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+            case "cc.ScaleBy":
+                action = new cc.ScaleBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+        }
         target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {
             isRun = false;
             sender.x = targetActionNode.x;
             sender.y = targetActionNode.y;
+            sender.scaleX = targetActionNode.scaleX;
+            sender.scaleY = targetActionNode.scaleY;
             $('#actionStatus').text('Ready');
             $('#actionStatus').removeClass('label-danger');
             $('#actionStatus').addClass('label-default');

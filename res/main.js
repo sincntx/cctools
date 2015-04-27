@@ -376,6 +376,7 @@ window.onload = function() {
         if(propNode) {
             propNode.x = parseInt($('#propXInput').val());
             propNode.y = parseInt($('#propYInput').val());
+            propNode.opacity = parseFloat($('#propOpacityInput').val());
             propNode.anchorX = parseFloat($('#propAXInput').val());
             propNode.anchorY = parseFloat($('#propAYInput').val());
             propNode.scaleX = parseFloat($('#propScaleXInput').val());
@@ -537,6 +538,7 @@ window.onload = function() {
                         $('#propNameInput').val(propNode.tag);
                         $('#propXInput').val(propNode.x);
                         $('#propYInput').val(propNode.y);
+                        $('#propOpacityInput').val(propNode.opacity);
                         $('#propAXInput').val(propNode.anchorX);
                         $('#propAYInput').val(propNode.anchorY);
                         $('#propScaleXInput').val(propNode.scaleX);
@@ -719,6 +721,7 @@ window.onload = function() {
                                     $('#propNameInput').val(propNode.tag);
                                     $('#propXInput').val(propNode.x);
                                     $('#propYInput').val(propNode.y);
+                                    $('#propOpacityInput').val(propNode.opacity);
                                     $('#propAXInput').val(propNode.anchorX);
                                     $('#propAYInput').val(propNode.anchorY);
                                     $('#propScaleXInput').val(propNode.scaleX);
@@ -738,6 +741,7 @@ window.onload = function() {
                                         $('#propNameInput').val(propNode.tag);
                                         $('#propXInput').val(propNode.x);
                                         $('#propYInput').val(propNode.y);
+                                        $('#propOpacityInput').val(propNode.opacity);
                                         $('#propAXInput').val(propNode.anchorX);
                                         $('#propAYInput').val(propNode.anchorY);
                                         $('#propScaleXInput').val(propNode.scaleX);

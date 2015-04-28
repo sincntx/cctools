@@ -253,6 +253,8 @@ window.onload = function() {
         h: 200
     };
 
+    $('#propColorInput').colorpicker();
+
     // Node List Init
     for(var i = 0;i < NodeList.length;i++) {
         $('#nodeList').append('<li class="list-group-item"><a class="node-list-btn" href="#" data-toggle="modal" data-target="#nodeModal" data-type="' + NodeList[i][0].value + '">' + NodeList[i][0].title + '</a></li>');

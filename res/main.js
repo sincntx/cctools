@@ -254,6 +254,24 @@ window.onload = function() {
     };
 
     $('#propColorInput').colorpicker();
+    $('#canvasBackgroundInput').colorpicker();
+    $('#canvasLayerBackgroundInput').colorpicker();
+
+    $("#canvasBackgroundInput").on("change.color", function(event, color){
+        $('#Cocos2dGameContainer').css('background-color', $('#canvasBackgroundInput').val());
+    });
+
+    $("#canvasLayerBackgroundInput").on("change.color", function(event, color){
+        var layerColor = $('#canvasLayerBackgroundInput').val();
+        MainScene.getChildByTag('colorLayer').color = cc.color(parseInt(layerColor.substring(1, 3), 16), parseInt(layerColor.substring(3, 5), 16), parseInt(layerColor.substring(5, 7), 16), 255);
+    });
+
+    $("#propColorInput").on("change.color", function(event, color){
+        if(propNode) {
+            var color = $('#propColorInput').val();
+            propNode.color = cc.color(parseInt(color.substring(1, 3), 16), parseInt(color.substring(3, 5), 16), parseInt(color.substring(5, 7), 16), 255);
+        }
+    });
 
     // Node List Init
     for(var i = 0;i < NodeList.length;i++) {
@@ -367,7 +385,7 @@ window.onload = function() {
         $('#Cocos2dGameContainer').css('background-color', $('#canvasBackgroundInput').val());
 
         layerColor = $('#canvasLayerBackgroundInput').val();
-        MainScene.getChildByTag('colorLayer').color = cc.color(parseInt(layerColor.substring(1, 3), 16), parseInt(layerColor.substring(3, 5), 16), parseInt(layerColor.substring(5, 7), 16));
+        MainScene.getChildByTag('colorLayer').color = cc.color(parseInt(layerColor.substring(1, 3), 16), parseInt(layerColor.substring(3, 5), 16), parseInt(layerColor.substring(5, 7), 16), 255);
     });
 
     $('#canvasResInput').change(function() {
@@ -376,6 +394,7 @@ window.onload = function() {
 
     $('.prop-input').change(function() {
         if(propNode) {
+            propNode.color = cc.color(parseInt(propNode.color.substring(1, 3), 16), parseInt(propNode.color.substring(3, 5), 16), parseInt(propNode.color.substring(5, 7), 16), 255);
             propNode.x = parseInt($('#propXInput').val());
             propNode.y = parseInt($('#propYInput').val());
             propNode.opacity = parseFloat($('#propOpacityInput').val());
@@ -456,6 +475,8 @@ window.onload = function() {
                 str += "var " + name + " = new " + type + "(\"" + child.filename + "\");\n";
             }
 
+            str += name + ".color = cc.color(" + child.color.r + ", " + child.color.g +", " + child.color.b +", " + child.color.a + ");\n";
+            str += name + ".opacity = " + child.opacity + ";\n";
             str += name + ".x = " + child.x + ";\n";
             str += name + ".y = " + child.y + ";\n";
             str += name + ".anchorX = " + child.anchorX + ";\n";
@@ -537,6 +558,7 @@ window.onload = function() {
                         else {
                             propNode = MainScene.getChildByTag(n.text);
                         }
+                        $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
                         $('#propNameInput').val(propNode.tag);
                         $('#propXInput').val(propNode.x);
                         $('#propYInput').val(propNode.y);
@@ -715,12 +737,14 @@ window.onload = function() {
                                 cc.log("onRightMouseDown at: " + pos.x + " " + pos.y );
                             else if(event.getButton() === cc.EventMouse.BUTTON_LEFT)
                                 cc.log("onLeftMouseDown at: " + pos.x + " " + pos.y );*/
+                            console.log('click');
 
                             for(i = 1;i < target._children.length;i++) {
                                 if(cc.rectContainsPoint(target._children[i].getBoundingBox(),pos)) {
                                     targetNode = target._children[i];
                                     propNode = target._children[i];
                                     $('#propNameInput').val(propNode.tag);
+                                    $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
                                     $('#propXInput').val(propNode.x);
                                     $('#propYInput').val(propNode.y);
                                     $('#propOpacityInput').val(propNode.opacity);
@@ -741,6 +765,7 @@ window.onload = function() {
                                         targetNode = target._children[i]._children[j];
                                         propNode = target._children[i]._children[j];
                                         $('#propNameInput').val(propNode.tag);
+                                        $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
                                         $('#propXInput').val(propNode.x);
                                         $('#propYInput').val(propNode.y);
                                         $('#propOpacityInput').val(propNode.opacity);

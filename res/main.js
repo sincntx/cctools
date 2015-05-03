@@ -184,6 +184,70 @@ window.onload = function() {
                 "type" : "number",
                 "value" : "1"
             }
+        ],
+        [
+            {
+                "title" : "cc.RotateTo",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.RotateTo"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "rotateto"
+            },
+            {
+                "title" : "Delta Angle X",
+                "id" : "x",
+                "type" : "number",
+                "value" : "180"
+            },
+            {
+                "title" : "Delta Angle Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "180"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
+        ],
+        [
+            {
+                "title" : "cc.RotateBy",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.RotateBy"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "rotateby"
+            },
+            {
+                "title" : "Delta Angle X",
+                "id" : "x",
+                "type" : "number",
+                "value" : "180"
+            },
+            {
+                "title" : "Delta Angle Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "180"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
         ]
     ];
 
@@ -676,6 +740,12 @@ window.onload = function() {
                 break;
             case "cc.ScaleBy":
                 action = new cc.ScaleBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+            case "cc.RotateTo":
+                action = new cc.RotateTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+            case "cc.RotateBy":
+                action = new cc.RotateBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
                 break;
         }
         target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {

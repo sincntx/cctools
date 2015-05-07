@@ -1,5 +1,5 @@
 window.onload = function() {
-    var cctools;
+    var cctools = {};
     var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false, nodeIndex = -1, actionIndex = -1;
     var NodeList = [
         [
@@ -250,8 +250,6 @@ window.onload = function() {
             }
         ]
     ];
-
-    cctools = {};
 
     cctools.sideBtnClick = function(selector) {
         $('.contents-box').css('display', 'none');

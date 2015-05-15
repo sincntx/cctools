@@ -53,6 +53,34 @@ window.onload = function() {
                 "type" : "file",
                 "value" : ""
             }
+        ],
+        [
+            {
+                "title" : "cc.Layer",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.Layer"
+            },
+            {
+                "title" : "Tag",
+                "id" : "tag",
+                "type" : "text",
+                "value" : "layer"
+            }
+        ],
+        [
+            {
+                "title" : "cc.LayerColor",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.LayerColor"
+            },
+            {
+                "title" : "Tag",
+                "id" : "tag",
+                "type" : "text",
+                "value" : "layercolor"
+            }
         ]
     ];
 
@@ -373,6 +401,13 @@ window.onload = function() {
                     case "cc.Sprite" :
                         node = new cc.Sprite($('#spriteImagePreivew')[0].src);
                         node.filename = $('#spriteFilename').val();
+                        break;
+                    case "cc.Layer" :
+                        node = new cc.Layer();
+                        break;
+                    case "cc.LayerColor" :
+                        node = new cc.LayerColor();
+                        break;
                 }
 
                 node.tag = $('#nodeModal' + NodeList[nodeIndex][1].id).val();

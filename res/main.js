@@ -276,6 +276,46 @@ window.onload = function() {
                 "type" : "number",
                 "value" : "1"
             }
+        ],
+        [
+            {
+                "title" : "cc.FadeIn",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.FadeIn"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "fadein"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
+        ],
+        [
+            {
+                "title" : "cc.FadeOut",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.FadeOut"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "fadeout"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
         ]
     ];
 
@@ -779,6 +819,12 @@ window.onload = function() {
                 break;
             case "cc.RotateBy":
                 action = new cc.RotateBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+            case "cc.FadeIn":
+                action = new cc.FadeIn(parseInt(targetAction.duration));
+                break;
+            case "cc.FadeOut":
+                action = new cc.FadeOut(parseInt(targetAction.duration));
                 break;
         }
         target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {

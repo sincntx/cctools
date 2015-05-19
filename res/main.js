@@ -115,11 +115,6 @@ window.onload = function() {
                 "id" : "duration",
                 "type" : "number",
                 "value" : "1"
-            },
-            {
-                "title" : "Target",
-                "id" : "target",
-                "type" : "target"
             }
         ],
         [
@@ -152,11 +147,6 @@ window.onload = function() {
                 "id" : "duration",
                 "type" : "number",
                 "value" : "1"
-            },
-            {
-                "title" : "Target",
-                "id" : "target",
-                "type" : "target"
             }
         ],
         [
@@ -189,11 +179,6 @@ window.onload = function() {
                 "id" : "duration",
                 "type" : "number",
                 "value" : "1"
-            },
-            {
-                "title" : "Target",
-                "id" : "target",
-                "type" : "target"
             }
         ],
         [
@@ -226,11 +211,6 @@ window.onload = function() {
                 "id" : "duration",
                 "type" : "number",
                 "value" : "1"
-            },
-            {
-                "title" : "Target",
-                "id" : "target",
-                "type" : "target"
             }
         ],
         [
@@ -263,11 +243,6 @@ window.onload = function() {
                 "id" : "duration",
                 "type" : "number",
                 "value" : "1"
-            },
-            {
-                "title" : "Target",
-                "id" : "target",
-                "type" : "target"
             }
         ],
         [
@@ -300,11 +275,6 @@ window.onload = function() {
                 "id" : "duration",
                 "type" : "number",
                 "value" : "1"
-            },
-            {
-                "title" : "Target",
-                "id" : "target",
-                "type" : "target"
             }
         ],
         [
@@ -325,11 +295,6 @@ window.onload = function() {
                 "id" : "duration",
                 "type" : "number",
                 "value" : "1"
-            },
-            {
-                "title" : "Target",
-                "id" : "target",
-                "type" : "target"
             }
         ],
         [
@@ -350,11 +315,6 @@ window.onload = function() {
                 "id" : "duration",
                 "type" : "number",
                 "value" : "1"
-            },
-            {
-                "title" : "Target",
-                "id" : "target",
-                "type" : "target"
             }
         ]
     ];
@@ -504,17 +464,11 @@ window.onload = function() {
 
     // Action List Init
     for(var i = 0;i < ActionList.length;i++) {
-        $('#actionList').append('<li class="list-group-item"><a class="action-list-btn" href="#">' + ActionList[i][0].title + '</a></li>');
+        $('#actionList').append('<li class="list-group-item"><a class="action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + ActionList[i][0].value + '">' + ActionList[i][0].title + '</a></li>');
     }
 
     $('.action-list-btn').click(function(e) {
-        var i, j;
-
-        if(MainScene._children.length < 2) {
-            alert('You must add a Node.');
-            return;
-        }
-
+        var i;
         for(i = 0;i < ActionList.length;i++) {
             if(ActionList[i][0].value === e.currentTarget.childNodes[0].data) {
                 actionIndex = i;
@@ -526,15 +480,7 @@ window.onload = function() {
         $('#actionModalForm').empty();
 
         for(i = 1;i < ActionList[actionIndex].length;i++) {
-            if(ActionList[actionIndex][i].type === 'target') {
-                $('#actionModalForm').append("<select class='form-control' id='actionModal" + ActionList[actionIndex][i].id + "'></select>");
-                for(j = 1;j < MainScene._children.length;j++) {
-                    console.log(MainScene._children[j]);
-                    $('#actionModal' + ActionList[actionIndex][i].id).append('<option>' + MainScene._children[j].tag +'</option>');
-                }
-            }
-            else
-                $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + ActionList[actionIndex][i].id + '">' + ActionList[actionIndex][i].title + '</label><input type="' + ActionList[actionIndex][i].type + '" class="form-control" id="actionModal' + ActionList[actionIndex][i].id + '" placeholder="' + ActionList[actionIndex][i].title + '" value="' + ActionList[actionIndex][i].value +'"></div>');
+            $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + ActionList[actionIndex][i].id + '">' + ActionList[actionIndex][i].title + '</label><input type="' + ActionList[actionIndex][i].type + '" class="form-control" id="actionModal' + ActionList[actionIndex][i].id + '" placeholder="' + ActionList[actionIndex][i].title + '" value="' + ActionList[actionIndex][i].value +'"></div>');
         }
         $('#actionModalBtn').unbind('click');
         $('#actionModalBtn').click(function() {
@@ -549,11 +495,9 @@ window.onload = function() {
                 check.x = $('#actionModalx').val();
                 check.y = $('#actionModaly').val();
                 check.duration = $('#actionModalduration').val();
-                check.target = $('#actionModaltarget').val();
                 $('#actionModal').modal('hide');
             }
         });
-        $('#actionModal').modal('show');
     });
 
     $('.navbar-main > li > a').click(function() {
@@ -835,56 +779,67 @@ window.onload = function() {
                         }
 
                         targetAction = n;
-                        console.log(targetAction);
 
-                        var target = MainScene.getChildByTag(targetAction.target), action;
-                        isRun = true;
-                        targetActionNode = $.extend({}, target);
-                        $('#actionStatus').text('Action!');
-                        $('#actionStatus').removeClass('label-default');
-                        $('#actionStatus').addClass('label-danger');
+                        $('#runTargetInput option').remove();
 
-                        switch(targetAction.type) {
-                            case "cc.MoveTo":
-                                action = new cc.MoveTo(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
-                                break;
-                            case "cc.MoveBy":
-                                action = new cc.MoveBy(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
-                                break;
-                            case "cc.ScaleTo":
-                                action = new cc.ScaleTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
-                                break;
-                            case "cc.ScaleBy":
-                                action = new cc.ScaleBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
-                                break;
-                            case "cc.RotateTo":
-                                action = new cc.RotateTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
-                                break;
-                            case "cc.RotateBy":
-                                action = new cc.RotateBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
-                                break;
-                            case "cc.FadeIn":
-                                action = new cc.FadeIn(parseInt(targetAction.duration));
-                                break;
-                            case "cc.FadeOut":
-                                action = new cc.FadeOut(parseInt(targetAction.duration));
-                                break;
+                        for(i = 1;i < MainScene._children.length;i++) {
+                            $('#runTargetInput').append('<option>' + MainScene._children[i].tag +'</option>');
                         }
-                        target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {
-                            isRun = false;
-                            sender.x = targetActionNode.x;
-                            sender.y = targetActionNode.y;
-                            sender.scaleX = targetActionNode.scaleX;
-                            sender.scaleY = targetActionNode.scaleY;
-                            $('#actionStatus').text('Ready');
-                            $('#actionStatus').removeClass('label-danger');
-                            $('#actionStatus').addClass('label-default');
-                        }, target)));
+
+                        $('#runActionModal').modal('show');
                     }
                 }
             };
         }
     }});
+
+    $('#runActionBtn').click(function() {
+        var target = MainScene.getChildByTag($("#runTargetInput option:selected").text()), action;
+        isRun = true;
+        targetActionNode = $.extend({}, target);
+        $('#actionStatus').text('Action!');
+        $('#actionStatus').removeClass('label-default');
+        $('#actionStatus').addClass('label-danger');
+
+        switch(targetAction.type) {
+            case "cc.MoveTo":
+                action = new cc.MoveTo(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
+                break;
+            case "cc.MoveBy":
+                action = new cc.MoveBy(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
+                break;
+            case "cc.ScaleTo":
+                action = new cc.ScaleTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+            case "cc.ScaleBy":
+                action = new cc.ScaleBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+            case "cc.RotateTo":
+                action = new cc.RotateTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+            case "cc.RotateBy":
+                action = new cc.RotateBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+            case "cc.FadeIn":
+                action = new cc.FadeIn(parseInt(targetAction.duration));
+                break;
+            case "cc.FadeOut":
+                action = new cc.FadeOut(parseInt(targetAction.duration));
+                break;
+        }
+        target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {
+            isRun = false;
+            sender.x = targetActionNode.x;
+            sender.y = targetActionNode.y;
+            sender.scaleX = targetActionNode.scaleX;
+            sender.scaleY = targetActionNode.scaleY;
+            $('#actionStatus').text('Ready');
+            $('#actionStatus').removeClass('label-danger');
+            $('#actionStatus').addClass('label-default');
+        }, target)));
+
+        $('#runActionModal').modal('hide');
+    });
 
     cc.game.onStart = function(){
         cc.LoaderScene.preload([], function () {

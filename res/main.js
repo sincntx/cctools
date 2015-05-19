@@ -523,6 +523,9 @@ window.onload = function() {
 
         layerColor = $('#canvasLayerBackgroundInput').val();
         MainScene.getChildByTag('colorLayer').color = cc.color(parseInt(layerColor.substring(1, 3), 16), parseInt(layerColor.substring(3, 5), 16), parseInt(layerColor.substring(5, 7), 16), 255);
+        MainScene.getChildByTag('colorLayer').width = $('#canvasWidthInput').val();
+        MainScene.getChildByTag('colorLayer').height = $('#canvasHeightInput').val();
+        cc.view.setDesignResolutionSize($('#canvasWidthInput').val(), $('#canvasHeightInput').val(), $("#canvasResInput option:selected").text());
     });
 
     $('#canvasResInput').change(function() {

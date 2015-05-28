@@ -534,7 +534,7 @@ window.onload = function() {
 
     $('.prop-input').change(function() {
         if(propNode) {
-            propNode.color = cc.color(parseInt(propNode.color.substring(1, 3), 16), parseInt(propNode.color.substring(3, 5), 16), parseInt(propNode.color.substring(5, 7), 16), 255);
+            if(propNode.hasOwnProperty('color')) propNode.color = cc.color(parseInt(propNode.color.substring(1, 3), 16), parseInt(propNode.color.substring(3, 5), 16), parseInt(propNode.color.substring(5, 7), 16), 255);
             propNode.x = parseInt($('#propXInput').val());
             propNode.y = parseInt($('#propYInput').val());
             propNode.opacity = parseFloat($('#propOpacityInput').val());

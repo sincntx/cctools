@@ -1,6 +1,6 @@
 window.onload = function() {
     var cctools = {};
-    var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false, nodeIndex = -1, actionIndex = -1;
+    var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false, nodeIndex = -1, actionIndex = -1, storageName='';
     var NodeList = [
         [
             {
@@ -319,6 +319,22 @@ window.onload = function() {
         ]
     ];
 
+    cctools.refreshStorage = function() {
+        var i;
+
+        $('#storageInput').empty();
+        $('#storageInput').append("<option value='select'>Select the storage</option>");
+
+        for (i = 0; i < localStorage.length; i++)   {
+            if(storageName === localStorage.key(i))
+                $('#storageInput').append("<option selected value='" + localStorage.key(i) + "'>" + localStorage.key(i) + "</option>");
+            else
+                $('#storageInput').append("<option value='" + localStorage.key(i) + "'>" + localStorage.key(i) + "</option>");
+        }
+
+        $('#storageName').val('');
+    };
+
     cctools.sideBtnClick = function(selector) {
         $('.contents-box').css('display', 'none');
         $('.contents-box').removeClass('hidden');
@@ -500,13 +516,90 @@ window.onload = function() {
         });
     });
 
-    $('.navbar-main > li > a').click(function() {
-        if(this.id.split('Btn')[0] !== 'code') {
-            cctools.sideBtnClick(this.id.split('Btn')[0]);
+    // Storage Init
+    $('#storageInput').change(function() {
+        $('#storageName').val($('#storageInput option:selected').text());
+    });
+
+    $('#removeBtn').click(function() {
+        var data = {};
+
+        if(!$('#storageInput option:selected').text() || $('#storageInput option:selected').text() === 'Select the storage') {
+            alert('Please select the storage');
+            return;
         }
-        else {
+
+        localStorage.removeItem($('#storageInput option:selected').text());
+
+        cctools.refreshStorage();
+    });
+
+
+    $('#renameBtn').click(function() {
+        var data = {};
+
+        if(!$('#storageInput option:selected').text() || $('#storageInput option:selected').text() === 'Select the storage') {
+            alert('Please select the storage');
+            return;
+        }
+
+        if(!$('#storageName').val()) {
+            alert('Please enter the storage name');
+            return;
+        }
+
+        localStorage.setItem($('#storageName').val(), localStorage.getItem($('#storageInput option:selected').text()));
+        localStorage.removeItem($('#storageInput option:selected').text());
+
+        cctools.refreshStorage();
+    });
+
+    $('#saveBtn').click(function() {
+        var data = {};
+
+        if(!$('#storageName').val()) {
+            alert('Please enter the storage name');
+            return;
+        }
+
+        data.canvas_width = $('#canvasWidthInput').val();
+        data.canvas_height = $('#canvasHeightInput').val();
+
+        localStorage.setItem($('#storageName').val(), JSON.stringify(data));
+        storageName = $('#storageName').val();
+
+        $('#storageModal').modal('hide');
+    });
+
+    $('#loadBtn').click(function() {
+        var data;
+
+        if(!$('#storageInput option:selected').text() || $('#storageInput option:selected').text() === 'Select the storage') {
+            alert('Please select the storage');
+            return;
+        }
+
+        data = JSON.parse(localStorage.getItem($('#storageInput option:selected').text()));
+        $('#canvasWidthInput').val(data.canvas_width);
+        $('#canvasHeightInput').val(data.canvas_height);
+        $('.canvas-input').trigger('change');
+
+        storageName = $('#storageInput option:selected').text();
+
+        $('#storageModal').modal('hide');
+    });
+
+    $('.navbar-main > li > a').click(function() {
+        if(this.id.split('Btn')[0] === 'code') {
             $('#jsBtn').click();
             $('#codeModal').modal('show');
+        }
+        else if(this.id.split('Btn')[0] === 'storage') {
+            cctools.refreshStorage();
+            $('#storageModal').modal('show');
+        }
+        else {
+            cctools.sideBtnClick(this.id.split('Btn')[0]);
         }
     });
 

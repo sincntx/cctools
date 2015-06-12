@@ -29,6 +29,7 @@
                 <li role="presentation"><a id="propertyBtn" href="#">Property</a></li>
                 <li role="presentation"><a id="actionBtn" href="#">Action</a></li>
                 <li role="presentation"><a id="codeBtn" href="#">Code</a></li>
+                <li role="presentation"><a id="storageBtn" href="#">Storage</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a>Help</a></li>
@@ -287,6 +288,32 @@
             </div>
             <div class="modal-footer">
                 <a id="runActionBtn" class="btn btn-danger">Run Action</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="storageModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Storage</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <select class="form-control" id="storageInput">
+                    </select>
+                </p>
+                <p>
+                    <input type="text" class="form-control prop-input" id="storageName" placeholder="Please input the storage name to save">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a id="renameBtn" class="btn">Rename</a>
+                <a id="removeBtn" class="btn">Remove</a>
+                <a id="saveBtn" class="btn">Save</a>
+                <a id="loadBtn" class="btn">Load</a>
             </div>
         </div>
     </div>

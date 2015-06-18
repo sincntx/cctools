@@ -564,6 +564,7 @@ window.onload = function() {
 
         data.canvas_width = $('#canvasWidthInput').val();
         data.canvas_height = $('#canvasHeightInput').val();
+        data.resoultion_policy = $('#canvasResInput').val();
 
         localStorage.setItem($('#storageName').val(), JSON.stringify(data));
         storageName = $('#storageName').val();
@@ -582,6 +583,7 @@ window.onload = function() {
         data = JSON.parse(localStorage.getItem($('#storageInput option:selected').text()));
         $('#canvasWidthInput').val(data.canvas_width);
         $('#canvasHeightInput').val(data.canvas_height);
+        $('#canvasResInput').val(data.resoultion_policy);
         $('.canvas-input').trigger('change');
 
         storageName = $('#storageInput option:selected').text();

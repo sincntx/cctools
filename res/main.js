@@ -316,6 +316,64 @@ window.onload = function() {
                 "type" : "number",
                 "value" : "1"
             }
+        ],
+        [
+            {
+                "title" : "cc.SkewTo",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.SkewTo"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "skewto"
+            },
+            {
+                "title" : "Skew X",
+                "id" : "x",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Skew Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
+        ],
+        [
+            {
+                "title" : "cc.SkewBy",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.SkewBy"
+            },
+            {
+                "title" : "Skew X",
+                "id" : "x",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Skew Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
         ]
     ];
 
@@ -918,6 +976,12 @@ window.onload = function() {
             case "cc.RotateBy":
                 action = new cc.RotateBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
                 break;
+            case "cc.SkewTo":
+                action = new cc.SkewTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                break;
+            case "cc.SkewBy":
+                break;
+                action = new cc.SkewBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
             case "cc.FadeIn":
                 action = new cc.FadeIn(parseInt(targetAction.duration));
                 break;
@@ -931,6 +995,8 @@ window.onload = function() {
             sender.y = targetActionNode.y;
             sender.scaleX = targetActionNode.scaleX;
             sender.scaleY = targetActionNode.scaleY;
+            sender.skewX = targetActionNode.skewX;
+            sender.skewY = targetActionNode.skewY;
             $('#actionStatus').text('Ready');
             $('#actionStatus').removeClass('label-danger');
             $('#actionStatus').addClass('label-default');

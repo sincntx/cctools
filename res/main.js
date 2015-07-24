@@ -357,6 +357,12 @@ window.onload = function() {
                 "value" : "cc.SkewBy"
             },
             {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "skewby"
+            },
+            {
                 "title" : "Skew X",
                 "id" : "x",
                 "type" : "number",
@@ -367,6 +373,94 @@ window.onload = function() {
                 "id" : "y",
                 "type" : "number",
                 "value" : "0"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
+        ],
+        [
+            {
+                "title" : "cc.JumpBy",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.JumpBy"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "jumpby"
+            },
+            {
+                "title" : "X",
+                "id" : "x",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Height",
+                "id" : "height",
+                "type" : "number",
+                "value" : "1"
+            },
+            {
+                "title" : "Jumps",
+                "id" : "jumps",
+                "type" : "number",
+                "value" : "1"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
+        ],
+        [
+            {
+                "title" : "cc.JumpTo",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.JumpTo"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "jumpto"
+            },
+            {
+                "title" : "X",
+                "id" : "x",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Height",
+                "id" : "height",
+                "type" : "number",
+                "value" : "1"
+            },
+            {
+                "title" : "Jumps",
+                "id" : "jumps",
+                "type" : "number",
+                "value" : "1"
             },
             {
                 "title" : "Duration",
@@ -554,7 +648,7 @@ window.onload = function() {
         $('#actionModalForm').empty();
 
         for(i = 1;i < ActionList[actionIndex].length;i++) {
-            $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + ActionList[actionIndex][i].id + '">' + ActionList[actionIndex][i].title + '</label><input type="' + ActionList[actionIndex][i].type + '" class="form-control" id="actionModal' + ActionList[actionIndex][i].id + '" placeholder="' + ActionList[actionIndex][i].title + '" value="' + ActionList[actionIndex][i].value +'"></div>');
+            $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + ActionList[actionIndex][i].id + '">' + ActionList[actionIndex][i].title + '</label><input type="' + ActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + ActionList[actionIndex][i].id + '" placeholder="' + ActionList[actionIndex][i].title + '" value="' + ActionList[actionIndex][i].value +'"></div>');
         }
         $('#actionModalBtn').unbind('click');
         $('#actionModalBtn').click(function() {
@@ -566,9 +660,12 @@ window.onload = function() {
             else {
                 check = $('#jstreeAction').jstree(true).get_node(check);
                 check.type = ActionList[actionIndex][0].value;
-                check.x = $('#actionModalx').val();
-                check.y = $('#actionModaly').val();
-                check.duration = $('#actionModalduration').val();
+
+                for(i = 1;i < ActionList[actionIndex].length;i++) {
+                    check[ActionList[actionIndex][i].id] = $('#actionModal' + ActionList[actionIndex][i].id).val();
+                }
+
+                console.log(check);
                 $('#actionModal').modal('hide');
             }
         });
@@ -988,6 +1085,13 @@ window.onload = function() {
             case "cc.FadeOut":
                 action = new cc.FadeOut(parseInt(targetAction.duration));
                 break;
+            case "cc.JumpTo":
+                console.log(targetAction);
+                action = new cc.JumpTo(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)), parseInt(targetAction.height), parseInt(targetAction.jumps));
+                break;
+            case "cc.JumpBy":
+                break;
+                action = new cc.JumpBy(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)), parseInt(targetAction.height), parseInt(targetAction.jumps));
         }
         target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {
             isRun = false;

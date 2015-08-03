@@ -494,6 +494,82 @@ window.onload = function() {
                 "type" : "number",
                 "value" : "1"
             }
+        ],
+        [
+            {
+                "title" : "cc.TintTo",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.TintTo"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "tintto"
+            },
+            {
+                "title" : "Red",
+                "id" : "r",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Greend",
+                "id" : "g",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Blue",
+                "id" : "b",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
+        ],
+        [
+            {
+                "title" : "cc.TintBy",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.TintBy"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "tintby"
+            },
+            {
+                "title" : "Red",
+                "id" : "r",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Greend",
+                "id" : "g",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Blue",
+                "id" : "b",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Duration",
+                "id" : "duration",
+                "type" : "number",
+                "value" : "1"
+            }
         ]
     ];
 
@@ -1121,9 +1197,16 @@ window.onload = function() {
             case "cc.Blink":
                 action = new cc.Blink(parseInt(targetAction.duration), parseInt(targetAction.blinks));
                 break;
+            case "cc.TintTo":
+                action = new cc.TintTo(parseInt(targetAction.duration), parseInt(targetAction.r), parseInt(targetAction.g), parseInt(targetAction.b));
+                break;
+            case "cc.TintBy":
+                action = new cc.TintBy(parseInt(targetAction.duration), parseInt(targetAction.r), parseInt(targetAction.g), parseInt(targetAction.b));
+                break;
         }
         target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {
             isRun = false;
+            sender.color = targetActionNode.color;
             sender.x = targetActionNode.x;
             sender.y = targetActionNode.y;
             sender.scaleX = targetActionNode.scaleX;

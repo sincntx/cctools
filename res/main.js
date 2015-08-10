@@ -570,6 +570,34 @@ window.onload = function() {
                 "type" : "number",
                 "value" : "1"
             }
+        ],
+        [
+            {
+                "title" : "cc.Show",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.Show"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "show"
+            }
+        ],
+        [
+            {
+                "title" : "cc.Hide",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.Hide"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "hide"
+            }
         ]
     ];
 
@@ -1202,6 +1230,12 @@ window.onload = function() {
                 break;
             case "cc.TintBy":
                 action = new cc.TintBy(parseInt(targetAction.duration), parseInt(targetAction.r), parseInt(targetAction.g), parseInt(targetAction.b));
+                break;
+            case "cc.Show":
+                action = new cc.Show();
+                break;
+            case "cc.Hide":
+                action = new cc.Hide();
                 break;
         }
         target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {

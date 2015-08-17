@@ -598,6 +598,32 @@ window.onload = function() {
                 "type" : "text",
                 "value" : "hide"
             }
+        ],
+        [
+            {
+                "title" : "cc.Place",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.Place"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "place"
+            },
+            {
+                "title" : "X",
+                "id" : "x",
+                "type" : "number",
+                "value" : "0"
+            },
+            {
+                "title" : "Y",
+                "id" : "y",
+                "type" : "number",
+                "value" : "0"
+            }
         ]
     ];
 
@@ -1236,6 +1262,9 @@ window.onload = function() {
                 break;
             case "cc.Hide":
                 action = new cc.Hide();
+                break;
+            case "cc.Place":
+                action = new cc.Place(cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
                 break;
         }
         target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {

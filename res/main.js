@@ -624,6 +624,46 @@ window.onload = function() {
                 "type" : "number",
                 "value" : "0"
             }
+        ],
+        [
+            {
+                "title" : "cc.FlipX",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.FlipX"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "flipx"
+            },
+            {
+                "title" : "flip",
+                "id" : "flip",
+                "type" : "text",
+                "value" : "true"
+            }
+        ],
+        [
+            {
+                "title" : "cc.FlipY",
+                "id" : "name",
+                "type" : "label",
+                "value" : "cc.FlipY"
+            },
+            {
+                "title" : "Name",
+                "id" : "name",
+                "type" : "text",
+                "value" : "flipy"
+            },
+            {
+                "title" : "flip",
+                "id" : "flip",
+                "type" : "text",
+                "value" : "true"
+            }
         ]
     ];
 
@@ -1266,6 +1306,12 @@ window.onload = function() {
             case "cc.Place":
                 action = new cc.Place(cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
                 break;
+            case "cc.FlipX":
+                action = new cc.FlipX(eval(targetAction.flip));
+                break;
+            case "cc.FlipY":
+                action = new cc.FlipY(eval(targetAction.flip));
+                break;
         }
         target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {
             isRun = false;
@@ -1276,6 +1322,8 @@ window.onload = function() {
             sender.scaleY = targetActionNode.scaleY;
             sender.skewX = targetActionNode.skewX;
             sender.skewY = targetActionNode.skewY;
+            sender.flippedX = targetActionNode.flipX;
+            sender.flippedY = targetActionNode.flipY;
             $('#actionStatus').text('Ready');
             $('#actionStatus').removeClass('label-danger');
             $('#actionStatus').addClass('label-default');

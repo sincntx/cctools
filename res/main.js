@@ -1,671 +1,6 @@
 window.onload = function() {
     var cctools = {};
     var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false, nodeIndex = -1, actionIndex = -1, storageName='';
-    var NodeList = [
-        [
-            {
-                "title" : "cc.LabelTTF",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.LabelTTF"
-            },
-            {
-                "title" : "Tag",
-                "id" : "tag",
-                "type" : "text",
-                "value" : "label"
-            },
-            {
-                "title" : "Text",
-                "id" : "text",
-                "type" : "text",
-                "value" : "Hello World!"
-            },
-            {
-                "title" : "Font",
-                "id" : "font",
-                "type" : "text",
-                "value" : "Arial"
-            },
-            {
-                "title" : "Font Size",
-                "id" : "fontsize",
-                "type" : "number",
-                "value" : "40"
-            }
-        ],
-        [
-            {
-                "title" : "cc.Sprite",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.Sprite"
-            },
-            {
-                "title" : "Tag",
-                "id" : "tag",
-                "type" : "text",
-                "value" : "sprite"
-            },
-            {
-                "title" : "Src",
-                "id" : "src",
-                "type" : "file",
-                "value" : ""
-            }
-        ],
-        [
-            {
-                "title" : "cc.Layer",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.Layer"
-            },
-            {
-                "title" : "Tag",
-                "id" : "tag",
-                "type" : "text",
-                "value" : "layer"
-            }
-        ],
-        [
-            {
-                "title" : "cc.LayerColor",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.LayerColor"
-            },
-            {
-                "title" : "Tag",
-                "id" : "tag",
-                "type" : "text",
-                "value" : "layercolor"
-            }
-        ]
-    ];
-
-    var ActionList = [
-        [
-            {
-                "title" : "cc.MoveTo",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.MoveTo"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "moveto"
-            },
-            {
-                "title" : "X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.MoveBy",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.MoveBy"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "moveby"
-            },
-            {
-                "title" : "X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.ScaleTo",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.ScaleTo"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "scaleto"
-            },
-            {
-                "title" : "X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "1"
-            },
-            {
-                "title" : "Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "1"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.ScaleBy",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.ScaleBy"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "scaleby"
-            },
-            {
-                "title" : "X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "1"
-            },
-            {
-                "title" : "Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "1"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.RotateTo",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.RotateTo"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "rotateto"
-            },
-            {
-                "title" : "Delta Angle X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "180"
-            },
-            {
-                "title" : "Delta Angle Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "180"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.RotateBy",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.RotateBy"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "rotateby"
-            },
-            {
-                "title" : "Delta Angle X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "180"
-            },
-            {
-                "title" : "Delta Angle Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "180"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.FadeIn",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.FadeIn"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "fadein"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.FadeOut",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.FadeOut"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "fadeout"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.SkewTo",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.SkewTo"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "skewto"
-            },
-            {
-                "title" : "Skew X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Skew Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.SkewBy",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.SkewBy"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "skewby"
-            },
-            {
-                "title" : "Skew X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Skew Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.JumpBy",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.JumpBy"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "jumpby"
-            },
-            {
-                "title" : "X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Height",
-                "id" : "height",
-                "type" : "number",
-                "value" : "1"
-            },
-            {
-                "title" : "Jumps",
-                "id" : "jumps",
-                "type" : "number",
-                "value" : "1"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.JumpTo",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.JumpTo"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "jumpto"
-            },
-            {
-                "title" : "X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Height",
-                "id" : "height",
-                "type" : "number",
-                "value" : "1"
-            },
-            {
-                "title" : "Jumps",
-                "id" : "jumps",
-                "type" : "number",
-                "value" : "1"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.Blink",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.Blink"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "blink"
-            },
-            {
-                "title" : "Blinks",
-                "id" : "blinks",
-                "type" : "number",
-                "value" : "1"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.TintTo",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.TintTo"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "tintto"
-            },
-            {
-                "title" : "Red",
-                "id" : "r",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Greend",
-                "id" : "g",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Blue",
-                "id" : "b",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.TintBy",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.TintBy"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "tintby"
-            },
-            {
-                "title" : "Red",
-                "id" : "r",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Greend",
-                "id" : "g",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Blue",
-                "id" : "b",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Duration",
-                "id" : "duration",
-                "type" : "number",
-                "value" : "1"
-            }
-        ],
-        [
-            {
-                "title" : "cc.Show",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.Show"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "show"
-            }
-        ],
-        [
-            {
-                "title" : "cc.Hide",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.Hide"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "hide"
-            }
-        ],
-        [
-            {
-                "title" : "cc.Place",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.Place"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "place"
-            },
-            {
-                "title" : "X",
-                "id" : "x",
-                "type" : "number",
-                "value" : "0"
-            },
-            {
-                "title" : "Y",
-                "id" : "y",
-                "type" : "number",
-                "value" : "0"
-            }
-        ],
-        [
-            {
-                "title" : "cc.FlipX",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.FlipX"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "flipx"
-            },
-            {
-                "title" : "flip",
-                "id" : "flip",
-                "type" : "text",
-                "value" : "true"
-            }
-        ],
-        [
-            {
-                "title" : "cc.FlipY",
-                "id" : "name",
-                "type" : "label",
-                "value" : "cc.FlipY"
-            },
-            {
-                "title" : "Name",
-                "id" : "name",
-                "type" : "text",
-                "value" : "flipy"
-            },
-            {
-                "title" : "flip",
-                "id" : "flip",
-                "type" : "text",
-                "value" : "true"
-            }
-        ]
-    ];
 
     cctools.refreshStorage = function() {
         var i;
@@ -747,6 +82,114 @@ window.onload = function() {
         h: 200
     };
 
+    // Node List Init
+    $.getJSON("res/nodes.json", function(data) {
+        cctools.NodeList = data;
+
+        for(var i = 0;i < cctools.NodeList.length;i++) {
+            $('#nodeList').append('<li class="list-group-item"><a class="node-list-btn" href="#" data-toggle="modal" data-target="#nodeModal" data-type="' + cctools.NodeList[i][0].value + '">' + cctools.NodeList[i][0].title + '</a></li>');
+        }
+
+        $('.node-list-btn').click(function(e) {
+            var i;
+            for(i = 0;i < cctools.NodeList.length;i++) {
+                if(cctools.NodeList[i][0].value === e.currentTarget.childNodes[0].data) {
+                    nodeIndex = i;
+                    break;
+                }
+            }
+
+            $('#nodeModalTitle').html(cctools.NodeList[nodeIndex][0].title);
+            $('#nodeModalForm').empty();
+            $('#spriteImagePreivew').hide();
+
+            for(i = 1;i < cctools.NodeList[nodeIndex].length;i++) {
+                $('#nodeModalForm').append('<div class="form-group"> <label for="nodeModal' + cctools.NodeList[nodeIndex][i].id + '">' + cctools.NodeList[nodeIndex][i].title + '</label><input type="' + cctools.NodeList[nodeIndex][i].type + '" class="form-control" id="nodeModal' + cctools.NodeList[nodeIndex][i].id + '" placeholder="' + cctools.NodeList[nodeIndex][i].title + '" value="' + cctools.NodeList[nodeIndex][i].value +'"></div>');
+                if(cctools.NodeList[nodeIndex][i].type === 'file') {
+                    $('#nodeModal' + cctools.NodeList[nodeIndex][i].id).setPreview(opt);
+                    $('#nodeModalForm').append('<input type="hidden" id="spriteFilename" />');
+                }
+            }
+            $('#nodeModalBtn').unbind('click');
+            $('#nodeModalBtn').click(function() {
+                var n = MainScene.getChildByTag($('#nodeModal' + cctools.NodeList[nodeIndex][1].id).val());
+                if(!n) {
+                    var size = cc.director.getWinSize(), node;
+
+                    switch(cctools.NodeList[nodeIndex][0].value) {
+                        case "cc.LabelTTF" :
+                            node = new cc.LabelTTF($('#nodeModal' + cctools.NodeList[nodeIndex][2].id).val(), $('#nodeModal' + cctools.NodeList[nodeIndex][3].id).val(), $('#nodeModal' + cctools.NodeList[nodeIndex][4].id).val());
+                            break;
+                        case "cc.Sprite" :
+                            node = new cc.Sprite($('#spriteImagePreivew')[0].src);
+                            node.filename = $('#spriteFilename').val();
+                            break;
+                        case "cc.Layer" :
+                            node = new cc.Layer();
+                            break;
+                        case "cc.LayerColor" :
+                            node = new cc.LayerColor();
+                            break;
+                    }
+
+                    node.tag = $('#nodeModal' + cctools.NodeList[nodeIndex][1].id).val();
+                    node.setPosition(size.width / 2, size.height / 2);
+                    MainScene.addChild(node);
+                    $('#nodeModal').modal('hide');
+                    $('#jstreeNode').jstree("create_node", "#", {text:$('#nodeModal' + cctools.NodeList[nodeIndex][1].id).val(), data:{type:cctools.NodeList[nodeIndex][0].value, parent:"#"}}, "last");
+                }
+                else {
+                    alert('Same tag already exists.');
+                }
+            });
+        });
+    });
+
+    // Action List Init
+    $.getJSON("res/actions.json", function(data) {
+        cctools.ActionList = data;
+
+        for(var i = 0;i < cctools.ActionList.length;i++) {
+            $('#actionList').append('<li class="list-group-item"><a class="action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + cctools.ActionList[i][0].value + '">' + cctools.ActionList[i][0].title + '</a></li>');
+        }
+
+        $('.action-list-btn').click(function(e) {
+            var i;
+            for(i = 0;i < cctools.ActionList.length;i++) {
+                if(cctools.ActionList[i][0].value === e.currentTarget.childNodes[0].data) {
+                    actionIndex = i;
+                    break;
+                }
+            }
+
+            $('#actionModalTitle').html(cctools.ActionList[actionIndex][0].title);
+            $('#actionModalForm').empty();
+
+            for(i = 1;i < cctools.ActionList[actionIndex].length;i++) {
+                $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.ActionList[actionIndex][i].id + '">' + cctools.ActionList[actionIndex][i].title + '</label><input type="' + cctools.ActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.ActionList[actionIndex][i].id + '" placeholder="' + cctools.ActionList[actionIndex][i].title + '" value="' + cctools.ActionList[actionIndex][i].value +'"></div>');
+            }
+            $('#actionModalBtn').unbind('click');
+            $('#actionModalBtn').click(function() {
+                var check = $('#jstreeAction').jstree("create_node", "#", {text:$('#actionModalname').val()}, "last");
+
+                if(!check) {
+                    alert('Action name already exists.');
+                }
+                else {
+                    check = $('#jstreeAction').jstree(true).get_node(check);
+                    check.type = cctools.ActionList[actionIndex][0].value;
+
+                    for(i = 1;i < cctools.ActionList[actionIndex].length;i++) {
+                        check[cctools.ActionList[actionIndex][i].id] = $('#actionModal' + cctools.ActionList[actionIndex][i].id).val();
+                    }
+
+                    console.log(check);
+                    $('#actionModal').modal('hide');
+                }
+            });
+        });
+    });
+
     $('#propColorInput').colorpicker();
     $('#canvasBackgroundInput').colorpicker();
     $('#canvasLayerBackgroundInput').colorpicker();
@@ -765,106 +208,6 @@ window.onload = function() {
             var color = $('#propColorInput').val();
             propNode.color = cc.color(parseInt(color.substring(1, 3), 16), parseInt(color.substring(3, 5), 16), parseInt(color.substring(5, 7), 16), 255);
         }
-    });
-
-    // Node List Init
-    for(var i = 0;i < NodeList.length;i++) {
-        $('#nodeList').append('<li class="list-group-item"><a class="node-list-btn" href="#" data-toggle="modal" data-target="#nodeModal" data-type="' + NodeList[i][0].value + '">' + NodeList[i][0].title + '</a></li>');
-    }
-
-    $('.node-list-btn').click(function(e) {
-        var i;
-        for(i = 0;i < NodeList.length;i++) {
-            if(NodeList[i][0].value === e.currentTarget.childNodes[0].data) {
-                nodeIndex = i;
-                break;
-            }
-        }
-
-        $('#nodeModalTitle').html(NodeList[nodeIndex][0].title);
-        $('#nodeModalForm').empty();
-        $('#spriteImagePreivew').hide();
-
-        for(i = 1;i < NodeList[nodeIndex].length;i++) {
-            $('#nodeModalForm').append('<div class="form-group"> <label for="nodeModal' + NodeList[nodeIndex][i].id + '">' + NodeList[nodeIndex][i].title + '</label><input type="' + NodeList[nodeIndex][i].type + '" class="form-control" id="nodeModal' + NodeList[nodeIndex][i].id + '" placeholder="' + NodeList[nodeIndex][i].title + '" value="' + NodeList[nodeIndex][i].value +'"></div>');
-            if(NodeList[nodeIndex][i].type === 'file') {
-                $('#nodeModal' + NodeList[nodeIndex][i].id).setPreview(opt);
-                $('#nodeModalForm').append('<input type="hidden" id="spriteFilename" />');
-            }
-        }
-        $('#nodeModalBtn').unbind('click');
-        $('#nodeModalBtn').click(function() {
-            var n = MainScene.getChildByTag($('#nodeModal' + NodeList[nodeIndex][1].id).val());
-            if(!n) {
-                var size = cc.director.getWinSize(), node;
-
-                switch(NodeList[nodeIndex][0].value) {
-                    case "cc.LabelTTF" :
-                        node = new cc.LabelTTF($('#nodeModal' + NodeList[nodeIndex][2].id).val(), $('#nodeModal' + NodeList[nodeIndex][3].id).val(), $('#nodeModal' + NodeList[nodeIndex][4].id).val());
-                        break;
-                    case "cc.Sprite" :
-                        node = new cc.Sprite($('#spriteImagePreivew')[0].src);
-                        node.filename = $('#spriteFilename').val();
-                        break;
-                    case "cc.Layer" :
-                        node = new cc.Layer();
-                        break;
-                    case "cc.LayerColor" :
-                        node = new cc.LayerColor();
-                        break;
-                }
-
-                node.tag = $('#nodeModal' + NodeList[nodeIndex][1].id).val();
-                node.setPosition(size.width / 2, size.height / 2);
-                MainScene.addChild(node);
-                $('#nodeModal').modal('hide');
-                $('#jstreeNode').jstree("create_node", "#", {text:$('#nodeModal' + NodeList[nodeIndex][1].id).val(), data:{type:NodeList[nodeIndex][0].value, parent:"#"}}, "last");
-            }
-            else {
-                alert('Same tag already exists.');
-            }
-        });
-    });
-
-    // Action List Init
-    for(var i = 0;i < ActionList.length;i++) {
-        $('#actionList').append('<li class="list-group-item"><a class="action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + ActionList[i][0].value + '">' + ActionList[i][0].title + '</a></li>');
-    }
-
-    $('.action-list-btn').click(function(e) {
-        var i;
-        for(i = 0;i < ActionList.length;i++) {
-            if(ActionList[i][0].value === e.currentTarget.childNodes[0].data) {
-                actionIndex = i;
-                break;
-            }
-        }
-
-        $('#actionModalTitle').html(ActionList[actionIndex][0].title);
-        $('#actionModalForm').empty();
-
-        for(i = 1;i < ActionList[actionIndex].length;i++) {
-            $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + ActionList[actionIndex][i].id + '">' + ActionList[actionIndex][i].title + '</label><input type="' + ActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + ActionList[actionIndex][i].id + '" placeholder="' + ActionList[actionIndex][i].title + '" value="' + ActionList[actionIndex][i].value +'"></div>');
-        }
-        $('#actionModalBtn').unbind('click');
-        $('#actionModalBtn').click(function() {
-            var check = $('#jstreeAction').jstree("create_node", "#", {text:$('#actionModalname').val()}, "last");
-
-            if(!check) {
-                alert('Action name already exists.');
-            }
-            else {
-                check = $('#jstreeAction').jstree(true).get_node(check);
-                check.type = ActionList[actionIndex][0].value;
-
-                for(i = 1;i < ActionList[actionIndex].length;i++) {
-                    check[ActionList[actionIndex][i].id] = $('#actionModal' + ActionList[actionIndex][i].id).val();
-                }
-
-                console.log(check);
-                $('#actionModal').modal('hide');
-            }
-        });
     });
 
     // Storage Init
@@ -1443,5 +786,6 @@ window.onload = function() {
             cc.director.runScene(MainScene);
         }, this);
     };
+
     cc.game.run("gameCanvas");
 };

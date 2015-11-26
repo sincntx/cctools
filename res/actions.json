@@ -1,0 +1,582 @@
+[
+  [
+    {
+      "title" : "cc.MoveTo",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.MoveTo"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "moveto"
+    },
+    {
+      "title" : "X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.MoveBy",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.MoveBy"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "moveby"
+    },
+    {
+      "title" : "X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.ScaleTo",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.ScaleTo"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "scaleto"
+    },
+    {
+      "title" : "X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "1"
+    },
+    {
+      "title" : "Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "1"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.ScaleBy",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.ScaleBy"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "scaleby"
+    },
+    {
+      "title" : "X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "1"
+    },
+    {
+      "title" : "Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "1"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.RotateTo",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.RotateTo"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "rotateto"
+    },
+    {
+      "title" : "Delta Angle X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "180"
+    },
+    {
+      "title" : "Delta Angle Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "180"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.RotateBy",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.RotateBy"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "rotateby"
+    },
+    {
+      "title" : "Delta Angle X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "180"
+    },
+    {
+      "title" : "Delta Angle Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "180"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.FadeIn",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.FadeIn"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "fadein"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.FadeOut",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.FadeOut"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "fadeout"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.SkewTo",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.SkewTo"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "skewto"
+    },
+    {
+      "title" : "Skew X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Skew Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.SkewBy",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.SkewBy"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "skewby"
+    },
+    {
+      "title" : "Skew X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Skew Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.JumpBy",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.JumpBy"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "jumpby"
+    },
+    {
+      "title" : "X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Height",
+      "id" : "height",
+      "type" : "number",
+      "value" : "1"
+    },
+    {
+      "title" : "Jumps",
+      "id" : "jumps",
+      "type" : "number",
+      "value" : "1"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.JumpTo",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.JumpTo"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "jumpto"
+    },
+    {
+      "title" : "X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Height",
+      "id" : "height",
+      "type" : "number",
+      "value" : "1"
+    },
+    {
+      "title" : "Jumps",
+      "id" : "jumps",
+      "type" : "number",
+      "value" : "1"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.Blink",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.Blink"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "blink"
+    },
+    {
+      "title" : "Blinks",
+      "id" : "blinks",
+      "type" : "number",
+      "value" : "1"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.TintTo",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.TintTo"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "tintto"
+    },
+    {
+      "title" : "Red",
+      "id" : "r",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Greend",
+      "id" : "g",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Blue",
+      "id" : "b",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.TintBy",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.TintBy"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "tintby"
+    },
+    {
+      "title" : "Red",
+      "id" : "r",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Greend",
+      "id" : "g",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Blue",
+      "id" : "b",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Duration",
+      "id" : "duration",
+      "type" : "number",
+      "value" : "1"
+    }
+  ],
+  [
+    {
+      "title" : "cc.Show",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.Show"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "show"
+    }
+  ],
+  [
+    {
+      "title" : "cc.Hide",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.Hide"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "hide"
+    }
+  ],
+  [
+    {
+      "title" : "cc.Place",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.Place"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "place"
+    },
+    {
+      "title" : "X",
+      "id" : "x",
+      "type" : "number",
+      "value" : "0"
+    },
+    {
+      "title" : "Y",
+      "id" : "y",
+      "type" : "number",
+      "value" : "0"
+    }
+  ],
+  [
+    {
+      "title" : "cc.FlipX",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.FlipX"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "flipx"
+    },
+    {
+      "title" : "flip",
+      "id" : "flip",
+      "type" : "text",
+      "value" : "true"
+    }
+  ],
+  [
+    {
+      "title" : "cc.FlipY",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.FlipY"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "flipy"
+    },
+    {
+      "title" : "flip",
+      "id" : "flip",
+      "type" : "text",
+      "value" : "true"
+    }
+  ]
+]

@@ -1,0 +1,30 @@
+[
+  [
+    {
+      "title" : "cc.Sequence",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.Sequence"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "sequence"
+    }
+  ],
+  [
+    {
+      "title" : "cc.Spawn",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.Spawn"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "spawn"
+    }
+  ]
+]

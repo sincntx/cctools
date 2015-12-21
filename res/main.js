@@ -697,7 +697,7 @@ window.onload = function() {
         var root = targetAction = $('#jstreeAction').jstree(true).get_node('#');
 
         for(i = 0;i < root.children.length;i++) {
-            str += "// " + $('#jstreeAction').jstree(true).get_node(root.children[i]).name + "\n"
+            str += "// " + $('#jstreeAction').jstree(true).get_node(root.children[i]).name + "\nvar " + $('#jstreeAction').jstree(true).get_node(root.children[i]).name + " = ";
             str += cctools.getCocosActionStr(root.children[i]) + ";\n\n";
         }
 

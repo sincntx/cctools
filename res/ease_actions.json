@@ -1,0 +1,16 @@
+[
+  [
+    {
+      "title" : "cc.EaseBackIn",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseBackIn"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "easebackin"
+    }
+  ]
+]

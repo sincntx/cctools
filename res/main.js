@@ -118,6 +118,13 @@ window.onload = function() {
 
                 action = new cc.Spawn(actionArray);
                 break;
+            case "cc.EaseBackIn":
+                if(targetAction.children.length < 1) {
+                    return new cc.MoveBy(0, 0, 0);
+                }
+
+                action = new cc.EaseBackIn(cctools.getCocosAction(targetAction.children[0]));
+                break;
         }
 
         return action;
@@ -216,6 +223,13 @@ window.onload = function() {
 
                 actionArray = actionArray.join();
                 action = "new cc.Spawn(" + actionArray + ")";
+                break;
+            case "cc.EaseBackIn":
+                if(targetAction.children.length < 1) {
+                    return "new cc.MoveBy(0, 0, 0)";
+                }
+
+                action = "new cc.EaseBackIn(" + cctools.getCocosActionStr(targetAction.children[0]) + ")";
                 break;
         }
 
@@ -424,6 +438,51 @@ window.onload = function() {
 
                     for(i = 1;i < cctools.SequenceActionList[actionIndex].length;i++) {
                         check[cctools.SequenceActionList[actionIndex][i].id] = $('#actionModal' + cctools.SequenceActionList[actionIndex][i].id).val();
+                    }
+
+                    $('#actionModal').modal('hide');
+                }
+            });
+        });
+    });
+
+    $.getJSON("res/ease_actions.json", function(data) {
+        cctools.EaseActionList = data;
+
+        for(var i = 0;i < cctools.EaseActionList.length;i++) {
+            $('#easeActionList').append('<li class="list-group-item"><a class="ease-action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + cctools.EaseActionList[i][0].value + '">' + cctools.EaseActionList[i][0].title + '</a></li>');
+        }
+
+        $('.ease-action-list-btn').click(function(e) {
+            var i;
+            for(i = 0;i < cctools.EaseActionList.length;i++) {
+                if(cctools.EaseActionList[i][0].value === e.currentTarget.childNodes[0].data) {
+                    actionIndex = i;
+                    break;
+                }
+            }
+
+            $('#actionModalBtn').text('Create');
+            $('#actionModalTitle').html(cctools.EaseActionList[actionIndex][0].title);
+            $('#actionModalForm').empty();
+
+            for(i = 1;i < cctools.EaseActionList[actionIndex].length;i++) {
+                $('#actionModalForm').append('<input type="hidden" id="actionModalType" value="' + cctools.EaseActionList[actionIndex][0].value + '" /><div class="form-group"> <label for="actionModal' + cctools.EaseActionList[actionIndex][i].id + '">' + cctools.EaseActionList[actionIndex][i].title + '</label><input type="' + cctools.EaseActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.EaseActionList[actionIndex][i].id + '" placeholder="' + cctools.EaseActionList[actionIndex][i].title + '" value="' + cctools.EaseActionList[actionIndex][i].value +'"></div>');
+            }
+            $('#actionModalBtn').unbind('click');
+            $('#actionModalBtn').click(function() {
+                var check = $('#jstreeAction').jstree("create_node", "#", {text:'<span class="label label-success">' + $('#actionModalType').val() + "</span> " + $('#actionModalname').val()}, "last");
+
+                if(!check) {
+                    alert('Action name already exists.');
+                }
+                else {
+                    check = $('#jstreeAction').jstree(true).get_node(check);
+                    check.type = cctools.EaseActionList[actionIndex][0].value;
+                    check.isEase = true;
+
+                    for(i = 1;i < cctools.EaseActionList[actionIndex].length;i++) {
+                        check[cctools.EaseActionList[actionIndex][i].id] = $('#actionModal' + cctools.EaseActionList[actionIndex][i].id).val();
                     }
 
                     $('#actionModal').modal('hide');
@@ -808,6 +867,11 @@ window.onload = function() {
                             return;
                         }
 
+                        if(n.isEase) {
+                            alert('This action is ease action!');
+                            return;
+                        }
+
                         for(var i = 0;i < cctools.BasicActionList.length;i++) {
                             if(cctools.BasicActionList[i][0].value === n.type) {
                                 actionIndex = i;
@@ -873,10 +937,18 @@ window.onload = function() {
         // Parent action is root
         if(data.parent == '#') return;
 
-        // Parent action is not sequence action
-        if(!$('#jstreeAction').jstree(true).get_node(data.parent).isSequence) {
+        if(!$('#jstreeAction').jstree(true).get_node(data.parent).isSequence && !$('#jstreeAction').jstree(true).get_node(data.parent).isEase) {
             var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
             $('#jstreeAction').jstree(true).move_node(data.node, parent);
+            alert('Parent action is must sequence action or ease action!');
+            return;
+        }
+
+        if($('#jstreeAction').jstree(true).get_node(data.parent).isEase && $('#jstreeAction').jstree(true).get_node(data.parent).children.length > 1) {
+            var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
+            $('#jstreeAction').jstree(true).move_node(data.node, parent);
+            alert('ease action can have only one children!');
+            return;
         }
     });
 

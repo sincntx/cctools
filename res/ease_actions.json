@@ -12,5 +12,33 @@
       "type" : "text",
       "value" : "easebackin"
     }
+  ],
+  [
+    {
+      "title" : "cc.EaseBackInOut",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseBackInOut"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "easebackinout"
+    }
+  ],
+  [
+    {
+      "title" : "cc.EaseBackOut",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseBackOut"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "easebackout"
+    }
   ]
 ]

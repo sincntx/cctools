@@ -132,6 +132,13 @@ window.onload = function() {
 
                 action = new cc.EaseBackInOut(cctools.getCocosAction(targetAction.children[0]));
                 break;
+            case "cc.EaseBackOut":
+                if(targetAction.children.length < 1) {
+                    return new cc.MoveBy(0, 0, 0);
+                }
+
+                action = new cc.EaseBackOut(cctools.getCocosAction(targetAction.children[0]));
+                break;
         }
 
         return action;
@@ -244,6 +251,13 @@ window.onload = function() {
                 }
 
                 action = "new cc.EaseBackInOut(" + cctools.getCocosActionStr(targetAction.children[0]) + ")";
+                break;
+            case "cc.EaseBackOut":
+                if(targetAction.children.length < 1) {
+                    return "new cc.MoveBy(0, 0, 0)";
+                }
+
+                action = "new cc.EaseBackOut(" + cctools.getCocosActionStr(targetAction.children[0]) + ")";
                 break;
         }
 

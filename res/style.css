@@ -125,3 +125,7 @@ textarea {
 .modal.modal.large .modal-dialog {
     width: 70%;
 }
+
+.titleBtn {
+    color:#000000;
+}

@@ -119,25 +119,14 @@ window.onload = function() {
                 action = new cc.Spawn(actionArray);
                 break;
             case "cc.EaseBackIn":
-                if(targetAction.children.length < 1) {
-                    return new cc.MoveBy(0, 0, 0);
-                }
-
-                action = new cc.EaseBackIn(cctools.getCocosAction(targetAction.children[0]));
-                break;
             case "cc.EaseBackInOut":
-                if(targetAction.children.length < 1) {
-                    return new cc.MoveBy(0, 0, 0);
-                }
-
-                action = new cc.EaseBackInOut(cctools.getCocosAction(targetAction.children[0]));
-                break;
             case "cc.EaseBackOut":
+            case "cc.EaseBounceIn":
                 if(targetAction.children.length < 1) {
                     return new cc.MoveBy(0, 0, 0);
                 }
 
-                action = new cc.EaseBackOut(cctools.getCocosAction(targetAction.children[0]));
+                action = eval("new " + targetAction.type + "(cctools.getCocosAction(targetAction.children[0]))");
                 break;
         }
 
@@ -239,25 +228,14 @@ window.onload = function() {
                 action = "new cc.Spawn(" + actionArray + ")";
                 break;
             case "cc.EaseBackIn":
-                if(targetAction.children.length < 1) {
-                    return "new cc.MoveBy(0, 0, 0)";
-                }
-
-                action = "new cc.EaseBackIn(" + cctools.getCocosActionStr(targetAction.children[0]) + ")";
-                break;
             case "cc.EaseBackInOut":
-                if(targetAction.children.length < 1) {
-                    return "new cc.MoveBy(0, 0, 0)";
-                }
-
-                action = "new cc.EaseBackInOut(" + cctools.getCocosActionStr(targetAction.children[0]) + ")";
-                break;
             case "cc.EaseBackOut":
+            case "cc.EaseBounceIn":
                 if(targetAction.children.length < 1) {
                     return "new cc.MoveBy(0, 0, 0)";
                 }
 
-                action = "new cc.EaseBackOut(" + cctools.getCocosActionStr(targetAction.children[0]) + ")";
+                action = "new " + targetAction.type + "(" + cctools.getCocosActionStr(targetAction.children[0]) + ")";
                 break;
         }
 
@@ -388,7 +366,7 @@ window.onload = function() {
         cctools.BasicActionList = data;
 
         for(var i = 0;i < cctools.BasicActionList.length;i++) {
-            $('#basicActionList').append('<li class="list-group-item"><a class="basic-action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + cctools.BasicActionList[i][0].value + '">' + cctools.BasicActionList[i][0].title + '</a></li>');
+            $('#collapseBasicAction').append('<li class="list-group-item"><a class="basic-action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + cctools.BasicActionList[i][0].value + '">' + cctools.BasicActionList[i][0].title + '</a></li>');
         }
 
         $('.basic-action-list-btn').click(function(e) {
@@ -433,7 +411,7 @@ window.onload = function() {
         cctools.SequenceActionList = data;
 
         for(var i = 0;i < cctools.SequenceActionList.length;i++) {
-            $('#sequenceActionList').append('<li class="list-group-item"><a class="sequence-action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + cctools.SequenceActionList[i][0].value + '">' + cctools.SequenceActionList[i][0].title + '</a></li>');
+            $('#collapseSequenceAction').append('<li class="list-group-item"><a class="sequence-action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + cctools.SequenceActionList[i][0].value + '">' + cctools.SequenceActionList[i][0].title + '</a></li>');
         }
 
         $('.sequence-action-list-btn').click(function(e) {
@@ -478,7 +456,7 @@ window.onload = function() {
         cctools.EaseActionList = data;
 
         for(var i = 0;i < cctools.EaseActionList.length;i++) {
-            $('#easeActionList').append('<li class="list-group-item"><a class="ease-action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + cctools.EaseActionList[i][0].value + '">' + cctools.EaseActionList[i][0].title + '</a></li>');
+            $('#collapseEaseAction').append('<li class="list-group-item"><a class="ease-action-list-btn" href="#" data-toggle="modal" data-target="#actionModal" data-type="' + cctools.EaseActionList[i][0].value + '">' + cctools.EaseActionList[i][0].title + '</a></li>');
         }
 
         $('.ease-action-list-btn').click(function(e) {
@@ -1002,6 +980,7 @@ window.onload = function() {
             sender.flippedX = targetActionNode.flipX;
             sender.flippedY = targetActionNode.flipY;
             sender.rotation = targetActionNode.rotation;
+            sender.runAction(new cc.FadeIn(0));
             $('#actionStatus').text('Ready');
             $('#actionStatus').removeClass('label-danger');
             $('#actionStatus').addClass('label-default');

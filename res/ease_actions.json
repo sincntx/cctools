@@ -54,5 +54,19 @@
       "type" : "text",
       "value" : "easebouncein"
     }
+  ],
+  [
+    {
+      "title" : "cc.EaseBounceInOut",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseBounceInOut"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "easebounceinout"
+    }
   ]
 ]

@@ -82,5 +82,47 @@
       "type" : "text",
       "value" : "easebounceout"
     }
+  ],
+  [
+    {
+      "title" : "cc.EaseElasticIn",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseElasticIn"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "easeelasticin"
+    }
+  ],
+  [
+    {
+      "title" : "cc.EaseElasticInOut",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseElasticInOut"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "easeelasticinout"
+    }
+  ],
+  [
+    {
+      "title" : "cc.EaseElasticOut",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseElasticOut"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "easeelasticout"
+    }
   ]
 ]

@@ -124,6 +124,9 @@ window.onload = function() {
             case "cc.EaseBounceIn":
             case "cc.EaseBounceInOut":
             case "cc.EaseBounceOut":
+            case "cc.EaseElasticIn":
+            case "cc.EaseElasticInOut":
+            case "cc.EaseElasticOut":
                 if(targetAction.children.length < 1) {
                     return new cc.MoveBy(0, 0, 0);
                 }
@@ -235,6 +238,9 @@ window.onload = function() {
             case "cc.EaseBounceIn":
             case "cc.EaseBounceInOut":
             case "cc.EaseBounceOut":
+            case "cc.EaseElasticIn":
+            case "cc.EaseElasticInOut":
+            case "cc.EaseElasticOut":
                 if(targetAction.children.length < 1) {
                     return "new cc.MoveBy(0, 0, 0)";
                 }

@@ -124,5 +124,19 @@
       "type" : "text",
       "value" : "easeelasticout"
     }
+  ],
+  [
+    {
+      "title" : "cc.EaseExponentialIn",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseExponentialIn"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "easeexponentialin"
+    }
   ]
 ]

@@ -138,5 +138,19 @@
       "type" : "text",
       "value" : "easeexponentialin"
     }
+  ],
+  [
+    {
+      "title" : "cc.EaseExponentialInOut",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseExponentialInOut"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "easeexponentialinout"
+    }
   ]
 ]

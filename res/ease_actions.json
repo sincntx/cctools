@@ -166,5 +166,19 @@
       "type" : "text",
       "value" : "easeexponentialout"
     }
+  ],
+  [
+    {
+      "title" : "cc.EaseSineIn",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseSineIn"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "sinein"
+    }
   ]
 ]

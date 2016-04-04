@@ -131,6 +131,7 @@ window.onload = function() {
             case "cc.EaseExponentialInOut":
             case "cc.EaseExponentialOut":
             case "cc.EaseSineIn":
+            case "cc.EaseSineInOut":
                 if(targetAction.children.length < 1) {
                     return new cc.MoveBy(0, 0, 0);
                 }
@@ -249,6 +250,7 @@ window.onload = function() {
             case "cc.EaseExponentialInOut":
             case "cc.EaseExponentialOut":
             case "cc.EaseSineIn":
+            case "cc.EaseSineInOut":
                 if(targetAction.children.length < 1) {
                     return "new cc.MoveBy(0, 0, 0)";
                 }

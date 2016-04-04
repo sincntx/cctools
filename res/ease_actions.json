@@ -180,5 +180,19 @@
       "type" : "text",
       "value" : "sinein"
     }
+  ],
+  [
+    {
+      "title" : "cc.EaseSineInOut",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.EaseSineInOut"
+    },
+    {
+      "title" : "Name",
+      "id" : "name",
+      "type" : "text",
+      "value" : "sineinout"
+    }
   ]
 ]

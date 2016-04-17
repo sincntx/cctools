@@ -148,7 +148,6 @@ window.onload = function() {
         var action;
 
         if(!targetAction.hasOwnProperty('id')) targetAction = $('#jstreeAction').jstree(true).get_node(targetAction);
-
         switch(targetAction.type) {
             case "cc.MoveTo":
                 action = "new cc.MoveTo(" + parseInt(targetAction.duration) + ", cc.p(" + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + "))";
@@ -211,6 +210,7 @@ window.onload = function() {
                 action = "new cc.FlipY(" + targetAction.flip + ")";
                 break;
             case "cc.Sequence":
+                console.log(targetAction);
                 if(targetAction.children.length < 1) {
                     return "new cc.MoveBy(0, 0, 0)";
                 }
@@ -262,6 +262,188 @@ window.onload = function() {
         }
 
         return action;
+    };
+
+    cctools.initTree = function() {
+        $('#jstreeNode').jstree({"core":{"check_callback" : true}, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
+            "items" : function ($node) {
+                return {
+                    "Rename" : {
+                        "label" : "Rename",
+                        "action" : function (obj) {
+                            var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
+                            $('#jstreeNode').jstree(true).edit(n);
+                        }
+                    },
+                    "Delete" : {
+                        "label" : "Delete",
+                        "action" : function (obj) {
+                            var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
+                            $('#jstreeNode').jstree(true).delete_node(n);
+                        }
+                    },
+                    "Property" : {
+                        "label" : "Property",
+                        "action" : function (obj) {
+                            var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
+                            if(n.parent_tags) {
+                                propNode = MainScene.getChildByTag(n.parent_tags).getChildByTag(n.text);
+                            }
+                            else {
+                                propNode = MainScene.getChildByTag(n.text);
+                            }
+
+                            $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
+                            $('#propNameInput').val(propNode.tag);
+                            $('#propXInput').val(propNode.x);
+                            $('#propYInput').val(propNode.y);
+                            $('#propOpacityInput').val(propNode.opacity);
+                            $('#propAXInput').val(propNode.anchorX);
+                            $('#propAYInput').val(propNode.anchorY);
+                            $('#propScaleXInput').val(propNode.scaleX);
+                            $('#propScaleYInput').val(propNode.scaleY);
+                            $('#propRotationXInput').val(propNode.rotationX);
+                            $('#propRotationYInput').val(propNode.rotationY);
+                            $('#propSkewXInput').val(propNode.skewX);
+                            $('#propSkewYInput').val(propNode.skewY);
+                            $('#propzIndexInput').val(propNode.zIndex);
+                            $('#propertyBtn').click();
+                        }
+                    }
+                };
+            }
+        }});
+
+        $('#jstreeNode').on('move_node.jstree', function (event, data) {
+            var exParentName, exParent, parent, node;
+
+            exParentName = $('#jstreeNode').jstree(true).get_node(data.node).parent_tags;
+
+            if(exParentName) {
+                exParent = MainScene.getChildByTag(exParentName);
+            }
+
+            if(!exParent) {
+                exParent = MainScene;
+            }
+
+            parent = MainScene.getChildByTag($('#jstreeNode').jstree(true).get_node(data.parent).text);
+            $('#jstreeNode').jstree(true).get_node(data.node).parent_tags = $('#jstreeNode').jstree(true).get_node(data.parent).text
+
+            if(!parent) parent = MainScene;
+
+            node = exParent.getChildByTag(data.node.text);
+            exParent.removeChildByTag(data.node.text);
+            parent.addChild(node);
+        });
+
+        $('#jstreeNode').on('rename_node.jstree', function (event, obj) {
+            var node;
+            node = MainScene.getChildByTag(obj.old);
+            node.tag = obj.text;
+        });
+
+        $('#jstreeNode').on('delete_node.jstree', function (event, obj) {
+            MainScene.removeChildByTag(obj.node.text);
+        });
+
+        $('#jstreeAction').jstree({"core":{"check_callback" : true}, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
+            "items" : function ($node) {
+                return {
+                    "Edit" : {
+                        "label" : "Edit",
+                        "action" : function (obj) {
+                            var n = $('#jstreeAction').jstree(true).get_node(obj.reference);
+
+                            if(n.isSequence) {
+                                alert('This action is sequence action!');
+                                return;
+                            }
+
+                            if(n.isEase) {
+                                alert('This action is ease action!');
+                                return;
+                            }
+
+                            for(var i = 0;i < cctools.BasicActionList.length;i++) {
+                                if(cctools.BasicActionList[i][0].value === n.type) {
+                                    actionIndex = i;
+                                    break;
+                                }
+                            }
+
+                            $('#actionModalTitle').html(cctools.BasicActionList[actionIndex][0].title);
+                            $('#actionModalForm').empty();
+
+                            for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
+                                if(cctools.BasicActionList[actionIndex][i].id != 'name') $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.BasicActionList[actionIndex][i].id + '">' + cctools.BasicActionList[actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[actionIndex][i].title + '" value="' + eval('n.' + cctools.BasicActionList[actionIndex][i].id) +'"></div>');
+                            }
+
+                            $('#actionModalBtn').text('Edit');
+                            $('#actionModal').modal('show');
+
+                            $('#actionModalBtn').unbind('click');
+                            $('#actionModalBtn').click(function() {
+                                for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
+                                    if(cctools.BasicActionList[actionIndex][i].id != 'name') n[cctools.BasicActionList[actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[actionIndex][i].id).val();
+                                }
+
+                                $('#actionModal').modal('hide');
+                            });
+                        }
+                    },
+                    "Delete" : {
+                        "label" : "Delete",
+                        "action" : function (obj) {
+                            var n = $('#jstreeAction').jstree(true).get_node(obj.reference);
+                            $('#jstreeAction').jstree(true).delete_node(n);
+                        }
+                    },
+                    "Run" : {
+                        "label" : "Run",
+                        "action" : function (obj) {
+                            var n = $('#jstreeAction').jstree(true).get_node(obj.reference), i;
+
+                            if(isRun) return;
+
+                            if(MainScene._children.length < 2) {
+                                alert('Please add a node.');
+                                return;
+                            }
+
+                            targetAction = n;
+
+                            $('#runTargetInput option').remove();
+
+                            for(i = 1;i < MainScene._children.length;i++) {
+                                $('#runTargetInput').append('<option>' + MainScene._children[i].tag +'</option>');
+                            }
+
+                            $('#runActionModal').modal('show');
+                        }
+                    }
+                };
+            }
+        }});
+
+        $('#jstreeAction').on('move_node.jstree', function (event, data) {
+            // Parent action is root
+            if(data.parent == '#') return;
+
+            if(!$('#jstreeAction').jstree(true).get_node(data.parent).isSequence && !$('#jstreeAction').jstree(true).get_node(data.parent).isEase) {
+                var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
+                $('#jstreeAction').jstree(true).move_node(data.node, parent);
+                alert('Parent action is must sequence action or ease action!');
+                return;
+            }
+
+            if($('#jstreeAction').jstree(true).get_node(data.parent).isEase && $('#jstreeAction').jstree(true).get_node(data.parent).children.length > 1) {
+                var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
+                $('#jstreeAction').jstree(true).move_node(data.node, parent);
+                alert('ease action can have only one children!');
+                return;
+            }
+        });
     };
 
     $.fn.setPreview = function(opt){
@@ -539,6 +721,96 @@ window.onload = function() {
         }
     });
 
+    $('#exampleBtn').click(function(e) {
+        var size = cc.director.getWinSize();
+
+        MainScene.removeAllChildren();
+        $('#jstreeNode').jstree('destroy');
+        cctools.initTree();
+
+        var colorLayer = new cc.LayerColor(cc.color(0, 0, 0), size.width, size.height);
+        colorLayer.tag = 'colorLayer';
+        MainScene.addChild(colorLayer);
+
+        // create layer
+        var layer = new cc.Layer();
+        layer.tag = 'layer1';
+        layer.setPosition(0, 0);
+        MainScene.addChild(layer);
+        var layerNode = $('#jstreeNode').jstree("create_node", "#", {text:'layer1', data:{type:'cc.Layer', parent:"#"}}, "last");
+
+        // create label
+        var label = new cc.LabelTTF('cctools', 'Arial', 30);
+        label.tag = 'label1';
+        label.setPosition(size.width / 2, size.height / 2 + 100);
+        layer.addChild(label);
+        var labelNode = $('#jstreeNode').jstree("create_node", layerNode, {text:'label1', data:{type:'cc.LabelTTF', parent:layerNode, parent_tags:'layer1'}}, "last");
+        $('#jstreeNode').jstree(true).get_node(labelNode).parent_tags = 'layer1';
+
+        // create sprite
+        var sprite = new cc.Sprite('http://cocos2d-x.org/images/logo.png');
+        sprite.tag = 'sprite1';
+        sprite.setPosition(size.width / 2, size.height / 2);
+        layer.addChild(sprite);
+        var spriteNode = $('#jstreeNode').jstree("create_node", layerNode, {text:'sprite1', data:{type:'cc.Sprite', parent:layerNode, parent_tags:'layer1'}}, "last");
+        $('#jstreeNode').jstree(true).get_node(spriteNode).parent_tags = 'layer1';
+
+        var sequenceAction = $('#jstreeAction').jstree("create_node", "#", {text:'<span class="label label-default">cc.Sequence</span> sequence1'}, "last");
+        sequenceAction = $('#jstreeAction').jstree(true).get_node(sequenceAction);
+        sequenceAction.isSequence = sequenceAction;
+        sequenceAction.name = 'sequence1';
+        sequenceAction.type = 'cc.Sequence'
+
+        var movetoAction = $('#jstreeAction').jstree("create_node", sequenceAction.id, {text:'<span class="label label-primary">cc.MoveTo</span> moveto1'}, "last");
+        movetoAction = $('#jstreeAction').jstree(true).get_node(movetoAction);
+        movetoAction.isSequence = false;
+        movetoAction.name = 'moveto1';
+        movetoAction.type = 'cc.MoveTo';
+        movetoAction.x = -size.width / 2;
+        movetoAction.y = -size.height / 2;
+        movetoAction.duration = 1;
+
+        var spawnAction = $('#jstreeAction').jstree("create_node", sequenceAction.id, {text:'<span class="label label-default">cc.Spawn</span> spawn1'}, "last");
+        spawnAction = $('#jstreeAction').jstree(true).get_node(spawnAction);
+        spawnAction.isSequence = true;
+        spawnAction.name = 'spawn1';
+        spawnAction.type = 'cc.Spawn';
+
+        var rotateAction = $('#jstreeAction').jstree("create_node", spawnAction.id, {text:'<span class="label label-primary">cc.RotateTo</span> rotateto1'}, "last");
+        rotateAction = $('#jstreeAction').jstree(true).get_node(rotateAction);
+        rotateAction.isSequence = false;
+        rotateAction.name = 'rotateto1';
+        rotateAction.type = 'cc.RotateTo';
+        rotateAction.x = 180;
+        rotateAction.y = 180;
+        rotateAction.duration = 1;
+
+        var moveto2Action = $('#jstreeAction').jstree("create_node", spawnAction.id, {text:'<span class="label label-primary">cc.MoveTo</span> moveto2'}, "last");
+        moveto2Action = $('#jstreeAction').jstree(true).get_node(moveto2Action);
+        moveto2Action.isSequence = false;
+        moveto2Action.name = 'moveto2';
+        moveto2Action.type = 'cc.MoveTo';
+        moveto2Action.x = 0;
+        moveto2Action.y = 0;
+        moveto2Action.duration = 1;
+
+        var easeAction = $('#jstreeAction').jstree("create_node", sequenceAction.id, {text:'<span class="label label-success">cc.EaseBackIn</span> easebackin1'}, "last");
+        easeAction = $('#jstreeAction').jstree(true).get_node(easeAction);
+        easeAction.isEase = true;
+        easeAction.name = 'easebackin1';
+        easeAction.type = 'cc.EaseBackIn';
+
+        var moveto3Action = $('#jstreeAction').jstree("create_node", easeAction.id, {text:'<span class="label label-primary">cc.MoveTo</span> moveto3'}, "last");
+        moveto3Action = $('#jstreeAction').jstree(true).get_node(moveto3Action);
+        moveto3Action.isSequence = false;
+        moveto3Action.name = 'moveto3';
+        moveto3Action.type = 'cc.MoveTo';
+        moveto3Action.x = -size.width / 2;
+        moveto3Action.y = -size.height / 2;
+        moveto3Action.duration = 1;
+
+    });
+
     // Storage Init
     $('#storageInput').change(function() {
         $('#storageName').val($('#storageInput option:selected').text());
@@ -801,184 +1073,7 @@ window.onload = function() {
 
     var client = new ZeroClipboard( document.getElementById("codeCopyBtn") );
 
-    $('#jstreeNode').jstree({"core":{"check_callback" : true}, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
-        "items" : function ($node) {
-            return {
-                "Rename" : {
-                    "label" : "Rename",
-                    "action" : function (obj) {
-                        var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
-                        $('#jstreeNode').jstree(true).edit(n);
-                    }
-                },
-                "Delete" : {
-                    "label" : "Delete",
-                    "action" : function (obj) {
-                        var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
-                        $('#jstreeNode').jstree(true).delete_node(n);
-                    }
-                },
-                "Property" : {
-                    "label" : "Property",
-                    "action" : function (obj) {
-                        var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
-                        if(n.parent_tags) {
-                            propNode = MainScene.getChildByTag(n.parent_tags).getChildByTag(n.text);
-                        }
-                        else {
-                            propNode = MainScene.getChildByTag(n.text);
-                        }
-                        $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
-                        $('#propNameInput').val(propNode.tag);
-                        $('#propXInput').val(propNode.x);
-                        $('#propYInput').val(propNode.y);
-                        $('#propOpacityInput').val(propNode.opacity);
-                        $('#propAXInput').val(propNode.anchorX);
-                        $('#propAYInput').val(propNode.anchorY);
-                        $('#propScaleXInput').val(propNode.scaleX);
-                        $('#propScaleYInput').val(propNode.scaleY);
-                        $('#propRotationXInput').val(propNode.rotationX);
-                        $('#propRotationYInput').val(propNode.rotationY);
-                        $('#propSkewXInput').val(propNode.skewX);
-                        $('#propSkewYInput').val(propNode.skewY);
-                        $('#propzIndexInput').val(propNode.zIndex);
-                        $('#propertyBtn').click();
-                    }
-                }
-            };
-        }
-    }});
-
-    $('#jstreeNode').on('move_node.jstree', function (event, data) {
-        var exParentName, exParent, parent, node;
-
-        exParentName = $('#jstreeNode').jstree(true).get_node(data.node).parent_tags;
-
-        if(exParentName) {
-            exParent = MainScene.getChildByTag(exParentName);
-        }
-
-        if(!exParent) {
-            exParent = MainScene;
-        }
-
-        parent = MainScene.getChildByTag($('#jstreeNode').jstree(true).get_node(data.parent).text);
-        $('#jstreeNode').jstree(true).get_node(data.node).parent_tags = $('#jstreeNode').jstree(true).get_node(data.parent).text
-
-        if(!parent) parent = MainScene;
-
-        node = exParent.getChildByTag(data.node.text);
-        exParent.removeChildByTag(data.node.text);
-        parent.addChild(node);
-    });
-
-    $('#jstreeNode').on('rename_node.jstree', function (event, obj) {
-        var node;
-        node = MainScene.getChildByTag(obj.old);
-        node.tag = obj.text;
-    });
-
-    $('#jstreeNode').on('delete_node.jstree', function (event, obj) {
-        MainScene.removeChildByTag(obj.node.text);
-    });
-
-    $('#jstreeAction').jstree({"core":{"check_callback" : true}, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
-        "items" : function ($node) {
-            return {
-                "Edit" : {
-                    "label" : "Edit",
-                    "action" : function (obj) {
-                        var n = $('#jstreeAction').jstree(true).get_node(obj.reference);
-
-                        if(n.isSequence) {
-                            alert('This action is sequence action!');
-                            return;
-                        }
-
-                        if(n.isEase) {
-                            alert('This action is ease action!');
-                            return;
-                        }
-
-                        for(var i = 0;i < cctools.BasicActionList.length;i++) {
-                            if(cctools.BasicActionList[i][0].value === n.type) {
-                                actionIndex = i;
-                                break;
-                            }
-                        }
-
-                        $('#actionModalTitle').html(cctools.BasicActionList[actionIndex][0].title);
-                        $('#actionModalForm').empty();
-
-                        for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
-                            if(cctools.BasicActionList[actionIndex][i].id != 'name') $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.BasicActionList[actionIndex][i].id + '">' + cctools.BasicActionList[actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[actionIndex][i].title + '" value="' + eval('n.' + cctools.BasicActionList[actionIndex][i].id) +'"></div>');
-                        }
-
-                        $('#actionModalBtn').text('Edit');
-                        $('#actionModal').modal('show');
-
-                        $('#actionModalBtn').unbind('click');
-                        $('#actionModalBtn').click(function() {
-                            for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
-                                if(cctools.BasicActionList[actionIndex][i].id != 'name') n[cctools.BasicActionList[actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[actionIndex][i].id).val();
-                            }
-
-                            $('#actionModal').modal('hide');
-                        });
-                    }
-                },
-                "Delete" : {
-                    "label" : "Delete",
-                    "action" : function (obj) {
-                        var n = $('#jstreeAction').jstree(true).get_node(obj.reference);
-                        $('#jstreeAction').jstree(true).delete_node(n);
-                    }
-                },
-                "Run" : {
-                    "label" : "Run",
-                    "action" : function (obj) {
-                        var n = $('#jstreeAction').jstree(true).get_node(obj.reference), i;
-
-                        if(isRun) return;
-
-                        if(MainScene._children.length < 2) {
-                            alert('Please add a node.');
-                            return;
-                        }
-
-                        targetAction = n;
-
-                        $('#runTargetInput option').remove();
-
-                        for(i = 1;i < MainScene._children.length;i++) {
-                            $('#runTargetInput').append('<option>' + MainScene._children[i].tag +'</option>');
-                        }
-
-                        $('#runActionModal').modal('show');
-                    }
-                }
-            };
-        }
-    }});
-
-    $('#jstreeAction').on('move_node.jstree', function (event, data) {
-        // Parent action is root
-        if(data.parent == '#') return;
-
-        if(!$('#jstreeAction').jstree(true).get_node(data.parent).isSequence && !$('#jstreeAction').jstree(true).get_node(data.parent).isEase) {
-            var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
-            $('#jstreeAction').jstree(true).move_node(data.node, parent);
-            alert('Parent action is must sequence action or ease action!');
-            return;
-        }
-
-        if($('#jstreeAction').jstree(true).get_node(data.parent).isEase && $('#jstreeAction').jstree(true).get_node(data.parent).children.length > 1) {
-            var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
-            $('#jstreeAction').jstree(true).move_node(data.node, parent);
-            alert('ease action can have only one children!');
-            return;
-        }
-    });
+    cctools.initTree();
 
     $('#runActionBtn').click(function() {
         var target = MainScene.getChildByTag($("#runTargetInput option:selected").text()), action;

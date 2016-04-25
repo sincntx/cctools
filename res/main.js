@@ -31,51 +31,51 @@ window.onload = function() {
 
         if(!targetAction.hasOwnProperty('id')) targetAction = $('#jstreeAction').jstree(true).get_node(targetAction);
 
-        switch(targetAction.type) {
+        switch(targetAction.data.type) {
             case "cc.MoveTo":
-                action = new cc.MoveTo(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
+                action = new cc.MoveTo(parseInt(targetAction.data.duration), cc.p(parseInt(targetAction.data.x), parseInt(targetAction.data.y)));
                 break;
             case "cc.MoveBy":
-                action = new cc.MoveBy(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
+                action = new cc.MoveBy(parseInt(targetAction.data.duration), cc.p(parseInt(targetAction.data.x), parseInt(targetAction.data.y)));
                 break;
             case "cc.ScaleTo":
-                action = new cc.ScaleTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                action = new cc.ScaleTo(parseInt(targetAction.data.duration), parseInt(targetAction.data.x), parseInt(targetAction.data.y));
                 break;
             case "cc.ScaleBy":
-                action = new cc.ScaleBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                action = new cc.ScaleBy(parseInt(targetAction.data.duration), parseInt(targetAction.data.x), parseInt(targetAction.data.y));
                 break;
             case "cc.RotateTo":
-                action = new cc.RotateTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                action = new cc.RotateTo(parseInt(targetAction.data.duration), parseInt(targetAction.data.x), parseInt(targetAction.data.y));
                 break;
             case "cc.RotateBy":
-                action = new cc.RotateBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                action = new cc.RotateBy(parseInt(targetAction.data.duration), parseInt(targetAction.data.x), parseInt(targetAction.data.y));
                 break;
             case "cc.SkewTo":
-                action = new cc.SkewTo(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                action = new cc.SkewTo(parseInt(targetAction.data.duration), parseInt(targetAction.data.x), parseInt(targetAction.data.y));
                 break;
             case "cc.SkewBy":
-                action = new cc.SkewBy(parseInt(targetAction.duration), parseInt(targetAction.x), parseInt(targetAction.y));
+                action = new cc.SkewBy(parseInt(targetAction.data.duration), parseInt(targetAction.data.x), parseInt(targetAction.data.y));
                 break;
             case "cc.FadeIn":
-                action = new cc.FadeIn(parseInt(targetAction.duration));
+                action = new cc.FadeIn(parseInt(targetAction.data.duration));
                 break;
             case "cc.FadeOut":
-                action = new cc.FadeOut(parseInt(targetAction.duration));
+                action = new cc.FadeOut(parseInt(targetAction.data.duration));
                 break;
             case "cc.JumpTo":
-                action = new cc.JumpTo(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)), parseInt(targetAction.height), parseInt(targetAction.jumps));
+                action = new cc.JumpTo(parseInt(targetAction.data.duration), cc.p(parseInt(targetAction.data.x), parseInt(targetAction.data.y)), parseInt(targetAction.data.height), parseInt(targetAction.data.jumps));
                 break;
             case "cc.JumpBy":
-                action = new cc.JumpBy(parseInt(targetAction.duration), cc.p(parseInt(targetAction.x), parseInt(targetAction.y)), parseInt(targetAction.height), parseInt(targetAction.jumps));
+                action = new cc.JumpBy(parseInt(targetAction.data.duration), cc.p(parseInt(targetAction.data.x), parseInt(targetAction.data.y)), parseInt(targetAction.data.height), parseInt(targetAction.data.jumps));
                 break;
             case "cc.Blink":
-                action = new cc.Blink(parseInt(targetAction.duration), parseInt(targetAction.blinks));
+                action = new cc.Blink(parseInt(targetAction.data.duration), parseInt(targetAction.data.blinks));
                 break;
             case "cc.TintTo":
-                action = new cc.TintTo(parseInt(targetAction.duration), parseInt(targetAction.r), parseInt(targetAction.g), parseInt(targetAction.b));
+                action = new cc.TintTo(parseInt(targetAction.data.duration), parseInt(targetAction.data.r), parseInt(targetAction.data.g), parseInt(targetAction.data.b));
                 break;
             case "cc.TintBy":
-                action = new cc.TintBy(parseInt(targetAction.duration), parseInt(targetAction.r), parseInt(targetAction.g), parseInt(targetAction.b));
+                action = new cc.TintBy(parseInt(targetAction.data.duration), parseInt(targetAction.data.r), parseInt(targetAction.data.g), parseInt(targetAction.data.b));
                 break;
             case "cc.Show":
                 action = new cc.Show();
@@ -84,13 +84,13 @@ window.onload = function() {
                 action = new cc.Hide();
                 break;
             case "cc.Place":
-                action = new cc.Place(cc.p(parseInt(targetAction.x), parseInt(targetAction.y)));
+                action = new cc.Place(cc.p(parseInt(targetAction.data.x), parseInt(targetAction.data.y)));
                 break;
             case "cc.FlipX":
-                action = new cc.FlipX(eval(targetAction.flip));
+                action = new cc.FlipX(eval(targetAction.data.flip));
                 break;
             case "cc.FlipY":
-                action = new cc.FlipY(eval(targetAction.flip));
+                action = new cc.FlipY(eval(targetAction.data.flip));
                 break;
             case "cc.Sequence":
                 if(targetAction.children.length < 1) {
@@ -137,7 +137,7 @@ window.onload = function() {
                     return new cc.MoveBy(0, 0, 0);
                 }
 
-                action = eval("new " + targetAction.type + "(cctools.getCocosAction(targetAction.children[0]))");
+                action = eval("new " + targetAction.data.type + "(cctools.getCocosAction(targetAction.children[0]))");
                 break;
         }
 
@@ -148,51 +148,51 @@ window.onload = function() {
         var action;
 
         if(!targetAction.hasOwnProperty('id')) targetAction = $('#jstreeAction').jstree(true).get_node(targetAction);
-        switch(targetAction.type) {
+        switch(targetAction.data.type) {
             case "cc.MoveTo":
-                action = "new cc.MoveTo(" + parseInt(targetAction.duration) + ", cc.p(" + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + "))";
+                action = "new cc.MoveTo(" + parseInt(targetAction.data.duration) + ", cc.p(" + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + "))";
                 break;
             case "cc.MoveBy":
-                action = "new cc.MoveBy(" + parseInt(targetAction.duration) + ", cc.p(" + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + "))";
+                action = "new cc.MoveBy(" + parseInt(targetAction.data.duration) + ", cc.p(" + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + "))";
                 break;
             case "cc.ScaleTo":
-                action = "new cc.ScaleTo(" + parseInt(targetAction.duration) + ", " + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + ")";
+                action = "new cc.ScaleTo(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
                 break;
             case "cc.ScaleBy":
-                action = "new cc.ScaleBy(" + parseInt(targetAction.duration) + ", " + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + ")";
+                action = "new cc.ScaleBy(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
                 break;
             case "cc.RotateTo":
-                action = "new cc.RotateTo(" + parseInt(targetAction.duration) + ", " + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + ")";
+                action = "new cc.RotateTo(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
                 break;
             case "cc.RotateBy":
-                action = "new cc.RotateBy(" + parseInt(targetAction.duration) + ", " + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + ")";
+                action = "new cc.RotateBy(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
                 break;
             case "cc.SkewTo":
-                action = "new cc.SkewTo(" + parseInt(targetAction.duration) + ", " + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + ")";
+                action = "new cc.SkewTo(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
                 break;
             case "cc.SkewBy":
-                action = "new cc.SkewBy(" + parseInt(targetAction.duration) + ", " + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + ")";
+                action = "new cc.SkewBy(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
                 break;
             case "cc.FadeIn":
-                action = "new cc.FadeIn(" + parseInt(targetAction.duration) + ")";
+                action = "new cc.FadeIn(" + parseInt(targetAction.data.duration) + ")";
                 break;
             case "cc.FadeOut":
-                action = "new cc.FadeOut(" + parseInt(targetAction.duration) + ")";
+                action = "new cc.FadeOut(" + parseInt(targetAction.data.duration) + ")";
                 break;
             case "cc.JumpTo":
-                action = "new cc.JumpTo(" + parseInt(targetAction.duration) + ", cc.p(" + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + ") + , " + parseInt(targetAction.height) + ", " + parseInt(targetAction.jumps) + ")";
+                action = "new cc.JumpTo(" + parseInt(targetAction.data.duration) + ", cc.p(" + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ") + , " + parseInt(targetAction.data.height) + ", " + parseInt(targetAction.data.jumps) + ")";
                 break;
             case "cc.JumpBy":
-                action = "new cc.JumpBy(" + parseInt(targetAction.duration) + ", cc.p(" + parseInt(targetAction.x) + ", " + parseInt(targetAction.y) + ") + , " + parseInt(targetAction.height) + ", " + parseInt(targetAction.jumps) + ")";
+                action = "new cc.JumpBy(" + parseInt(targetAction.data.duration) + ", cc.p(" + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ") + , " + parseInt(targetAction.data.height) + ", " + parseInt(targetAction.data.jumps) + ")";
                 break;
             case "cc.Blink":
-                action = "new cc.Blink(" + parseInt(targetAction.duration) + ", " + parseInt(targetAction.blinks) + ")";
+                action = "new cc.Blink(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.blinks) + ")";
                 break;
             case "cc.TintTo":
-                action = "new cc.TintTo(" + parseInt(targetAction.duration) + ", " + parseInt(targetAction.r) + ", " + parseInt(targetAction.g) + ", " + parseInt(targetAction.b) + ")";
+                action = "new cc.TintTo(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.r) + ", " + parseInt(targetAction.data.g) + ", " + parseInt(targetAction.data.b) + ")";
                 break;
             case "cc.TintBy":
-                action = "new cc.TintBy(" + parseInt(targetAction.duration) + ", " + parseInt(targetAction.r) + ", " + parseInt(targetAction.g) + ", " + parseInt(targetAction.b) + ")";
+                action = "new cc.TintBy(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.r) + ", " + parseInt(targetAction.data.g) + ", " + parseInt(targetAction.data.b) + ")";
                 break;
             case "cc.Show":
                 action = "new cc.Show()";
@@ -201,16 +201,15 @@ window.onload = function() {
                 action = "new cc.Hide()";
                 break;
             case "cc.Place":
-                action = "new cc.Place(cc.p(" + parseInt(targetAction.x) +", " + parseInt(targetAction.y) + "))";
+                action = "new cc.Place(cc.p(" + parseInt(targetAction.data.x) +", " + parseInt(targetAction.data.y) + "))";
                 break;
             case "cc.FlipX":
-                action = "new cc.FlipX(" + targetAction.flip + ")";
+                action = "new cc.FlipX(" + targetAction.data.flip + ")";
                 break;
             case "cc.FlipY":
-                action = "new cc.FlipY(" + targetAction.flip + ")";
+                action = "new cc.FlipY(" + targetAction.data.flip + ")";
                 break;
             case "cc.Sequence":
-                console.log(targetAction);
                 if(targetAction.children.length < 1) {
                     return "new cc.MoveBy(0, 0, 0)";
                 }
@@ -257,14 +256,102 @@ window.onload = function() {
                     return "new cc.MoveBy(0, 0, 0)";
                 }
 
-                action = "new " + targetAction.type + "(" + cctools.getCocosActionStr(targetAction.children[0]) + ")";
+                action = "new " + targetAction.data.type + "(" + cctools.getCocosActionStr(targetAction.children[0]) + ")";
                 break;
         }
 
         return action;
     };
 
+    cctools.getNodeStr = function() {
+        var i, str = "", j, type, name, child, child2;
+
+        for(i = 1;i < MainScene._children.length;i++) {
+            child = MainScene._children[i];
+            name = child.tag;
+
+            str += "// " + name + "\n";
+
+            if(child instanceof cc.LabelTTF) {
+                type = "cc.LabelTTF";
+                str += "var " + name + " = new " + type + "(\"" + child.string + "\", \"" + child.fontName + "\", " + child.fontSize + ");\n";
+            }
+            else if(child instanceof cc.Sprite) {
+                type = "cc.Sprite";
+                str += "var " + name + " = new " + type + "(\"" + child.filename + "\");\n";
+                str += name + ".filename = '" + child.filename + "';\n";
+            }
+            else if(child instanceof cc.Layer) {
+                type = "cc.Layer";
+                str += "var " + name + " = new " + type + "();\n";
+            }
+
+            str += name + ".tag = '" + name + "';\n";
+            str += name + ".color = cc.color(" + child.color.r + ", " + child.color.g +", " + child.color.b +", " + child.color.a + ");\n";
+            str += name + ".opacity = " + child.opacity + ";\n";
+            str += name + ".x = " + child.x + ";\n";
+            str += name + ".y = " + child.y + ";\n";
+            str += name + ".anchorX = " + child.anchorX + ";\n";
+            str += name + ".anchorY = " + child.anchorY + ";\n";
+            str += name + ".scaleX = " + child.scaleX + ";\n";
+            str += name + ".scaleY = " + child.scaleY + ";\n";
+            str += name + ".skewX = " + child.skewX + ";\n";
+            str += name + ".skewY = " + child.skewY + ";\n";
+            str += name + ".rotationX = " + child.rotationX + ";\n";
+            str += name + ".rotationY = " + child.rotationY + ";\n";
+            str += name + ".zIndex = " + child.zIndex + ";\n";
+            str += "MainScene.addChild(" + name + ");\n\n";
+
+            for(j = 0;j < child._children.length;j++) {
+                child2 = child._children[j];
+                name = child2.tag;
+
+                if(child2 instanceof cc.LabelTTF) {
+                    type = "cc.LabelTTF";
+                    str += "var " + name + " = new " + type + "(\"" + child2.string + "\", \"" + child2.fontName + "\", " + child2.fontSize + ");\n";
+                }
+                else if(child2 instanceof cc.Sprite) {
+                    type = "cc.Sprite";
+                    str += "var " + name + " = new " + type + "(\"" + child2.filename + "\");\n";
+                    str += name + ".filename = '" + child2.filename + "';\n";
+                }
+                else if(child2 instanceof cc.Layer) {
+                    type = "cc.Layer";
+                    str += "var " + name + " = new " + type + "();\n";
+                }
+
+                str += name + ".tag = '" + name + "';\n";
+                str += name + ".x = " + child2.x + ";\n";
+                str += name + ".y = " + child2.y + ";\n";
+                str += name + ".anchorX = " + child2.anchorX + ";\n";
+                str += name + ".anchorY = " + child2.anchorY + ";\n";
+                str += name + ".scaleX = " + child2.scaleX + ";\n";
+                str += name + ".scaleY = " + child2.scaleY + ";\n";
+                str += name + ".skewX = " + child2.skewX + ";\n";
+                str += name + ".skewY = " + child2.skewY + ";\n";
+                str += name + ".rotationX = " + child2.rotationX + ";\n";
+                str += name + ".rotationY = " + child2.rotationY + ";\n";
+                str += name + ".zIndex = " + child2.zIndex + ";\n";
+                str += child.tag + ".addChild(" + name + ");\n\n";
+            }
+        }
+
+        return str;
+    };
+
+    cctools.init = function() {
+        var size = cc.director.getWinSize();
+
+        MainScene.removeAllChildren();
+        cctools.initTree();
+
+        var colorLayer = new cc.LayerColor(cc.color(0, 0, 0), size.width, size.height);
+        colorLayer.tag = 'colorLayer';
+        MainScene.addChild(colorLayer);
+    };
+
     cctools.initTree = function() {
+        $('#jstreeNode').jstree('destroy');
         $('#jstreeNode').jstree({"core":{"check_callback" : true}, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
             "items" : function ($node) {
                 return {
@@ -347,6 +434,7 @@ window.onload = function() {
             MainScene.removeChildByTag(obj.node.text);
         });
 
+        $('#jstreeAction').jstree('destroy');
         $('#jstreeAction').jstree({"core":{"check_callback" : true}, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
             "items" : function ($node) {
                 return {
@@ -430,14 +518,14 @@ window.onload = function() {
             // Parent action is root
             if(data.parent == '#') return;
 
-            if(!$('#jstreeAction').jstree(true).get_node(data.parent).isSequence && !$('#jstreeAction').jstree(true).get_node(data.parent).isEase) {
+            if(!$('#jstreeAction').jstree(true).get_node(data.parent).data.isSequence && !$('#jstreeAction').jstree(true).get_node(data.parent).data.isEase) {
                 var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
                 $('#jstreeAction').jstree(true).move_node(data.node, parent);
                 alert('Parent action is must sequence action or ease action!');
                 return;
             }
 
-            if($('#jstreeAction').jstree(true).get_node(data.parent).isEase && $('#jstreeAction').jstree(true).get_node(data.parent).children.length > 1) {
+            if($('#jstreeAction').jstree(true).get_node(data.parent).data.isEase && $('#jstreeAction').jstree(true).get_node(data.parent).children.length > 1) {
                 var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
                 $('#jstreeAction').jstree(true).move_node(data.node, parent);
                 alert('ease action can have only one children!');
@@ -598,11 +686,12 @@ window.onload = function() {
                 }
                 else {
                     check = $('#jstreeAction').jstree(true).get_node(check);
-                    check.type = cctools.BasicActionList[actionIndex][0].value;
-                    check.isSequence = false;
+                    check.data = {};
+                    check.data.type = cctools.BasicActionList[actionIndex][0].value;
+                    check.data.isSequence = false;
 
                     for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
-                        check[cctools.BasicActionList[actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[actionIndex][i].id).val();
+                        check.data[cctools.BasicActionList[actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[actionIndex][i].id).val();
                     }
 
                     $('#actionModal').modal('hide');
@@ -643,11 +732,12 @@ window.onload = function() {
                 }
                 else {
                     check = $('#jstreeAction').jstree(true).get_node(check);
-                    check.type = cctools.SequenceActionList[actionIndex][0].value;
-                    check.isSequence = true;
+                    check.data = {};
+                    check.data.type = cctools.SequenceActionList[actionIndex][0].value;
+                    check.data.isSequence = true;
 
                     for(i = 1;i < cctools.SequenceActionList[actionIndex].length;i++) {
-                        check[cctools.SequenceActionList[actionIndex][i].id] = $('#actionModal' + cctools.SequenceActionList[actionIndex][i].id).val();
+                        check.data[cctools.SequenceActionList[actionIndex][i].id] = $('#actionModal' + cctools.SequenceActionList[actionIndex][i].id).val();
                     }
 
                     $('#actionModal').modal('hide');
@@ -688,11 +778,12 @@ window.onload = function() {
                 }
                 else {
                     check = $('#jstreeAction').jstree(true).get_node(check);
-                    check.type = cctools.EaseActionList[actionIndex][0].value;
-                    check.isEase = true;
+                    check.data = {};
+                    check.data.type = cctools.EaseActionList[actionIndex][0].value;
+                    check.data.isEase = true;
 
                     for(i = 1;i < cctools.EaseActionList[actionIndex].length;i++) {
-                        check[cctools.EaseActionList[actionIndex][i].id] = $('#actionModal' + cctools.EaseActionList[actionIndex][i].id).val();
+                        check.data[cctools.EaseActionList[actionIndex][i].id] = $('#actionModal' + cctools.EaseActionList[actionIndex][i].id).val();
                     }
 
                     $('#actionModal').modal('hide');
@@ -723,14 +814,7 @@ window.onload = function() {
 
     $('#exampleBtn').click(function(e) {
         var size = cc.director.getWinSize();
-
-        MainScene.removeAllChildren();
-        $('#jstreeNode').jstree('destroy');
-        cctools.initTree();
-
-        var colorLayer = new cc.LayerColor(cc.color(0, 0, 0), size.width, size.height);
-        colorLayer.tag = 'colorLayer';
-        MainScene.addChild(colorLayer);
+        cctools.init();
 
         // create layer
         var layer = new cc.Layer();
@@ -750,65 +834,79 @@ window.onload = function() {
         // create sprite
         var sprite = new cc.Sprite('http://cocos2d-x.org/images/logo.png');
         sprite.tag = 'sprite1';
+        sprite.filename = 'http://cocos2d-x.org/images/logo.png';
         sprite.setPosition(size.width / 2, size.height / 2);
         layer.addChild(sprite);
-        var spriteNode = $('#jstreeNode').jstree("create_node", layerNode, {text:'sprite1', data:{type:'cc.Sprite', parent:layerNode, parent_tags:'layer1'}}, "last");
+        var spriteNode = $('#jstreeNode').jstree("create_node", layerNode, {text:'sprite1', data:{filename:'http://cocos2d-x.org/images/logo.png', type:'cc.Sprite', parent:layerNode, parent_tags:'layer1'}}, "last");
         $('#jstreeNode').jstree(true).get_node(spriteNode).parent_tags = 'layer1';
 
         var sequenceAction = $('#jstreeAction').jstree("create_node", "#", {text:'<span class="label label-default">cc.Sequence</span> sequence1'}, "last");
         sequenceAction = $('#jstreeAction').jstree(true).get_node(sequenceAction);
-        sequenceAction.isSequence = sequenceAction;
-        sequenceAction.name = 'sequence1';
-        sequenceAction.type = 'cc.Sequence'
+        sequenceAction.data = {
+            isSequence : true,
+            name : 'sequence1',
+            type : 'cc.Sequence'
+        };
 
         var movetoAction = $('#jstreeAction').jstree("create_node", sequenceAction.id, {text:'<span class="label label-primary">cc.MoveTo</span> moveto1'}, "last");
         movetoAction = $('#jstreeAction').jstree(true).get_node(movetoAction);
-        movetoAction.isSequence = false;
-        movetoAction.name = 'moveto1';
-        movetoAction.type = 'cc.MoveTo';
-        movetoAction.x = -size.width / 2;
-        movetoAction.y = -size.height / 2;
-        movetoAction.duration = 1;
+        movetoAction.data = {
+            type : 'cc.MoveTo',
+            name : 'moveto1',
+            isSequence : false,
+            x : -size.width / 2,
+            y : -size.height / 2,
+            duration : 1
+        };
 
         var spawnAction = $('#jstreeAction').jstree("create_node", sequenceAction.id, {text:'<span class="label label-default">cc.Spawn</span> spawn1'}, "last");
         spawnAction = $('#jstreeAction').jstree(true).get_node(spawnAction);
-        spawnAction.isSequence = true;
-        spawnAction.name = 'spawn1';
-        spawnAction.type = 'cc.Spawn';
+        spawnAction.data = {
+            type : 'cc.Spawn',
+            name : 'spawn1',
+            isSequence : true
+        };
 
         var rotateAction = $('#jstreeAction').jstree("create_node", spawnAction.id, {text:'<span class="label label-primary">cc.RotateTo</span> rotateto1'}, "last");
         rotateAction = $('#jstreeAction').jstree(true).get_node(rotateAction);
-        rotateAction.isSequence = false;
-        rotateAction.name = 'rotateto1';
-        rotateAction.type = 'cc.RotateTo';
-        rotateAction.x = 180;
-        rotateAction.y = 180;
-        rotateAction.duration = 1;
+        rotateAction.data = {
+            type : 'cc.RotateTo',
+            name : 'rotateto1',
+            isSequence : false,
+            x : 180,
+            y : 180,
+            duration : 1
+        };
 
         var moveto2Action = $('#jstreeAction').jstree("create_node", spawnAction.id, {text:'<span class="label label-primary">cc.MoveTo</span> moveto2'}, "last");
         moveto2Action = $('#jstreeAction').jstree(true).get_node(moveto2Action);
-        moveto2Action.isSequence = false;
-        moveto2Action.name = 'moveto2';
-        moveto2Action.type = 'cc.MoveTo';
-        moveto2Action.x = 0;
-        moveto2Action.y = 0;
-        moveto2Action.duration = 1;
+        moveto2Action.data = {
+            type : 'cc.MoveTo',
+            name : 'moveto2',
+            isSequence : false,
+            x : 0,
+            y : 0,
+            duration : 1
+        };
 
         var easeAction = $('#jstreeAction').jstree("create_node", sequenceAction.id, {text:'<span class="label label-success">cc.EaseBackIn</span> easebackin1'}, "last");
         easeAction = $('#jstreeAction').jstree(true).get_node(easeAction);
-        easeAction.isEase = true;
-        easeAction.name = 'easebackin1';
-        easeAction.type = 'cc.EaseBackIn';
+        easeAction.data = {
+            type : 'cc.EaseBackIn',
+            name : 'easebackin1',
+            isEase : true
+        };
 
         var moveto3Action = $('#jstreeAction').jstree("create_node", easeAction.id, {text:'<span class="label label-primary">cc.MoveTo</span> moveto3'}, "last");
         moveto3Action = $('#jstreeAction').jstree(true).get_node(moveto3Action);
-        moveto3Action.isSequence = false;
-        moveto3Action.name = 'moveto3';
-        moveto3Action.type = 'cc.MoveTo';
-        moveto3Action.x = -size.width / 2;
-        moveto3Action.y = -size.height / 2;
-        moveto3Action.duration = 1;
-
+        moveto3Action.data = {
+            type : 'cc.MoveTo',
+            name : 'moveto3',
+            isSequence : false,
+            x : -size.width / 2,
+            y : -size.height / 2,
+            duration : 1
+        };
     });
 
     // Storage Init
@@ -857,11 +955,17 @@ window.onload = function() {
             return;
         }
 
-        data.canvas_width = $('#canvasWidthInput').val();
-        data.canvas_height = $('#canvasHeightInput').val();
-        data.resoultion_policy = $('#canvasResInput').val();
+        data.canvas = {
+            canvas_width : $('#canvasWidthInput').val(),
+            canvas_height : $('#canvasHeightInput').val(),
+            resoultion_policy : $('#canvasResInput').val()
+        };
 
-        localStorage.setItem($('#storageName').val(), JSON.stringify(data));
+        data.action_tree = $('#jstreeAction').jstree(true).get_json(null, { "flat" : true });
+        data.node_tree = $('#jstreeNode').jstree(true).get_json(null, { "flat" : true });
+        data.node_str = cctools.getNodeStr();
+
+        localStorage.setItem($('#storageName').val(), CircularJSON.stringify(data));
         storageName = $('#storageName').val();
 
         $('#storageModal').modal('hide');
@@ -870,17 +974,203 @@ window.onload = function() {
     $('#loadBtn').click(function() {
         var data;
 
-        if(!$('#storageInput option:selected').text() || $('#storageInput option:selected').text() === 'Select the storage') {
+        if($('#storageInput option:selected').text() === 'Select the storage') {
             alert('Please select the storage');
             return;
         }
 
-        data = JSON.parse(localStorage.getItem($('#storageInput option:selected').text()));
-        $('#canvasWidthInput').val(data.canvas_width);
-        $('#canvasHeightInput').val(data.canvas_height);
-        $('#canvasResInput').val(data.resoultion_policy);
+        data = CircularJSON.parse(localStorage.getItem($('#storageInput option:selected').text()));
+
+        cctools.init();
+
+        $('#canvasWidthInput').val(data.canvas.canvas_width);
+        $('#canvasHeightInput').val(data.canvas.canvas_height);
+        $('#canvasResInput').val(data.canvas.resoultion_policy);
         $('.canvas-input').trigger('change');
 
+        $('#jstreeNode').jstree('destroy');
+        $('#jstreeNode').jstree({"core":{"check_callback" : true, "data" : data.node_tree }, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
+            "items" : function ($node) {
+                return {
+                    "Rename" : {
+                        "label" : "Rename",
+                        "action" : function (obj) {
+                            var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
+                            $('#jstreeNode').jstree(true).edit(n);
+                        }
+                    },
+                    "Delete" : {
+                        "label" : "Delete",
+                        "action" : function (obj) {
+                            var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
+                            $('#jstreeNode').jstree(true).delete_node(n);
+                        }
+                    },
+                    "Property" : {
+                        "label" : "Property",
+                        "action" : function (obj) {
+                            var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
+                            if(n.data.parent_tags) {
+                                propNode = MainScene.getChildByTag(n.data.parent_tags).getChildByTag(n.text);
+                            }
+                            else {
+                                propNode = MainScene.getChildByTag(n.text);
+                            }
+
+                            if(propNode.hasOwnProperty('color')) $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
+                            $('#propNameInput').val(propNode.tag);
+                            $('#propXInput').val(propNode.x);
+                            $('#propYInput').val(propNode.y);
+                            $('#propOpacityInput').val(propNode.opacity);
+                            $('#propAXInput').val(propNode.anchorX);
+                            $('#propAYInput').val(propNode.anchorY);
+                            $('#propScaleXInput').val(propNode.scaleX);
+                            $('#propScaleYInput').val(propNode.scaleY);
+                            $('#propRotationXInput').val(propNode.rotationX);
+                            $('#propRotationYInput').val(propNode.rotationY);
+                            $('#propSkewXInput').val(propNode.skewX);
+                            $('#propSkewYInput').val(propNode.skewY);
+                            $('#propzIndexInput').val(propNode.zIndex);
+                            $('#propertyBtn').click();
+                        }
+                    }
+                };
+            }
+        }});
+
+        $('#jstreeNode').on('move_node.jstree', function (event, data) {
+            var exParentName, exParent, parent, node;
+
+            exParentName = $('#jstreeNode').jstree(true).get_node(data.node).parent_tags;
+
+            if(exParentName) {
+                exParent = MainScene.getChildByTag(exParentName);
+            }
+
+            if(!exParent) {
+                exParent = MainScene;
+            }
+
+            parent = MainScene.getChildByTag($('#jstreeNode').jstree(true).get_node(data.parent).text);
+            $('#jstreeNode').jstree(true).get_node(data.node).parent_tags = $('#jstreeNode').jstree(true).get_node(data.parent).text
+
+            if(!parent) parent = MainScene;
+
+            node = exParent.getChildByTag(data.node.text);
+            exParent.removeChildByTag(data.node.text);
+            parent.addChild(node);
+        });
+
+        $('#jstreeNode').on('rename_node.jstree', function (event, obj) {
+            var node;
+            node = MainScene.getChildByTag(obj.old);
+            node.tag = obj.text;
+        });
+
+        $('#jstreeNode').on('delete_node.jstree', function (event, obj) {
+            MainScene.removeChildByTag(obj.node.text);
+        });
+
+        $('#jstreeAction').jstree('destroy');
+        $('#jstreeAction').jstree({"core":{"check_callback" : true, "data" : data.action_tree}, "plugins" : [ "unique", "contextmenu", "dnd", "wholerow" ], "contextmenu" : {
+            "items" : function ($node) {
+                return {
+                    "Edit" : {
+                        "label" : "Edit",
+                        "action" : function (obj) {
+                            var n = $('#jstreeAction').jstree(true).get_node(obj.reference);
+
+                            if(n.isSequence) {
+                                alert('This action is sequence action!');
+                                return;
+                            }
+
+                            if(n.isEase) {
+                                alert('This action is ease action!');
+                                return;
+                            }
+
+                            for(var i = 0;i < cctools.BasicActionList.length;i++) {
+                                if(cctools.BasicActionList[i][0].value === n.type) {
+                                    actionIndex = i;
+                                    break;
+                                }
+                            }
+
+                            $('#actionModalTitle').html(cctools.BasicActionList[actionIndex][0].title);
+                            $('#actionModalForm').empty();
+
+                            for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
+                                if(cctools.BasicActionList[actionIndex][i].id != 'name') $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.BasicActionList[actionIndex][i].id + '">' + cctools.BasicActionList[actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[actionIndex][i].title + '" value="' + eval('n.' + cctools.BasicActionList[actionIndex][i].id) +'"></div>');
+                            }
+
+                            $('#actionModalBtn').text('Edit');
+                            $('#actionModal').modal('show');
+
+                            $('#actionModalBtn').unbind('click');
+                            $('#actionModalBtn').click(function() {
+                                for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
+                                    if(cctools.BasicActionList[actionIndex][i].id != 'name') n[cctools.BasicActionList[actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[actionIndex][i].id).val();
+                                }
+
+                                $('#actionModal').modal('hide');
+                            });
+                        }
+                    },
+                    "Delete" : {
+                        "label" : "Delete",
+                        "action" : function (obj) {
+                            var n = $('#jstreeAction').jstree(true).get_node(obj.reference);
+                            $('#jstreeAction').jstree(true).delete_node(n);
+                        }
+                    },
+                    "Run" : {
+                        "label" : "Run",
+                        "action" : function (obj) {
+                            var n = $('#jstreeAction').jstree(true).get_node(obj.reference), i;
+
+                            if(isRun) return;
+
+                            if(MainScene._children.length < 2) {
+                                alert('Please add a node.');
+                                return;
+                            }
+
+                            targetAction = n;
+
+                            $('#runTargetInput option').remove();
+
+                            for(i = 1;i < MainScene._children.length;i++) {
+                                $('#runTargetInput').append('<option>' + MainScene._children[i].tag +'</option>');
+                            }
+
+                            $('#runActionModal').modal('show');
+                        }
+                    }
+                };
+            }
+        }});
+
+        $('#jstreeAction').on('move_node.jstree', function (event, data) {
+            // Parent action is root
+            if(data.parent == '#') return;
+
+            if(!$('#jstreeAction').jstree(true).get_node(data.parent).data.isSequence && !$('#jstreeAction').jstree(true).get_node(data.parent).data.isEase) {
+                var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
+                $('#jstreeAction').jstree(true).move_node(data.node, parent);
+                alert('Parent action is must sequence action or ease action!');
+                return;
+            }
+
+            if($('#jstreeAction').jstree(true).get_node(data.parent).data.isEase && $('#jstreeAction').jstree(true).get_node(data.parent).children.length > 1) {
+                var parent = $('#jstreeAction').jstree(true).get_node(data.old_parent);
+                $('#jstreeAction').jstree(true).move_node(data.node, parent);
+                alert('ease action can have only one children!');
+                return;
+            }
+        });
+
+        eval(data.node_str);
         storageName = $('#storageInput option:selected').text();
 
         $('#storageModal').modal('hide');
@@ -915,7 +1205,7 @@ window.onload = function() {
         MainScene.getChildByTag('colorLayer').color = cc.color(parseInt(layerColor.substring(1, 3), 16), parseInt(layerColor.substring(3, 5), 16), parseInt(layerColor.substring(5, 7), 16), 255);
         MainScene.getChildByTag('colorLayer').width = $('#canvasWidthInput').val();
         MainScene.getChildByTag('colorLayer').height = $('#canvasHeightInput').val();
-        cc.view.setDesignResolutionSize($('#canvasWidthInput').val(), $('#canvasHeightInput').val(), $("#canvasResInput option:selected").text());
+        cc.view.setDesignResolutionSize($('#canvasWidthInput').val(), $('#canvasHeightInput').val(), eval($("#canvasResInput option:selected").text()));
     });
 
     $('#canvasResInput').change(function() {
@@ -987,68 +1277,12 @@ window.onload = function() {
     });
 
     $('#jsBtn').click(function() {
-        var i, j, type, name, child, child2, str = "// Canvas Setting\n";
+        var i, str = "// Canvas Setting\n";
         str += "cc.view.setDesignResolutionSize(" + $('#canvasWidthInput').val() + ", " + $('#canvasHeightInput').val() + ", " + $("#canvasResInput option:selected").text() + ");";
         str += "\n\n";
         str += "// Create Nodes\n\n";
 
-        for(i = 1;i < MainScene._children.length;i++) {
-            child = MainScene._children[i];
-            name = child.tag;
-
-            str += "// " + name + "\n";
-
-            if(child instanceof cc.LabelTTF) {
-                type = "cc.LabelTTF";
-                str += "var " + name + " = new " + type + "(\"" + child.string + "\", \"" + child.fontName + "\", " + child.fontSize + ");\n";
-            }
-            else if(child instanceof cc.Sprite) {
-                type = "cc.Sprite";
-                str += "var " + name + " = new " + type + "(\"" + child.filename + "\");\n";
-            }
-
-            str += name + ".color = cc.color(" + child.color.r + ", " + child.color.g +", " + child.color.b +", " + child.color.a + ");\n";
-            str += name + ".opacity = " + child.opacity + ";\n";
-            str += name + ".x = " + child.x + ";\n";
-            str += name + ".y = " + child.y + ";\n";
-            str += name + ".anchorX = " + child.anchorX + ";\n";
-            str += name + ".anchorY = " + child.anchorY + ";\n";
-            str += name + ".scaleX = " + child.scaleX + ";\n";
-            str += name + ".scaleY = " + child.scaleY + ";\n";
-            str += name + ".skewX = " + child.skewX + ";\n";
-            str += name + ".skewY = " + child.skewY + ";\n";
-            str += name + ".rotationX = " + child.rotationX + ";\n";
-            str += name + ".rotationY = " + child.rotationY + ";\n";
-            str += name + ".zIndex = " + child.zIndex + ";\n";
-            str += "this.addChild(" + name + ");\n\n";
-
-            for(j = 0;j < child._children.length;j++) {
-                child2 = child._children[j];
-                name = child2.tag;
-
-                if(child2 instanceof cc.LabelTTF) {
-                    type = "cc.LabelTTF";
-                    str += "var " + name + " = new " + type + "(\"" + child2.string + "\", \"" + child2.fontName + "\", " + child2.fontSize + ");\n";
-                }
-                else if(child2 instanceof cc.Sprite) {
-                    type = "cc.Sprite";
-                    str += "var " + name + " = new " + type + "(\"" + child2.filename + "\");\n";
-                }
-
-                str += name + ".x = " + child2.x + ";\n";
-                str += name + ".y = " + child2.y + ";\n";
-                str += name + ".anchorX = " + child2.anchorX + ";\n";
-                str += name + ".anchorY = " + child2.anchorY + ";\n";
-                str += name + ".scaleX = " + child2.scaleX + ";\n";
-                str += name + ".scaleY = " + child2.scaleY + ";\n";
-                str += name + ".skewX = " + child2.skewX + ";\n";
-                str += name + ".skewY = " + child2.skewY + ";\n";
-                str += name + ".rotationX = " + child2.rotationX + ";\n";
-                str += name + ".rotationY = " + child2.rotationY + ";\n";
-                str += name + ".zIndex = " + child2.zIndex + ";\n";
-                str += child.tag + ".addChild(" + name + ");\n\n";
-            }
-        }
+        str += cctools.getNodeStr();
 
         str += "\n\n";
         str += "// Create Actions\n\n";
@@ -1056,7 +1290,7 @@ window.onload = function() {
         var root = targetAction = $('#jstreeAction').jstree(true).get_node('#');
 
         for(i = 0;i < root.children.length;i++) {
-            str += "// " + $('#jstreeAction').jstree(true).get_node(root.children[i]).name + "\nvar " + $('#jstreeAction').jstree(true).get_node(root.children[i]).name + " = ";
+            str += "// " + $('#jstreeAction').jstree(true).get_node(root.children[i]).data.name + "\nvar " + $('#jstreeAction').jstree(true).get_node(root.children[i]).data.name + " = ";
             str += cctools.getCocosActionStr(root.children[i]) + ";\n\n";
         }
 

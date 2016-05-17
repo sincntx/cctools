@@ -1352,7 +1352,7 @@ window.onload = function() {
                     colorLayer.tag = 'colorLayer';
                     this.addChild(colorLayer);
 
-                    cc.eventManager.addListener(cc.EventListener.create({
+                    /*cc.eventManager.addListener(cc.EventListener.create({
                         event: cc.EventListener.KEYBOARD,
                         onKeyPressed: function(key, event){
                             if(propNode) {
@@ -1375,7 +1375,7 @@ window.onload = function() {
                                 $('#propYInput').val(propNode.y);
                             }
                         }
-                    }), this);
+                    }), this);*/
 
                     cc.eventManager.addListener(cc.EventListener.create({
                         event: cc.EventListener.MOUSE,

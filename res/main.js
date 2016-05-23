@@ -1352,31 +1352,6 @@ window.onload = function() {
                     colorLayer.tag = 'colorLayer';
                     this.addChild(colorLayer);
 
-                    /*cc.eventManager.addListener(cc.EventListener.create({
-                        event: cc.EventListener.KEYBOARD,
-                        onKeyPressed: function(key, event){
-                            if(propNode) {
-                                switch(key) {
-                                    case 37:
-                                        propNode.x--;
-                                        break;
-                                    case 39:
-                                        propNode.x++;
-                                        break;
-                                    case 38:
-                                        propNode.y++;
-                                        break;
-                                    case 40:
-                                        propNode.y--;
-                                        break;
-                                }
-
-                                $('#propXInput').val(propNode.x);
-                                $('#propYInput').val(propNode.y);
-                            }
-                        }
-                    }), this);*/
-
                     cc.eventManager.addListener(cc.EventListener.create({
                         event: cc.EventListener.MOUSE,
                         onMouseDown: function(event){

@@ -1,6 +1,5 @@
 window.onload = function() {
     var cctools = {};
-    var MainScene, targetNode, targetAction, targetActionNode, propNode, isRun = false, nodeIndex = -1, actionIndex = -1, storageName='';
 
     cctools.refreshStorage = function() {
         var i;
@@ -9,13 +8,13 @@ window.onload = function() {
         $('#storageInput').append("<option value='select'>Select the storage</option>");
 
         for (i = 0; i < localStorage.length; i++)   {
-            if(storageName === localStorage.key(i))
+            if(cctools.storageName === localStorage.key(i))
                 $('#storageInput').append("<option selected value='" + localStorage.key(i) + "'>" + localStorage.key(i) + "</option>");
             else
                 $('#storageInput').append("<option value='" + localStorage.key(i) + "'>" + localStorage.key(i) + "</option>");
         }
 
-        $('#storageName').val('');
+        $('#cctools.storageName').val('');
     };
 
     cctools.sideBtnClick = function(selector) {
@@ -266,8 +265,8 @@ window.onload = function() {
     cctools.getNodeStr = function() {
         var i, str = "", j, type, name, child, child2;
 
-        for(i = 1;i < MainScene._children.length;i++) {
-            child = MainScene._children[i];
+        for(i = 1;i < cctools.MainScene._children.length;i++) {
+            child = cctools.MainScene._children[i];
             name = child.tag;
 
             str += "// " + name + "\n";
@@ -300,7 +299,7 @@ window.onload = function() {
             str += name + ".rotationX = " + child.rotationX + ";\n";
             str += name + ".rotationY = " + child.rotationY + ";\n";
             str += name + ".zIndex = " + child.zIndex + ";\n";
-            str += "MainScene.addChild(" + name + ");\n\n";
+            str += "cctools.MainScene.addChild(" + name + ");\n\n";
 
             for(j = 0;j < child._children.length;j++) {
                 child2 = child._children[j];
@@ -342,12 +341,13 @@ window.onload = function() {
     cctools.init = function() {
         var size = cc.director.getWinSize();
 
-        MainScene.removeAllChildren();
+        cctools.isRun = false;
+        cctools.MainScene.removeAllChildren();
         cctools.initTree();
 
         var colorLayer = new cc.LayerColor(cc.color(0, 0, 0), size.width, size.height);
         colorLayer.tag = 'colorLayer';
-        MainScene.addChild(colorLayer);
+        cctools.MainScene.addChild(colorLayer);
     };
 
     cctools.initTree = function() {
@@ -374,26 +374,26 @@ window.onload = function() {
                         "action" : function (obj) {
                             var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
                             if(n.parent_tags) {
-                                propNode = MainScene.getChildByTag(n.parent_tags).getChildByTag(n.text);
+                                cctools.propNode = cctools.MainScene.getChildByTag(n.parent_tags).getChildByTag(n.text);
                             }
                             else {
-                                propNode = MainScene.getChildByTag(n.text);
+                                cctools.propNode = cctools.MainScene.getChildByTag(n.text);
                             }
 
-                            $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
-                            $('#propNameInput').val(propNode.tag);
-                            $('#propXInput').val(propNode.x);
-                            $('#propYInput').val(propNode.y);
-                            $('#propOpacityInput').val(propNode.opacity);
-                            $('#propAXInput').val(propNode.anchorX);
-                            $('#propAYInput').val(propNode.anchorY);
-                            $('#propScaleXInput').val(propNode.scaleX);
-                            $('#propScaleYInput').val(propNode.scaleY);
-                            $('#propRotationXInput').val(propNode.rotationX);
-                            $('#propRotationYInput').val(propNode.rotationY);
-                            $('#propSkewXInput').val(propNode.skewX);
-                            $('#propSkewYInput').val(propNode.skewY);
-                            $('#propzIndexInput').val(propNode.zIndex);
+                            $('#propColorInput').val("#" + cctools.propNode.color.r.toString(16) + cctools.propNode.color.g.toString(16) + cctools.propNode.color.b.toString(16) + cctools.propNode.color.a.toString(16));
+                            $('#propNameInput').val(cctools.propNode.tag);
+                            $('#propXInput').val(cctools.propNode.x);
+                            $('#propYInput').val(cctools.propNode.y);
+                            $('#propOpacityInput').val(cctools.propNode.opacity);
+                            $('#propAXInput').val(cctools.propNode.anchorX);
+                            $('#propAYInput').val(cctools.propNode.anchorY);
+                            $('#propScaleXInput').val(cctools.propNode.scaleX);
+                            $('#propScaleYInput').val(cctools.propNode.scaleY);
+                            $('#propRotationXInput').val(cctools.propNode.rotationX);
+                            $('#propRotationYInput').val(cctools.propNode.rotationY);
+                            $('#propSkewXInput').val(cctools.propNode.skewX);
+                            $('#propSkewYInput').val(cctools.propNode.skewY);
+                            $('#propzIndexInput').val(cctools.propNode.zIndex);
                             $('#propertyBtn').click();
                         }
                     }
@@ -407,17 +407,17 @@ window.onload = function() {
             exParentName = $('#jstreeNode').jstree(true).get_node(data.node).parent_tags;
 
             if(exParentName) {
-                exParent = MainScene.getChildByTag(exParentName);
+                exParent = cctools.MainScene.getChildByTag(exParentName);
             }
 
             if(!exParent) {
-                exParent = MainScene;
+                exParent = cctools.MainScene;
             }
 
-            parent = MainScene.getChildByTag($('#jstreeNode').jstree(true).get_node(data.parent).text);
+            parent = cctools.MainScene.getChildByTag($('#jstreeNode').jstree(true).get_node(data.parent).text);
             $('#jstreeNode').jstree(true).get_node(data.node).parent_tags = $('#jstreeNode').jstree(true).get_node(data.parent).text
 
-            if(!parent) parent = MainScene;
+            if(!parent) parent = cctools.MainScene;
 
             node = exParent.getChildByTag(data.node.text);
             exParent.removeChildByTag(data.node.text);
@@ -426,12 +426,12 @@ window.onload = function() {
 
         $('#jstreeNode').on('rename_node.jstree', function (event, obj) {
             var node;
-            node = MainScene.getChildByTag(obj.old);
+            node = cctools.MainScene.getChildByTag(obj.old);
             node.tag = obj.text;
         });
 
         $('#jstreeNode').on('delete_node.jstree', function (event, obj) {
-            MainScene.removeChildByTag(obj.node.text);
+            cctools.MainScene.removeChildByTag(obj.node.text);
         });
 
         $('#jstreeAction').jstree('destroy');
@@ -455,16 +455,16 @@ window.onload = function() {
 
                             for(var i = 0;i < cctools.BasicActionList.length;i++) {
                                 if(cctools.BasicActionList[i][0].value === n.type) {
-                                    actionIndex = i;
+                                    cctools.actionIndex = i;
                                     break;
                                 }
                             }
 
-                            $('#actionModalTitle').html(cctools.BasicActionList[actionIndex][0].title);
+                            $('#actionModalTitle').html(cctools.BasicActionList[cctools.actionIndex][0].title);
                             $('#actionModalForm').empty();
 
-                            for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
-                                if(cctools.BasicActionList[actionIndex][i].id != 'name') $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.BasicActionList[actionIndex][i].id + '">' + cctools.BasicActionList[actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[actionIndex][i].title + '" value="' + eval('n.' + cctools.BasicActionList[actionIndex][i].id) +'"></div>');
+                            for(i = 1;i < cctools.BasicActionList[cctools.actionIndex].length;i++) {
+                                if(cctools.BasicActionList[cctools.actionIndex][i].id != 'name') $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '">' + cctools.BasicActionList[cctools.actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[cctools.actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[cctools.actionIndex][i].title + '" value="' + eval('n.' + cctools.BasicActionList[cctools.actionIndex][i].id) +'"></div>');
                             }
 
                             $('#actionModalBtn').text('Edit');
@@ -472,8 +472,8 @@ window.onload = function() {
 
                             $('#actionModalBtn').unbind('click');
                             $('#actionModalBtn').click(function() {
-                                for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
-                                    if(cctools.BasicActionList[actionIndex][i].id != 'name') n[cctools.BasicActionList[actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[actionIndex][i].id).val();
+                                for(i = 1;i < cctools.BasicActionList[cctools.actionIndex].length;i++) {
+                                    if(cctools.BasicActionList[cctools.actionIndex][i].id != 'name') n[cctools.BasicActionList[cctools.actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id).val();
                                 }
 
                                 $('#actionModal').modal('hide');
@@ -492,19 +492,19 @@ window.onload = function() {
                         "action" : function (obj) {
                             var n = $('#jstreeAction').jstree(true).get_node(obj.reference), i;
 
-                            if(isRun) return;
+                            if(cctools.isRun) return;
 
-                            if(MainScene._children.length < 2) {
+                            if(cctools.MainScene._children.length < 2) {
                                 alert('Please add a node.');
                                 return;
                             }
 
-                            targetAction = n;
+                            cctools.targetAction = n;
 
                             $('#runTargetInput option').remove();
 
-                            for(i = 1;i < MainScene._children.length;i++) {
-                                $('#runTargetInput').append('<option>' + MainScene._children[i].tag +'</option>');
+                            for(i = 1;i < cctools.MainScene._children.length;i++) {
+                                $('#runTargetInput').append('<option>' + cctools.MainScene._children[i].tag +'</option>');
                             }
 
                             $('#runActionModal').modal('show');
@@ -602,31 +602,31 @@ window.onload = function() {
             var i;
             for(i = 0;i < cctools.NodeList.length;i++) {
                 if(cctools.NodeList[i][0].value === e.currentTarget.childNodes[0].data) {
-                    nodeIndex = i;
+                    cctools.nodeIndex = i;
                     break;
                 }
             }
 
-            $('#nodeModalTitle').html(cctools.NodeList[nodeIndex][0].title);
+            $('#nodeModalTitle').html(cctools.NodeList[cctools.nodeIndex][0].title);
             $('#nodeModalForm').empty();
             $('#spriteImagePreivew').hide();
 
-            for(i = 1;i < cctools.NodeList[nodeIndex].length;i++) {
-                $('#nodeModalForm').append('<div class="form-group"> <label for="nodeModal' + cctools.NodeList[nodeIndex][i].id + '">' + cctools.NodeList[nodeIndex][i].title + '</label><input type="' + cctools.NodeList[nodeIndex][i].type + '" class="form-control" id="nodeModal' + cctools.NodeList[nodeIndex][i].id + '" placeholder="' + cctools.NodeList[nodeIndex][i].title + '" value="' + cctools.NodeList[nodeIndex][i].value +'"></div>');
-                if(cctools.NodeList[nodeIndex][i].type === 'file') {
-                    $('#nodeModal' + cctools.NodeList[nodeIndex][i].id).setPreview(opt);
+            for(i = 1;i < cctools.NodeList[cctools.nodeIndex].length;i++) {
+                $('#nodeModalForm').append('<div class="form-group"> <label for="nodeModal' + cctools.NodeList[cctools.nodeIndex][i].id + '">' + cctools.NodeList[cctools.nodeIndex][i].title + '</label><input type="' + cctools.NodeList[cctools.nodeIndex][i].type + '" class="form-control" id="nodeModal' + cctools.NodeList[cctools.nodeIndex][i].id + '" placeholder="' + cctools.NodeList[cctools.nodeIndex][i].title + '" value="' + cctools.NodeList[cctools.nodeIndex][i].value +'"></div>');
+                if(cctools.NodeList[cctools.nodeIndex][i].type === 'file') {
+                    $('#nodeModal' + cctools.NodeList[cctools.nodeIndex][i].id).setPreview(opt);
                     $('#nodeModalForm').append('<input type="hidden" id="spriteFilename" />');
                 }
             }
             $('#nodeModalBtn').unbind('click');
             $('#nodeModalBtn').click(function() {
-                var n = MainScene.getChildByTag($('#nodeModal' + cctools.NodeList[nodeIndex][1].id).val());
+                var n = cctools.MainScene.getChildByTag($('#nodeModal' + cctools.NodeList[cctools.nodeIndex][1].id).val());
                 if(!n) {
                     var size = cc.director.getWinSize(), node;
 
-                    switch(cctools.NodeList[nodeIndex][0].value) {
+                    switch(cctools.NodeList[cctools.nodeIndex][0].value) {
                         case "cc.LabelTTF" :
-                            node = new cc.LabelTTF($('#nodeModal' + cctools.NodeList[nodeIndex][2].id).val(), $('#nodeModal' + cctools.NodeList[nodeIndex][3].id).val(), $('#nodeModal' + cctools.NodeList[nodeIndex][4].id).val());
+                            node = new cc.LabelTTF($('#nodeModal' + cctools.NodeList[cctools.nodeIndex][2].id).val(), $('#nodeModal' + cctools.NodeList[cctools.nodeIndex][3].id).val(), $('#nodeModal' + cctools.NodeList[cctools.nodeIndex][4].id).val());
                             break;
                         case "cc.Sprite" :
                             node = new cc.Sprite($('#spriteImagePreivew')[0].src);
@@ -640,11 +640,11 @@ window.onload = function() {
                             break;
                     }
 
-                    node.tag = $('#nodeModal' + cctools.NodeList[nodeIndex][1].id).val();
+                    node.tag = $('#nodeModal' + cctools.NodeList[cctools.nodeIndex][1].id).val();
                     node.setPosition(size.width / 2, size.height / 2);
-                    MainScene.addChild(node);
+                    cctools.MainScene.addChild(node);
                     $('#nodeModal').modal('hide');
-                    $('#jstreeNode').jstree("create_node", "#", {text:$('#nodeModal' + cctools.NodeList[nodeIndex][1].id).val(), data:{type:cctools.NodeList[nodeIndex][0].value, parent:"#"}}, "last");
+                    $('#jstreeNode').jstree("create_node", "#", {text:$('#nodeModal' + cctools.NodeList[cctools.nodeIndex][1].id).val(), data:{type:cctools.NodeList[cctools.nodeIndex][0].value, parent:"#"}}, "last");
                 }
                 else {
                     alert('Same tag already exists.');
@@ -665,17 +665,17 @@ window.onload = function() {
             var i;
             for(i = 0;i < cctools.BasicActionList.length;i++) {
                 if(cctools.BasicActionList[i][0].value === e.currentTarget.childNodes[0].data) {
-                    actionIndex = i;
+                    cctools.actionIndex = i;
                     break;
                 }
             }
 
             $('#actionModalBtn').text('Create');
-            $('#actionModalTitle').html(cctools.BasicActionList[actionIndex][0].title);
+            $('#actionModalTitle').html(cctools.BasicActionList[cctools.actionIndex][0].title);
             $('#actionModalForm').empty();
 
-            for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
-                $('#actionModalForm').append('<input type="hidden" id="actionModalType" value="' + cctools.BasicActionList[actionIndex][0].value + '" /><div class="form-group"> <label for="actionModal' + cctools.BasicActionList[actionIndex][i].id + '">' + cctools.BasicActionList[actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[actionIndex][i].title + '" value="' + cctools.BasicActionList[actionIndex][i].value +'"></div>');
+            for(i = 1;i < cctools.BasicActionList[cctools.actionIndex].length;i++) {
+                $('#actionModalForm').append('<input type="hidden" id="actionModalType" value="' + cctools.BasicActionList[cctools.actionIndex][0].value + '" /><div class="form-group"> <label for="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '">' + cctools.BasicActionList[cctools.actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[cctools.actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[cctools.actionIndex][i].title + '" value="' + cctools.BasicActionList[cctools.actionIndex][i].value +'"></div>');
             }
             $('#actionModalBtn').unbind('click');
             $('#actionModalBtn').click(function() {
@@ -687,11 +687,11 @@ window.onload = function() {
                 else {
                     check = $('#jstreeAction').jstree(true).get_node(check);
                     check.data = {};
-                    check.data.type = cctools.BasicActionList[actionIndex][0].value;
+                    check.data.type = cctools.BasicActionList[cctools.actionIndex][0].value;
                     check.data.isSequence = false;
 
-                    for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
-                        check.data[cctools.BasicActionList[actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[actionIndex][i].id).val();
+                    for(i = 1;i < cctools.BasicActionList[cctools.actionIndex].length;i++) {
+                        check.data[cctools.BasicActionList[cctools.actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id).val();
                     }
 
                     $('#actionModal').modal('hide');
@@ -711,17 +711,17 @@ window.onload = function() {
             var i;
             for(i = 0;i < cctools.SequenceActionList.length;i++) {
                 if(cctools.SequenceActionList[i][0].value === e.currentTarget.childNodes[0].data) {
-                    actionIndex = i;
+                    cctools.actionIndex = i;
                     break;
                 }
             }
 
             $('#actionModalBtn').text('Create');
-            $('#actionModalTitle').html(cctools.SequenceActionList[actionIndex][0].title);
+            $('#actionModalTitle').html(cctools.SequenceActionList[cctools.actionIndex][0].title);
             $('#actionModalForm').empty();
 
-            for(i = 1;i < cctools.SequenceActionList[actionIndex].length;i++) {
-                $('#actionModalForm').append('<input type="hidden" id="actionModalType" value="' + cctools.SequenceActionList[actionIndex][0].value + '" /><div class="form-group"> <label for="actionModal' + cctools.SequenceActionList[actionIndex][i].id + '">' + cctools.SequenceActionList[actionIndex][i].title + '</label><input type="' + cctools.SequenceActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.SequenceActionList[actionIndex][i].id + '" placeholder="' + cctools.SequenceActionList[actionIndex][i].title + '" value="' + cctools.SequenceActionList[actionIndex][i].value +'"></div>');
+            for(i = 1;i < cctools.SequenceActionList[cctools.actionIndex].length;i++) {
+                $('#actionModalForm').append('<input type="hidden" id="actionModalType" value="' + cctools.SequenceActionList[cctools.actionIndex][0].value + '" /><div class="form-group"> <label for="actionModal' + cctools.SequenceActionList[cctools.actionIndex][i].id + '">' + cctools.SequenceActionList[cctools.actionIndex][i].title + '</label><input type="' + cctools.SequenceActionList[cctools.actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.SequenceActionList[cctools.actionIndex][i].id + '" placeholder="' + cctools.SequenceActionList[cctools.actionIndex][i].title + '" value="' + cctools.SequenceActionList[cctools.actionIndex][i].value +'"></div>');
             }
             $('#actionModalBtn').unbind('click');
             $('#actionModalBtn').click(function() {
@@ -733,11 +733,11 @@ window.onload = function() {
                 else {
                     check = $('#jstreeAction').jstree(true).get_node(check);
                     check.data = {};
-                    check.data.type = cctools.SequenceActionList[actionIndex][0].value;
+                    check.data.type = cctools.SequenceActionList[cctools.actionIndex][0].value;
                     check.data.isSequence = true;
 
-                    for(i = 1;i < cctools.SequenceActionList[actionIndex].length;i++) {
-                        check.data[cctools.SequenceActionList[actionIndex][i].id] = $('#actionModal' + cctools.SequenceActionList[actionIndex][i].id).val();
+                    for(i = 1;i < cctools.SequenceActionList[cctools.actionIndex].length;i++) {
+                        check.data[cctools.SequenceActionList[cctools.actionIndex][i].id] = $('#actionModal' + cctools.SequenceActionList[cctools.actionIndex][i].id).val();
                     }
 
                     $('#actionModal').modal('hide');
@@ -757,17 +757,17 @@ window.onload = function() {
             var i;
             for(i = 0;i < cctools.EaseActionList.length;i++) {
                 if(cctools.EaseActionList[i][0].value === e.currentTarget.childNodes[0].data) {
-                    actionIndex = i;
+                    cctools.actionIndex = i;
                     break;
                 }
             }
 
             $('#actionModalBtn').text('Create');
-            $('#actionModalTitle').html(cctools.EaseActionList[actionIndex][0].title);
+            $('#actionModalTitle').html(cctools.EaseActionList[cctools.actionIndex][0].title);
             $('#actionModalForm').empty();
 
-            for(i = 1;i < cctools.EaseActionList[actionIndex].length;i++) {
-                $('#actionModalForm').append('<input type="hidden" id="actionModalType" value="' + cctools.EaseActionList[actionIndex][0].value + '" /><div class="form-group"> <label for="actionModal' + cctools.EaseActionList[actionIndex][i].id + '">' + cctools.EaseActionList[actionIndex][i].title + '</label><input type="' + cctools.EaseActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.EaseActionList[actionIndex][i].id + '" placeholder="' + cctools.EaseActionList[actionIndex][i].title + '" value="' + cctools.EaseActionList[actionIndex][i].value +'"></div>');
+            for(i = 1;i < cctools.EaseActionList[cctools.actionIndex].length;i++) {
+                $('#actionModalForm').append('<input type="hidden" id="actionModalType" value="' + cctools.EaseActionList[cctools.actionIndex][0].value + '" /><div class="form-group"> <label for="actionModal' + cctools.EaseActionList[cctools.actionIndex][i].id + '">' + cctools.EaseActionList[cctools.actionIndex][i].title + '</label><input type="' + cctools.EaseActionList[cctools.actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.EaseActionList[cctools.actionIndex][i].id + '" placeholder="' + cctools.EaseActionList[cctools.actionIndex][i].title + '" value="' + cctools.EaseActionList[cctools.actionIndex][i].value +'"></div>');
             }
             $('#actionModalBtn').unbind('click');
             $('#actionModalBtn').click(function() {
@@ -779,11 +779,11 @@ window.onload = function() {
                 else {
                     check = $('#jstreeAction').jstree(true).get_node(check);
                     check.data = {};
-                    check.data.type = cctools.EaseActionList[actionIndex][0].value;
+                    check.data.type = cctools.EaseActionList[cctools.actionIndex][0].value;
                     check.data.isEase = true;
 
-                    for(i = 1;i < cctools.EaseActionList[actionIndex].length;i++) {
-                        check.data[cctools.EaseActionList[actionIndex][i].id] = $('#actionModal' + cctools.EaseActionList[actionIndex][i].id).val();
+                    for(i = 1;i < cctools.EaseActionList[cctools.actionIndex].length;i++) {
+                        check.data[cctools.EaseActionList[cctools.actionIndex][i].id] = $('#actionModal' + cctools.EaseActionList[cctools.actionIndex][i].id).val();
                     }
 
                     $('#actionModal').modal('hide');
@@ -802,13 +802,13 @@ window.onload = function() {
 
     $("#canvasLayerBackgroundInput").on("change.color", function(event, color){
         var layerColor = $('#canvasLayerBackgroundInput').val();
-        MainScene.getChildByTag('colorLayer').color = cc.color(parseInt(layerColor.substring(1, 3), 16), parseInt(layerColor.substring(3, 5), 16), parseInt(layerColor.substring(5, 7), 16), 255);
+        cctools.MainScene.getChildByTag('colorLayer').color = cc.color(parseInt(layerColor.substring(1, 3), 16), parseInt(layerColor.substring(3, 5), 16), parseInt(layerColor.substring(5, 7), 16), 255);
     });
 
     $("#propColorInput").on("change.color", function(event, color){
-        if(propNode) {
+        if(cctools.propNode) {
             var color = $('#propColorInput').val();
-            propNode.color = cc.color(parseInt(color.substring(1, 3), 16), parseInt(color.substring(3, 5), 16), parseInt(color.substring(5, 7), 16), 255);
+            cctools.propNode.color = cc.color(parseInt(color.substring(1, 3), 16), parseInt(color.substring(3, 5), 16), parseInt(color.substring(5, 7), 16), 255);
         }
     });
 
@@ -820,7 +820,7 @@ window.onload = function() {
         var layer = new cc.Layer();
         layer.tag = 'layer1';
         layer.setPosition(0, 0);
-        MainScene.addChild(layer);
+        cctools.MainScene.addChild(layer);
         var layerNode = $('#jstreeNode').jstree("create_node", "#", {text:'layer1', data:{type:'cc.Layer', parent:"#"}}, "last");
 
         // create label
@@ -911,7 +911,7 @@ window.onload = function() {
 
     // Storage Init
     $('#storageInput').change(function() {
-        $('#storageName').val($('#storageInput option:selected').text());
+        $('#cctools.storageName').val($('#storageInput option:selected').text());
     });
 
     $('#removeBtn').click(function() {
@@ -936,12 +936,12 @@ window.onload = function() {
             return;
         }
 
-        if(!$('#storageName').val()) {
+        if(!$('#cctools.storageName').val()) {
             alert('Please enter the storage name');
             return;
         }
 
-        localStorage.setItem($('#storageName').val(), localStorage.getItem($('#storageInput option:selected').text()));
+        localStorage.setItem($('#cctools.storageName').val(), localStorage.getItem($('#storageInput option:selected').text()));
         localStorage.removeItem($('#storageInput option:selected').text());
 
         cctools.refreshStorage();
@@ -950,7 +950,7 @@ window.onload = function() {
     $('#saveBtn').click(function() {
         var data = {};
 
-        if(!$('#storageName').val()) {
+        if(!$('#cctools.storageName').val()) {
             alert('Please enter the storage name');
             return;
         }
@@ -965,8 +965,8 @@ window.onload = function() {
         data.node_tree = $('#jstreeNode').jstree(true).get_json(null, { "flat" : true });
         data.node_str = cctools.getNodeStr();
 
-        localStorage.setItem($('#storageName').val(), CircularJSON.stringify(data));
-        storageName = $('#storageName').val();
+        localStorage.setItem($('#cctools.storageName').val(), CircularJSON.stringify(data));
+        cctools.storageName = $('#cctools.storageName').val();
 
         $('#storageModal').modal('hide');
     });
@@ -1011,26 +1011,26 @@ window.onload = function() {
                         "action" : function (obj) {
                             var n = $('#jstreeNode').jstree(true).get_node(obj.reference);
                             if(n.data.parent_tags) {
-                                propNode = MainScene.getChildByTag(n.data.parent_tags).getChildByTag(n.text);
+                                cctools.propNode = cctools.MainScene.getChildByTag(n.data.parent_tags).getChildByTag(n.text);
                             }
                             else {
-                                propNode = MainScene.getChildByTag(n.text);
+                                cctools.propNode = cctools.MainScene.getChildByTag(n.text);
                             }
 
-                            if(propNode.hasOwnProperty('color')) $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
-                            $('#propNameInput').val(propNode.tag);
-                            $('#propXInput').val(propNode.x);
-                            $('#propYInput').val(propNode.y);
-                            $('#propOpacityInput').val(propNode.opacity);
-                            $('#propAXInput').val(propNode.anchorX);
-                            $('#propAYInput').val(propNode.anchorY);
-                            $('#propScaleXInput').val(propNode.scaleX);
-                            $('#propScaleYInput').val(propNode.scaleY);
-                            $('#propRotationXInput').val(propNode.rotationX);
-                            $('#propRotationYInput').val(propNode.rotationY);
-                            $('#propSkewXInput').val(propNode.skewX);
-                            $('#propSkewYInput').val(propNode.skewY);
-                            $('#propzIndexInput').val(propNode.zIndex);
+                            if(cctools.propNode.hasOwnProperty('color')) $('#propColorInput').val("#" + cctools.propNode.color.r.toString(16) + cctools.propNode.color.g.toString(16) + cctools.propNode.color.b.toString(16) + cctools.propNode.color.a.toString(16));
+                            $('#propNameInput').val(cctools.propNode.tag);
+                            $('#propXInput').val(cctools.propNode.x);
+                            $('#propYInput').val(cctools.propNode.y);
+                            $('#propOpacityInput').val(cctools.propNode.opacity);
+                            $('#propAXInput').val(cctools.propNode.anchorX);
+                            $('#propAYInput').val(cctools.propNode.anchorY);
+                            $('#propScaleXInput').val(cctools.propNode.scaleX);
+                            $('#propScaleYInput').val(cctools.propNode.scaleY);
+                            $('#propRotationXInput').val(cctools.propNode.rotationX);
+                            $('#propRotationYInput').val(cctools.propNode.rotationY);
+                            $('#propSkewXInput').val(cctools.propNode.skewX);
+                            $('#propSkewYInput').val(cctools.propNode.skewY);
+                            $('#propzIndexInput').val(cctools.propNode.zIndex);
                             $('#propertyBtn').click();
                         }
                     }
@@ -1044,17 +1044,17 @@ window.onload = function() {
             exParentName = $('#jstreeNode').jstree(true).get_node(data.node).parent_tags;
 
             if(exParentName) {
-                exParent = MainScene.getChildByTag(exParentName);
+                exParent = cctools.MainScene.getChildByTag(exParentName);
             }
 
             if(!exParent) {
-                exParent = MainScene;
+                exParent = cctools.MainScene;
             }
 
-            parent = MainScene.getChildByTag($('#jstreeNode').jstree(true).get_node(data.parent).text);
+            parent = cctools.MainScene.getChildByTag($('#jstreeNode').jstree(true).get_node(data.parent).text);
             $('#jstreeNode').jstree(true).get_node(data.node).parent_tags = $('#jstreeNode').jstree(true).get_node(data.parent).text
 
-            if(!parent) parent = MainScene;
+            if(!parent) parent = cctools.MainScene;
 
             node = exParent.getChildByTag(data.node.text);
             exParent.removeChildByTag(data.node.text);
@@ -1063,12 +1063,12 @@ window.onload = function() {
 
         $('#jstreeNode').on('rename_node.jstree', function (event, obj) {
             var node;
-            node = MainScene.getChildByTag(obj.old);
+            node = cctools.MainScene.getChildByTag(obj.old);
             node.tag = obj.text;
         });
 
         $('#jstreeNode').on('delete_node.jstree', function (event, obj) {
-            MainScene.removeChildByTag(obj.node.text);
+            cctools.MainScene.removeChildByTag(obj.node.text);
         });
 
         $('#jstreeAction').jstree('destroy');
@@ -1092,16 +1092,16 @@ window.onload = function() {
 
                             for(var i = 0;i < cctools.BasicActionList.length;i++) {
                                 if(cctools.BasicActionList[i][0].value === n.type) {
-                                    actionIndex = i;
+                                    cctools.actionIndex = i;
                                     break;
                                 }
                             }
 
-                            $('#actionModalTitle').html(cctools.BasicActionList[actionIndex][0].title);
+                            $('#actionModalTitle').html(cctools.BasicActionList[cctools.actionIndex][0].title);
                             $('#actionModalForm').empty();
 
-                            for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
-                                if(cctools.BasicActionList[actionIndex][i].id != 'name') $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.BasicActionList[actionIndex][i].id + '">' + cctools.BasicActionList[actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[actionIndex][i].title + '" value="' + eval('n.' + cctools.BasicActionList[actionIndex][i].id) +'"></div>');
+                            for(i = 1;i < cctools.BasicActionList[cctools.actionIndex].length;i++) {
+                                if(cctools.BasicActionList[cctools.actionIndex][i].id != 'name') $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '">' + cctools.BasicActionList[cctools.actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[cctools.actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[cctools.actionIndex][i].title + '" value="' + eval('n.' + cctools.BasicActionList[cctools.actionIndex][i].id) +'"></div>');
                             }
 
                             $('#actionModalBtn').text('Edit');
@@ -1109,8 +1109,8 @@ window.onload = function() {
 
                             $('#actionModalBtn').unbind('click');
                             $('#actionModalBtn').click(function() {
-                                for(i = 1;i < cctools.BasicActionList[actionIndex].length;i++) {
-                                    if(cctools.BasicActionList[actionIndex][i].id != 'name') n[cctools.BasicActionList[actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[actionIndex][i].id).val();
+                                for(i = 1;i < cctools.BasicActionList[cctools.actionIndex].length;i++) {
+                                    if(cctools.BasicActionList[cctools.actionIndex][i].id != 'name') n[cctools.BasicActionList[cctools.actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id).val();
                                 }
 
                                 $('#actionModal').modal('hide');
@@ -1129,19 +1129,19 @@ window.onload = function() {
                         "action" : function (obj) {
                             var n = $('#jstreeAction').jstree(true).get_node(obj.reference), i;
 
-                            if(isRun) return;
+                            if(cctools.isRun) return;
 
-                            if(MainScene._children.length < 2) {
+                            if(cctools.MainScene._children.length < 2) {
                                 alert('Please add a node.');
                                 return;
                             }
 
-                            targetAction = n;
+                            cctools.targetAction = n;
 
                             $('#runTargetInput option').remove();
 
-                            for(i = 1;i < MainScene._children.length;i++) {
-                                $('#runTargetInput').append('<option>' + MainScene._children[i].tag +'</option>');
+                            for(i = 1;i < cctools.MainScene._children.length;i++) {
+                                $('#runTargetInput').append('<option>' + cctools.MainScene._children[i].tag +'</option>');
                             }
 
                             $('#runActionModal').modal('show');
@@ -1171,7 +1171,7 @@ window.onload = function() {
         });
 
         eval(data.node_str);
-        storageName = $('#storageInput option:selected').text();
+        cctools.storageName = $('#storageInput option:selected').text();
 
         $('#storageModal').modal('hide');
     });
@@ -1202,9 +1202,9 @@ window.onload = function() {
         $('#Cocos2dGameContainer').css('background-color', $('#canvasBackgroundInput').val());
 
         layerColor = $('#canvasLayerBackgroundInput').val();
-        MainScene.getChildByTag('colorLayer').color = cc.color(parseInt(layerColor.substring(1, 3), 16), parseInt(layerColor.substring(3, 5), 16), parseInt(layerColor.substring(5, 7), 16), 255);
-        MainScene.getChildByTag('colorLayer').width = $('#canvasWidthInput').val();
-        MainScene.getChildByTag('colorLayer').height = $('#canvasHeightInput').val();
+        cctools.MainScene.getChildByTag('colorLayer').color = cc.color(parseInt(layerColor.substring(1, 3), 16), parseInt(layerColor.substring(3, 5), 16), parseInt(layerColor.substring(5, 7), 16), 255);
+        cctools.MainScene.getChildByTag('colorLayer').width = $('#canvasWidthInput').val();
+        cctools.MainScene.getChildByTag('colorLayer').height = $('#canvasHeightInput').val();
         cc.view.setDesignResolutionSize($('#canvasWidthInput').val(), $('#canvasHeightInput').val(), eval($("#canvasResInput option:selected").text()));
     });
 
@@ -1213,66 +1213,66 @@ window.onload = function() {
     });
 
     $('.prop-input').change(function() {
-        if(propNode) {
-            if(propNode.hasOwnProperty('color')) propNode.color = cc.color(parseInt(propNode.color.substring(1, 3), 16), parseInt(propNode.color.substring(3, 5), 16), parseInt(propNode.color.substring(5, 7), 16), 255);
-            propNode.x = parseInt($('#propXInput').val());
-            propNode.y = parseInt($('#propYInput').val());
-            propNode.opacity = parseFloat($('#propOpacityInput').val());
-            propNode.anchorX = parseFloat($('#propAXInput').val());
-            propNode.anchorY = parseFloat($('#propAYInput').val());
-            propNode.scaleX = parseFloat($('#propScaleXInput').val());
-            propNode.scaleY = parseFloat($('#propScaleYInput').val());
-            propNode.rotationX = parseInt($('#propRotationXInput').val());
-            propNode.rotationY = parseInt($('#propRotationYInput').val());
-            propNode.skewX = parseInt($('#propSkewXInput').val());
-            propNode.skewY = parseInt($('#propSkewYInput').val());
-            propNode.zIndex = parseInt($('#propzIndexInput').val());
+        if(cctools.propNode) {
+            if(cctools.propNode.hasOwnProperty('color')) cctools.propNode.color = cc.color(parseInt(cctools.propNode.color.substring(1, 3), 16), parseInt(cctools.propNode.color.substring(3, 5), 16), parseInt(cctools.propNode.color.substring(5, 7), 16), 255);
+            cctools.propNode.x = parseInt($('#propXInput').val());
+            cctools.propNode.y = parseInt($('#propYInput').val());
+            cctools.propNode.opacity = parseFloat($('#propOpacityInput').val());
+            cctools.propNode.anchorX = parseFloat($('#propAXInput').val());
+            cctools.propNode.anchorY = parseFloat($('#propAYInput').val());
+            cctools.propNode.scaleX = parseFloat($('#propScaleXInput').val());
+            cctools.propNode.scaleY = parseFloat($('#propScaleYInput').val());
+            cctools.propNode.rotationX = parseInt($('#propRotationXInput').val());
+            cctools.propNode.rotationY = parseInt($('#propRotationYInput').val());
+            cctools.propNode.skewX = parseInt($('#propSkewXInput').val());
+            cctools.propNode.skewY = parseInt($('#propSkewYInput').val());
+            cctools.propNode.zIndex = parseInt($('#propzIndexInput').val());
         }
     });
 
     $('#xLeftAlign').click(function() {
-        if(propNode) {
-            propNode.x = 0;
-            $('#propXInput').val(propNode.x);
+        if(cctools.propNode) {
+            cctools.propNode.x = 0;
+            $('#propXInput').val(cctools.propNode.x);
         }
     });
 
     $('#xCenterAlign').click(function() {
         var size = cc.director.getWinSize();
-        if(propNode) {
-            propNode.x = size.width / 2;
-            $('#propXInput').val(propNode.x);
+        if(cctools.propNode) {
+            cctools.propNode.x = size.width / 2;
+            $('#propXInput').val(cctools.propNode.x);
         }
     });
 
     $('#xRightAlign').click(function() {
         var size = cc.director.getWinSize();
-        if(propNode) {
-            propNode.x = size.width;
-            $('#propXInput').val(propNode.x);
+        if(cctools.propNode) {
+            cctools.propNode.x = size.width;
+            $('#propXInput').val(cctools.propNode.x);
         }
     });
 
     $('#yTopAlign').click(function() {
         var size = cc.director.getWinSize();
-        if(propNode) {
-            propNode.y = size.height;
-            $('#propYInput').val(propNode.y);
+        if(cctools.propNode) {
+            cctools.propNode.y = size.height;
+            $('#propYInput').val(cctools.propNode.y);
         }
     });
 
     $('#yMiddleAlign').click(function() {
         var size = cc.director.getWinSize();
-        if(propNode) {
-            propNode.y = size.height / 2;
-            $('#propYInput').val(propNode.y);
+        if(cctools.propNode) {
+            cctools.propNode.y = size.height / 2;
+            $('#propYInput').val(cctools.propNode.y);
         }
     });
 
     $('#yBottomAlign').click(function() {
-        if(propNode) {
-            propNode.y = 0;
-            $('#propYInput').val(propNode.y);
+        if(cctools.propNode) {
+            cctools.propNode.y = 0;
+            $('#propYInput').val(cctools.propNode.y);
         }
     });
 
@@ -1287,7 +1287,7 @@ window.onload = function() {
         str += "\n\n";
         str += "// Create Actions\n\n";
 
-        var root = targetAction = $('#jstreeAction').jstree(true).get_node('#');
+        var root = cctools.targetAction = $('#jstreeAction').jstree(true).get_node('#');
 
         for(i = 0;i < root.children.length;i++) {
             str += "// " + $('#jstreeAction').jstree(true).get_node(root.children[i]).data.name + "\nvar " + $('#jstreeAction').jstree(true).get_node(root.children[i]).data.name + " = ";
@@ -1310,27 +1310,27 @@ window.onload = function() {
     cctools.initTree();
 
     $('#runActionBtn').click(function() {
-        var target = MainScene.getChildByTag($("#runTargetInput option:selected").text()), action;
-        isRun = true;
-        targetActionNode = $.extend({}, target);
+        var target = cctools.MainScene.getChildByTag($("#runTargetInput option:selected").text()), action;
+        cctools.isRun = true;
+        cctools.targetActionNode = $.extend({}, target);
         $('#actionStatus').text('Action!');
         $('#actionStatus').removeClass('label-default');
         $('#actionStatus').addClass('label-danger');
 
-        action = cctools.getCocosAction(targetAction);
+        action = cctools.getCocosAction(cctools.targetAction);
 
         target.runAction(new cc.Sequence(action, new cc.DelayTime(1), new cc.CallFunc(function(sender) {
-            isRun = false;
-            sender.color = targetActionNode.color;
-            sender.x = targetActionNode.x;
-            sender.y = targetActionNode.y;
-            sender.scaleX = targetActionNode.scaleX;
-            sender.scaleY = targetActionNode.scaleY;
-            sender.skewX = targetActionNode.skewX;
-            sender.skewY = targetActionNode.skewY;
-            sender.flippedX = targetActionNode.flipX;
-            sender.flippedY = targetActionNode.flipY;
-            sender.rotation = targetActionNode.rotation;
+            cctools.isRun = false;
+            sender.color = cctools.targetActionNode.color;
+            sender.x = cctools.targetActionNode.x;
+            sender.y = cctools.targetActionNode.y;
+            sender.scaleX = cctools.targetActionNode.scaleX;
+            sender.scaleY = cctools.targetActionNode.scaleY;
+            sender.skewX = cctools.targetActionNode.skewX;
+            sender.skewY = cctools.targetActionNode.skewY;
+            sender.flippedX = cctools.targetActionNode.flipX;
+            sender.flippedY = cctools.targetActionNode.flipY;
+            sender.rotation = cctools.targetActionNode.rotation;
             sender.runAction(new cc.FadeIn(0));
             $('#actionStatus').text('Ready');
             $('#actionStatus').removeClass('label-danger');
@@ -1358,43 +1358,43 @@ window.onload = function() {
                             var pos = event.getLocation(), target = event.getCurrentTarget(), i, j;
                             for(i = 1;i < target._children.length;i++) {
                                 if(cc.rectContainsPoint(target._children[i].getBoundingBox(),pos)) {
-                                    targetNode = target._children[i];
-                                    propNode = target._children[i];
-                                    $('#propNameInput').val(propNode.tag);
-                                    $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
-                                    $('#propXInput').val(propNode.x);
-                                    $('#propYInput').val(propNode.y);
-                                    $('#propOpacityInput').val(propNode.opacity);
-                                    $('#propAXInput').val(propNode.anchorX);
-                                    $('#propAYInput').val(propNode.anchorY);
-                                    $('#propScaleXInput').val(propNode.scaleX);
-                                    $('#propScaleYInput').val(propNode.scaleY);
-                                    $('#propRotationXInput').val(propNode.rotationX);
-                                    $('#propRotationYInput').val(propNode.rotationY);
-                                    $('#propSkewXInput').val(propNode.skewX);
-                                    $('#propSkewYInput').val(propNode.skewY);
-                                    $('#propzIndexInput').val(propNode.zIndex);
+                                    cctools.targetNode = target._children[i];
+                                    cctools.propNode = target._children[i];
+                                    $('#propNameInput').val(cctools.propNode.tag);
+                                    $('#propColorInput').val("#" + cctools.propNode.color.r.toString(16) + cctools.propNode.color.g.toString(16) + cctools.propNode.color.b.toString(16) + cctools.propNode.color.a.toString(16));
+                                    $('#propXInput').val(cctools.propNode.x);
+                                    $('#propYInput').val(cctools.propNode.y);
+                                    $('#propOpacityInput').val(cctools.propNode.opacity);
+                                    $('#propAXInput').val(cctools.propNode.anchorX);
+                                    $('#propAYInput').val(cctools.propNode.anchorY);
+                                    $('#propScaleXInput').val(cctools.propNode.scaleX);
+                                    $('#propScaleYInput').val(cctools.propNode.scaleY);
+                                    $('#propRotationXInput').val(cctools.propNode.rotationX);
+                                    $('#propRotationYInput').val(cctools.propNode.rotationY);
+                                    $('#propSkewXInput').val(cctools.propNode.skewX);
+                                    $('#propSkewYInput').val(cctools.propNode.skewY);
+                                    $('#propzIndexInput').val(cctools.propNode.zIndex);
                                     $('#propertyBtn').click();
                                 }
 
                                 for(j = 0;j < target._children[i]._children.length;j++) {
                                     if(cc.rectContainsPoint(target._children[i]._children[j].getBoundingBoxToWorld(),pos)) {
-                                        targetNode = target._children[i]._children[j];
-                                        propNode = target._children[i]._children[j];
-                                        $('#propNameInput').val(propNode.tag);
-                                        $('#propColorInput').val("#" + propNode.color.r.toString(16) + propNode.color.g.toString(16) + propNode.color.b.toString(16) + propNode.color.a.toString(16));
-                                        $('#propXInput').val(propNode.x);
-                                        $('#propYInput').val(propNode.y);
-                                        $('#propOpacityInput').val(propNode.opacity);
-                                        $('#propAXInput').val(propNode.anchorX);
-                                        $('#propAYInput').val(propNode.anchorY);
-                                        $('#propScaleXInput').val(propNode.scaleX);
-                                        $('#propScaleYInput').val(propNode.scaleY);
-                                        $('#propRotationXInput').val(propNode.rotationX);
-                                        $('#propRotationYInput').val(propNode.rotationY);
-                                        $('#propSkewXInput').val(propNode.skewX);
-                                        $('#propSkewYInput').val(propNode.skewY);
-                                        $('#propzIndexInput').val(propNode.zIndex);
+                                        cctools.targetNode = target._children[i]._children[j];
+                                        cctools.propNode = target._children[i]._children[j];
+                                        $('#propNameInput').val(cctools.propNode.tag);
+                                        $('#propColorInput').val("#" + cctools.propNode.color.r.toString(16) + cctools.propNode.color.g.toString(16) + cctools.propNode.color.b.toString(16) + cctools.propNode.color.a.toString(16));
+                                        $('#propXInput').val(cctools.propNode.x);
+                                        $('#propYInput').val(cctools.propNode.y);
+                                        $('#propOpacityInput').val(cctools.propNode.opacity);
+                                        $('#propAXInput').val(cctools.propNode.anchorX);
+                                        $('#propAYInput').val(cctools.propNode.anchorY);
+                                        $('#propScaleXInput').val(cctools.propNode.scaleX);
+                                        $('#propScaleYInput').val(cctools.propNode.scaleY);
+                                        $('#propRotationXInput').val(cctools.propNode.rotationX);
+                                        $('#propRotationYInput').val(cctools.propNode.rotationY);
+                                        $('#propSkewXInput').val(cctools.propNode.skewX);
+                                        $('#propSkewYInput').val(cctools.propNode.skewY);
+                                        $('#propzIndexInput').val(cctools.propNode.zIndex);
                                         $('#propertyBtn').click();
                                     }
                                 }
@@ -1402,22 +1402,22 @@ window.onload = function() {
                         },
                         onMouseMove: function(event){
                             var pos = event.getLocation(), target = event.getCurrentTarget();
-                            if(targetNode) {
-                                targetNode.x = parseInt(pos.x - targetNode.parent.x);
-                                targetNode.y = parseInt(pos.y - targetNode.parent.y);
-                                $('#propXInput').val(targetNode.x);
-                                $('#propYInput').val(targetNode.y);
+                            if(cctools.targetNode) {
+                                cctools.targetNode.x = parseInt(pos.x - cctools.targetNode.parent.x);
+                                cctools.targetNode.y = parseInt(pos.y - cctools.targetNode.parent.y);
+                                $('#propXInput').val(cctools.targetNode.x);
+                                $('#propYInput').val(cctools.targetNode.y);
                             }
                         },
                         onMouseUp: function(event){
                             var pos = event.getLocation(), target = event.getCurrentTarget();
-                            targetNode = null;
+                            cctools.targetNode = null;
                         }
                     }), this);
                 }
             });
-            MainScene = new MyScene();
-            cc.director.runScene(MainScene);
+            cctools.MainScene = new MyScene();
+            cc.director.runScene(cctools.MainScene);
         }, this);
     };
 

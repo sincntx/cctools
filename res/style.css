@@ -11,6 +11,54 @@ a {
     cursor:hand;
 }
 
+textarea {
+    width:100%;
+}
+
+footer {
+    margin-top:30px;
+    border-top: 1px solid #d9d9de;
+    padding-top:30px;
+}
+
+footer > div > ul {
+    margin-top:10px;
+    display:inline-block;
+    padding-left:0;
+    margin-bottom:0;
+    list-style:none
+}
+
+footer > div > ul > li{
+    display:inline-block;
+    padding:5px 8px;
+    line-height:1
+}
+
+.center {
+    text-align:center;
+}
+
+.bold {
+    font-weight:bold;
+}
+
+.hidden {
+    display:none;
+}
+
+.margin-top-30 {
+    margin-top:30px;
+}
+
+.row {
+    margin-left:0;
+    margin-right:0;
+}
+.float-left {
+    float:left;
+}
+
 .navbar {
     border-bottom: 1px solid #d9d9de;
     padding-bottom:5px;
@@ -37,30 +85,19 @@ a {
     font-size:14px;
 }
 
+.navbar-main > li.active > a {
+    color:#fc3948;
+    border-bottom:1px solid #d9d9de;
+}
+
+.navbar-main > li > a:hover, .navbar-main > li > a:visited {
+    background-color:#fff;
+}
+
 .lang {
     margin-left:20px;
     margin-top:10px;
     padding:0;
-}
-
-footer {
-    margin-top:30px;
-    border-top: 1px solid #d9d9de;
-    padding-top:30px;
-}
-
-footer > div > ul {
-    margin-top:10px;
-    display:inline-block;
-    padding-left:0;
-    margin-bottom:0;
-    list-style:none
-}
-
-footer > div > ul > li{
-    display:inline-block;
-    padding:5px 8px;
-    line-height:1
 }
 
 .github-btn{
@@ -73,53 +110,10 @@ footer > div > ul > li{
     margin:auto;
 }
 
-.center {
-    text-align:center;
-}
-
-.bold {
-    font-weight:bold;
-}
-
 .contents-box {
     border:1px solid #d9d9de;
     border-radius:5px;
     padding:20px;
-}
-
-.hidden {
-    display:none;
-}
-
-.margin-top-30 {
-    margin-top:30px;
-}
-
-.row {
-    margin-left:0;
-    margin-right:0;
-}
-
-.navbar-main > li.active > a {
-    color:#fc3948;
-    border-bottom:1px solid #d9d9de;
-}
-
-.navbar-main > li > a:hover, .navbar-main > li > a:visited {
-    background-color:#fff;
-}
-
-textarea {
-    width:100%;
-}
-
-.float-left {
-    float:left;
-}
-
-#codeText {
-    height: 500px;
-    margin: 0;
 }
 
 .modal.modal.large .modal-dialog {
@@ -128,4 +122,9 @@ textarea {
 
 .titleBtn {
     color:#000000;
+}
+
+#codeText {
+    height: 500px;
+    margin: 0;
 }

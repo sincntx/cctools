@@ -17,7 +17,7 @@ cctools는 cocos2d-x 게임을 만들 때 유용하게 사용할 수 있는 도�
 
 ## 바로 해보기
 
-- [http://htmlfive.co.kr/cctools/](http://cctools.tk)
+- [http://cctools.tk/](http://cctools.tk)
 
 ## 시작하기
 

@@ -443,18 +443,18 @@ window.onload = function() {
                         "action" : function (obj) {
                             var n = $('#jstreeAction').jstree(true).get_node(obj.reference);
 
-                            if(n.isSequence) {
+                            if(n.data.isSequence) {
                                 alert('This action is sequence action!');
                                 return;
                             }
 
-                            if(n.isEase) {
+                            if(n.data.isEase) {
                                 alert('This action is ease action!');
                                 return;
                             }
 
                             for(var i = 0;i < cctools.BasicActionList.length;i++) {
-                                if(cctools.BasicActionList[i][0].value === n.type) {
+                                if(cctools.BasicActionList[i][0].value === n.data.type) {
                                     cctools.actionIndex = i;
                                     break;
                                 }
@@ -464,7 +464,7 @@ window.onload = function() {
                             $('#actionModalForm').empty();
 
                             for(i = 1;i < cctools.BasicActionList[cctools.actionIndex].length;i++) {
-                                if(cctools.BasicActionList[cctools.actionIndex][i].id != 'name') $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '">' + cctools.BasicActionList[cctools.actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[cctools.actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[cctools.actionIndex][i].title + '" value="' + eval('n.' + cctools.BasicActionList[cctools.actionIndex][i].id) +'"></div>');
+                                if(cctools.BasicActionList[cctools.actionIndex][i].id != 'name') $('#actionModalForm').append('<div class="form-group"> <label for="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '">' + cctools.BasicActionList[cctools.actionIndex][i].title + '</label><input type="' + cctools.BasicActionList[cctools.actionIndex][i].type + '" class="form-control action-modal" id="actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id + '" placeholder="' + cctools.BasicActionList[cctools.actionIndex][i].title + '" value="' + eval('n.data.' + cctools.BasicActionList[cctools.actionIndex][i].id) +'"></div>');
                             }
 
                             $('#actionModalBtn').text('Edit');
@@ -473,7 +473,7 @@ window.onload = function() {
                             $('#actionModalBtn').unbind('click');
                             $('#actionModalBtn').click(function() {
                                 for(i = 1;i < cctools.BasicActionList[cctools.actionIndex].length;i++) {
-                                    if(cctools.BasicActionList[cctools.actionIndex][i].id != 'name') n[cctools.BasicActionList[cctools.actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id).val();
+                                    if(cctools.BasicActionList[cctools.actionIndex][i].id != 'name') n.data[cctools.BasicActionList[cctools.actionIndex][i].id] = $('#actionModal' + cctools.BasicActionList[cctools.actionIndex][i].id).val();
                                 }
 
                                 $('#actionModal').modal('hide');

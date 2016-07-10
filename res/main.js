@@ -338,6 +338,72 @@ window.onload = function() {
         return str;
     };
 
+    cctools.getNodeStrCpp = function() {
+        var i, str = "", j, type, name, child, child2;
+
+        for(i = 1;i < cctools.MainScene._children.length;i++) {
+            child = cctools.MainScene._children[i];
+            name = child.tag;
+
+            str += "// " + name + "\n";
+
+            if(child instanceof cc.LabelTTF) {
+                str += "auto "+ name + " = Label::createWithSystemFont(\"" + child.string + "\", \"" + child.fontName + "\", " + child.fontSize + ");\n";
+            }
+            else if(child instanceof cc.Sprite) {
+                str += "Sprite*  " + name + "::create(\"" + child.filename + "\");\n";
+            }
+            else if(child instanceof cc.Layer) {
+                str += "Layer* " + name + "::create();\n";
+            }
+
+            str += name + "->setTag('" + name + "');\n";
+            str += name + "->setColor(ccc4(" + child.color.r + ", " + child.color.g +", " + child.color.b +", " + child.color.a + "));\n";
+            str += name + "->setOpacity(" + child.opacity + ");\n";
+            str += name + "->setPosition(" + child.x + ", " + child.y + ");\n";
+            str += name + "->setAnchorPoint(ccp(" + child.anchorX + ", " + child.anchorY + ");\n";
+            str += name + "->setScaleX(" + child.scaleX + ");\n";
+            str += name + "->setScaleY(" + child.scaleY + ");\n";
+            str += name + "->setSkewX(" + child.skewX + ");\n";
+            str += name + "->setSkewY(" + child.skewY + ");\n";
+            str += name + "->setRotationX(" + child.rotationX + ");\n";
+            str += name + "->setRotationY(" + child.rotationY + ");\n";
+            str += name + "->setZOrder(" + child.zIndex + ");\n";
+            str += "this->addChild(" + name + ");\n\n";
+
+            for(j = 0;j < child._children.length;j++) {
+                child2 = child._children[j];
+                var name2 = child2.tag;
+
+                if(child2 instanceof cc.LabelTTF) {
+                    str += "auto "+ name2 + " = Label::createWithSystemFont(\"" + child2.string + "\", \"" + child2.fontName + "\", " + child2.fontSize + ");\n";
+                }
+                else if(child2 instanceof cc.Sprite) {
+                    str += "Sprite*  " + name2 + "::create(\"" + child2.filename + "\");\n";
+                }
+                else if(child2 instanceof cc.Layer) {
+                    str += "Layer* " + name2 + "::create();\n";
+                }
+
+                str += name2 + "->setTag('" + name2 + "');\n";
+                str += name2 + "->setColor(ccc4(" + child2.color.r + ", " + child2.color.g +", " + child2.color.b +", " + child2.color.a + "));\n";
+                str += name2 + "->setOpacity(" + child2.opacity + ");\n";
+                str += name2 + "->setPosition(" + child2.x + ", " + child2.y + ");\n";
+                str += name2 + "->setAnchorPoint(ccp(" + child2.anchorX + ", " + child2.anchorY + ");\n";
+                str += name2 + "->setScaleX(" + child2.scaleX + ");\n";
+                str += name2 + "->setScaleY(" + child2.scaleY + ");\n";
+                str += name2 + "->setSkewX(" + child2.skewX + ");\n";
+                str += name2 + "->setSkewY(" + child2.skewY + ");\n";
+                str += name2 + "->setRotationX(" + child2.rotationX + ");\n";
+                str += name2 + "->setRotationY(" + child2.rotationY + ");\n";
+                str += name2 + "->setZOrder(" + child2.zIndex + ");\n";
+                str += child.tag + "->addChild(" + name2 + ");\n\n";
+            }
+        }
+
+        return str;
+    };
+
     cctools.init = function() {
         var size = cc.director.getWinSize();
 
@@ -1178,7 +1244,13 @@ window.onload = function() {
 
     $('.navbar-main > li > a').click(function() {
         if(this.id.split('Btn')[0] === 'code') {
-            $('#jsBtn').click();
+            if($('#jsBtn').hasClass('active')) {
+                $('#jsBtn').click();
+            }
+            else {
+                $('#cppBtn').click();
+            }
+
             $('#codeModal').modal('show');
         }
         else if(this.id.split('Btn')[0] === 'storage') {
@@ -1278,6 +1350,13 @@ window.onload = function() {
 
     $('#jsBtn').click(function() {
         var i, str = "// Canvas Setting\n";
+
+        $('#jsBtn').addClass('active');
+        $('#cppBtn').removeClass('active');
+
+        var editor = ace.edit("codeText");
+        editor.getSession().setMode("ace/mode/javascript");
+
         str += "cc.view.setDesignResolutionSize(" + $('#canvasWidthInput').val() + ", " + $('#canvasHeightInput').val() + ", " + $("#canvasResInput option:selected").text() + ");";
         str += "\n\n";
         str += "// Create Nodes\n\n";
@@ -1292,6 +1371,60 @@ window.onload = function() {
         for(i = 0;i < root.children.length;i++) {
             str += "// " + $('#jstreeAction').jstree(true).get_node(root.children[i]).data.name + "\nvar " + $('#jstreeAction').jstree(true).get_node(root.children[i]).data.name + " = ";
             str += cctools.getCocosActionStr(root.children[i]) + ";\n\n";
+        }
+
+        $('#codeTextHidden').val(str);
+
+        var editor = ace.edit("codeText");
+        editor.setValue(str);
+        editor.clearSelection();
+    });
+
+    $('#cppBtn').click(function() {
+        var i, str = "// Canvas Setting\n", resPolicy ="kResolutionShowAll";
+
+        $('#cppBtn').addClass('active');
+        $('#jsBtn').removeClass('active');
+
+        var editor = ace.edit("codeText");
+        editor.getSession().setMode("ace/mode/c_cpp");
+
+        switch($("#canvasResInput option:selected").text()) {
+            case 'cc.ContainerStrategy.SHOW_ALL':
+                resPolicy ="kResolutionShowAll";
+                break;
+            case 'cc.ContainerStrategy.NO_BORDER':
+                resPolicy ="kResolutionNoBorder";
+                break;
+            case 'cc.ContainerStrategy.EXACT_FIT':
+                resPolicy ="kResolutionExactFit";
+                break;
+            case 'cc.ContainerStrategy.FIXED_WIDTH':
+                resPolicy ="kResolutionFixedWidth";
+                break;
+            case 'cc.ContainerStrategy.FIXED_HEIGHT':
+                resPolicy ="kResolutionFixedHeight";
+                break;
+        }
+
+        // Set the design resolution
+        str += "CCDirector* pDirector = CCDirector::sharedDirector();\n";
+        str += "CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();\n";
+
+        str += "pDirector->setOpenGLView(pEGLView);\n";
+        str += "pEGLView->setDesignResolutionSize(" + $("#canvasWidthInput").val() + ", " + $("#canvasHeightInput").val() + ", " + resPolicy + ");\n";
+        str += "\n\n";
+
+        str += "// Create Nodes\n\n";
+
+        str += cctools.getNodeStrCpp();
+
+        str += "\n\n";
+        str += "// Create Actions\n\n";
+
+        var root = cctools.targetAction = $('#jstreeAction').jstree(true).get_node('#');
+
+        for(i = 0;i < root.children.length;i++) {
         }
 
         $('#codeTextHidden').val(str);

@@ -33,6 +33,32 @@
   ],
   [
     {
+      "title" : "cc.LabelBMFont",
+      "id" : "name",
+      "type" : "label",
+      "value" : "cc.LabelBMFont"
+    },
+    {
+      "title" : "Tag",
+      "id" : "tag",
+      "type" : "text",
+      "value" : "label"
+    },
+    {
+      "title" : "Text",
+      "id" : "text",
+      "type" : "text",
+      "value" : "Hello World!"
+    },
+    {
+      "title" : "FNT file",
+      "id" : "fnt",
+      "type" : "file",
+      "value" : ""
+    }
+  ],
+  [
+    {
       "title" : "cc.Sprite",
       "id" : "name",
       "type" : "label",

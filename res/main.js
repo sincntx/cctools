@@ -275,6 +275,11 @@ window.onload = function() {
                 type = "cc.LabelTTF";
                 str += "var " + name + " = new " + type + "(\"" + child.string + "\", \"" + child.fontName + "\", " + child.fontSize + ");\n";
             }
+            else if(child instanceof cc.LabelBMFont) {
+                type = "cc.LabelBMFont";
+                str += "var " + name + " = new " + type + "(\"" + child.string + "\", \"" + child.fnt + "\");\n";
+                str += name + ".setFntFile('" + child.fnt+ "');\n";
+            }
             else if(child instanceof cc.Sprite) {
                 type = "cc.Sprite";
                 str += "var " + name + " = new " + type + "(\"" + child.filename + "\");\n";
@@ -308,6 +313,11 @@ window.onload = function() {
                 if(child2 instanceof cc.LabelTTF) {
                     type = "cc.LabelTTF";
                     str += "var " + name + " = new " + type + "(\"" + child2.string + "\", \"" + child2.fontName + "\", " + child2.fontSize + ");\n";
+                }
+                else if(child2 instanceof cc.LabelBMFont) {
+                    type = "cc.LabelBMFont";
+                    str += "var " + name + " = new " + type + "(\"" + child2.string + "\", \"" + child2.fnt + "\");\n";
+                    str += name + ".setFntFile('" + child2.fnt+ "');\n";
                 }
                 else if(child2 instanceof cc.Sprite) {
                     type = "cc.Sprite";
@@ -350,6 +360,9 @@ window.onload = function() {
             if(child instanceof cc.LabelTTF) {
                 str += "auto "+ name + " = Label::createWithSystemFont(\"" + child.string + "\", \"" + child.fontName + "\", " + child.fontSize + ");\n";
             }
+            else if(child instanceof cc.LabelBMFont) {
+                str += "auto "+ name + " = Label::createWithBMFont(\"" + child.fnt + "\", \"" + child.string + "\");\n";
+            }
             else if(child instanceof cc.Sprite) {
                 str += "Sprite*  " + name + "::create(\"" + child.filename + "\");\n";
             }
@@ -377,6 +390,9 @@ window.onload = function() {
 
                 if(child2 instanceof cc.LabelTTF) {
                     str += "auto "+ name2 + " = Label::createWithSystemFont(\"" + child2.string + "\", \"" + child2.fontName + "\", " + child2.fontSize + ");\n";
+                }
+                else if(child instanceof cc.LabelBMFont) {
+                    str += "auto "+ name2 + " = Label::createWithBMFont(\"" + child2.fnt + "\", \"" + child2.string + "\");\n";
                 }
                 else if(child2 instanceof cc.Sprite) {
                     str += "Sprite*  " + name2 + "::create(\"" + child2.filename + "\");\n";
@@ -619,7 +635,7 @@ window.onload = function() {
             if (window.FileReader) {
                 if (!inputFile.files[0].type.match(/image\//)) return;
 
-                $('#spriteFilename').val(inputFile.files[0].name);
+                $('#modalFileName').val(inputFile.files[0].name);
 
                 try {
                     var reader = new FileReader();
@@ -680,8 +696,14 @@ window.onload = function() {
             for(i = 1;i < cctools.NodeList[cctools.nodeIndex].length;i++) {
                 $('#nodeModalForm').append('<div class="form-group"> <label for="nodeModal' + cctools.NodeList[cctools.nodeIndex][i].id + '">' + cctools.NodeList[cctools.nodeIndex][i].title + '</label><input type="' + cctools.NodeList[cctools.nodeIndex][i].type + '" class="form-control" id="nodeModal' + cctools.NodeList[cctools.nodeIndex][i].id + '" placeholder="' + cctools.NodeList[cctools.nodeIndex][i].title + '" value="' + cctools.NodeList[cctools.nodeIndex][i].value +'"></div>');
                 if(cctools.NodeList[cctools.nodeIndex][i].type === 'file') {
-                    $('#nodeModal' + cctools.NodeList[cctools.nodeIndex][i].id).setPreview(opt);
-                    $('#nodeModalForm').append('<input type="hidden" id="spriteFilename" />');
+                    if(cctools.NodeList[cctools.nodeIndex][i].id === 'src') {
+                        $('#nodeModal' + cctools.NodeList[cctools.nodeIndex][i].id).setPreview(opt);
+                    }
+                    $('#nodeModalForm').append('<input type="hidden" id="modalFileName" />');
+                    $('#nodeModal' + cctools.NodeList[cctools.nodeIndex][i].id).change(function() {
+                        var tmppath = URL.createObjectURL(event.target.files[0]);
+                        $('#modalFileName').val(tmppath);
+                    });
                 }
             }
             $('#nodeModalBtn').unbind('click');
@@ -694,9 +716,12 @@ window.onload = function() {
                         case "cc.LabelTTF" :
                             node = new cc.LabelTTF($('#nodeModal' + cctools.NodeList[cctools.nodeIndex][2].id).val(), $('#nodeModal' + cctools.NodeList[cctools.nodeIndex][3].id).val(), $('#nodeModal' + cctools.NodeList[cctools.nodeIndex][4].id).val());
                             break;
+                        case "cc.LabelBMFont" :
+                            node = new cc.LabelBMFont($('#nodeModal' + cctools.NodeList[cctools.nodeIndex][2].id).val(),  $('#modalFileName').val());
+                            break;
                         case "cc.Sprite" :
                             node = new cc.Sprite($('#spriteImagePreivew')[0].src);
-                            node.filename = $('#spriteFilename').val();
+                            node.filename = $('#modalFileName').val();
                             break;
                         case "cc.Layer" :
                             node = new cc.Layer();

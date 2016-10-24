@@ -262,6 +262,125 @@ window.onload = function() {
         return action;
     };
 
+    cctools.getCocosActionStrCpp = function(targetAction) {
+        var action;
+
+        if(!targetAction.hasOwnProperty('id')) targetAction = $('#jstreeAction').jstree(true).get_node(targetAction);
+        switch(targetAction.data.type) {
+            case "cc.MoveTo":
+                action = "MoveTo::create(" + parseInt(targetAction.data.duration) + ", Vec2(" + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + "))";
+                break;
+            case "cc.MoveBy":
+                action = "MoveBy::create(" + parseInt(targetAction.data.duration) + ", Vec2(" + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + "))";
+                break;
+            case "cc.ScaleTo":
+                action = "ScaleTo::create(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
+                break;
+            case "cc.ScaleBy":
+                action = "ScaleBy::create(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
+                break;
+            case "cc.RotateTo":
+                action = "RotateTo::create(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
+                break;
+            case "cc.RotateBy":
+                action = "RotateBy::create(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
+                break;
+            case "cc.SkewTo":
+                action = "SkewTo::create(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
+                break;
+            case "cc.SkewBy":
+                action = "SkewBy::create(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ")";
+                break;
+            case "cc.FadeIn":
+                action = "FadeIn::create(" + parseInt(targetAction.data.duration) + ")";
+                break;
+            case "cc.FadeOut":
+                action = "FadeOut::create(" + parseInt(targetAction.data.duration) + ")";
+                break;
+            case "cc.JumpTo":
+                action = "JumpTo::create(" + parseInt(targetAction.data.duration) + ", Vec2(" + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ") + , " + parseInt(targetAction.data.height) + ", " + parseInt(targetAction.data.jumps) + ")";
+                break;
+            case "cc.JumpBy":
+                action = "JumpBy::create(" + parseInt(targetAction.data.duration) + ", Vec2(" + parseInt(targetAction.data.x) + ", " + parseInt(targetAction.data.y) + ") + , " + parseInt(targetAction.data.height) + ", " + parseInt(targetAction.data.jumps) + ")";
+                break;
+            case "cc.Blink":
+                action = "Blink::create(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.blinks) + ")";
+                break;
+            case "cc.TintTo":
+                action = "TintTo::create(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.r) + ", " + parseInt(targetAction.data.g) + ", " + parseInt(targetAction.data.b) + ")";
+                break;
+            case "cc.TintBy":
+                action = "TintBy::create(" + parseInt(targetAction.data.duration) + ", " + parseInt(targetAction.data.r) + ", " + parseInt(targetAction.data.g) + ", " + parseInt(targetAction.data.b) + ")";
+                break;
+            case "cc.Show":
+                action = "Show::create()";
+                break;
+            case "cc.Hide":
+                action = "Hide::create()";
+                break;
+            case "cc.Place":
+                action = "Place(Vec2(" + parseInt(targetAction.data.x) +", " + parseInt(targetAction.data.y) + "))";
+                break;
+            case "cc.FlipX":
+                action = "FlipX::create(" + targetAction.data.flip + ")";
+                break;
+            case "cc.FlipY":
+                action = "FlipY::create(" + targetAction.data.flip + ")";
+                break;
+            case "cc.Sequence":
+                if(targetAction.children.length < 1) {
+                    return "MoveBy::create(0, 0, 0)";
+                }
+
+                var actionArray = [];
+
+                for(var i = 0;i < targetAction.children.length;i++) {
+                    actionArray.push(cctools.getCocosActionStrCpp(targetAction.children[i]));
+                }
+
+                actionArray = actionArray.join();
+                action = "Sequence::create(" + actionArray + ")";
+                break;
+            case "cc.Spawn":
+                if(targetAction.children.length < 1) {
+                    return "MoveBy::create(0, 0, 0)";
+                }
+
+                var actionArray = [];
+
+                for(var i = 0;i < targetAction.children.length;i++) {
+                    actionArray.push(cctools.getCocosActionStrCpp(targetAction.children[i]));
+                }
+
+                actionArray = actionArray.join();
+                action = "Spawn::create(" + actionArray + ")";
+                break;
+            case "cc.EaseBackIn":
+            case "cc.EaseBackInOut":
+            case "cc.EaseBackOut":
+            case "cc.EaseBounceIn":
+            case "cc.EaseBounceInOut":
+            case "cc.EaseBounceOut":
+            case "cc.EaseElasticIn":
+            case "cc.EaseElasticInOut":
+            case "cc.EaseElasticOut":
+            case "cc.EaseExponentialIn":
+            case "cc.EaseExponentialInOut":
+            case "cc.EaseExponentialOut":
+            case "cc.EaseSineIn":
+            case "cc.EaseSineInOut":
+            case "cc.EaseSineOut":
+                if(targetAction.children.length < 1) {
+                    return "MoveBy::create(0, 0, 0)";
+                }
+
+                action = targetAction.data.type + "::create(" + cctools.getCocosActionStrCpp(targetAction.children[0]) + ")";
+                break;
+        }
+
+        return action;
+    };
+
     cctools.getNodeStr = function() {
         var i, str = "", j, type, name, child, child2;
 
@@ -1450,6 +1569,8 @@ window.onload = function() {
         var root = cctools.targetAction = $('#jstreeAction').jstree(true).get_node('#');
 
         for(i = 0;i < root.children.length;i++) {
+            str += "// " + $('#jstreeAction').jstree(true).get_node(root.children[i]).data.name + "\nauto " + $('#jstreeAction').jstree(true).get_node(root.children[i]).data.name + " = ";
+            str += cctools.getCocosActionStrCpp(root.children[i]) + ";\n\n";
         }
 
         $('#codeTextHidden').val(str);

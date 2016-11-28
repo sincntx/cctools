@@ -1,5 +1,6 @@
 {
-    "debugMode"     : 1,
+    "debugMode"     : 0,
+    "showFPS"       : false,
     "frameRate"     : 60,
     "id"            : "gameCanvas",
     "renderMode"    : 1,

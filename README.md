@@ -19,13 +19,10 @@ cctools is useful tools to create cocos2d-x game and licensed under [MIT](./LICE
 
 - [https://youtu.be/EE9108iq3cA](https://youtu.be/EE9108iq3cA)
 
-## Online Play
-
-- [http://cctools.tk/](http://cctools.tk/)
 
 ## Quick Start
 
-1. Run modern web browser, and click [Online Play](http://cctools.tk)
+1. Run by modern web browser.
 
 2. Click the 'Example' of top menu.
 
